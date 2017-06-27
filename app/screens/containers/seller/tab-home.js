@@ -196,7 +196,7 @@ export default class SellerHomeScreen extends Component {
                   <View style={ [styles.shome.userBlockLeft, styles.shome.userInfo] }>
                     <Image source={{uri: this.state.userInfo.shop_logo}} style={ styles.shome.userHeadIcon } onError={this._logoError}/>
                     <View style={ styles.shome.userData }>
-                      <Text style={ styles.shome.userName }>{ this.state.userInfo.shop_name }</Text>
+                      <Text style={ styles.shome.userName } numberOfLines={1}>{ this.state.userInfo.shop_name }</Text>
                       <View style={ styles.shome.idTab }>
                         <Text style={ [styles.shome.userName, styles.shome.idTabText] }>切换至买家</Text>
                         <Image source={require('../../../images/icon-user-tab.png')} style={ styles.shome.idTabImg } />

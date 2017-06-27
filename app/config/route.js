@@ -11,6 +11,7 @@ import LoginScreen from '../screens/login';
 import SellerScreen from '../screens/containers/seller/index';
 import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-info';
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
+import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
 
 const styles = StyleSheet.create({
   headerLeftNone: {
@@ -56,6 +57,12 @@ export default {
         screen: SellerAddrListScreen,
         navigationOptions: {
           title: '地址管理'
+        }
+      },
+      SellerAddrAdd: {
+        screen: SellerAddrAddScreen,
+        navigationOptions: {
+          title: '添加新地址'
         }
       }
 }

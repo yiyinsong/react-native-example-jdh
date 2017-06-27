@@ -33,6 +33,132 @@ export default {
       alignSelf: 'flex-end'
     }
   },
+  modal: {
+    container: {
+      flex:1,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      justifyContent:'center',
+      alignItems:'center'
+    },
+    confirm: {
+      content: {
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        borderRadius: 4
+      },
+      btn: {
+        flexDirection: 'row'
+      },
+      text: {
+        textAlign: 'center',
+        fontSize: 14,
+        marginBottom: 20
+      },
+      confirm: {
+        borderRadius: 2,
+        backgroundColor: '#fe5e5e',
+        borderWidth: 1,
+        borderColor: '#fe5e5e',
+        paddingTop: 10,
+        paddingBottom: 10,
+        flex: 1,
+        marginRight: 8
+      },
+      confirmText: {
+        color: '#fff',
+        fontSize: 12,
+        textAlign: 'center'
+      },
+      cancel: {
+        borderRadius: 2,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#ddd',
+        color: '#333',
+        fontSize: 12,
+        paddingTop: 10,
+        paddingBottom: 10,
+        textAlign: 'center',
+        flex: 1,
+        marginLeft: 8
+      },
+      cancelText: {
+        color: '#333',
+        fontSize: 12,
+        textAlign: 'center'
+      },
+    },
+    address: {
+      content: {
+        backgroundColor: '#fff'
+      },
+      title: {
+        padding: 10,
+        position: 'relative'
+      },
+      titleText: {
+        textAlign: 'center',
+        fontSize: 14,
+        paddingLeft: 20,
+        paddingRight: 20
+      },
+      closec: {
+        position: 'absolute',
+        top: 8,
+        right: 5
+      },
+      close: {
+        width: 24,
+        height: 24
+      },
+      itemText: {
+        fontSize: 12,
+        color: '#666'
+      },
+      itemImg: {
+        width: 12,
+        height: 12,
+        marginLeft: 5,
+        resizeMode: 'contain',
+        marginTop: 2
+      },
+      item: {
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 10,
+        paddingRight: 10
+      },
+      tab: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee'
+      },
+      tabItem: {
+        fontSize: 12,
+        color: '#666',
+        marginRight: 5,
+        paddingLeft: 10,
+
+      },
+      tabItemText: {
+        fontSize: 12,
+        color: '#666',
+        paddingBottom: 5,
+        borderBottomWidth: 2,
+        borderBottomColor: '#fff'
+      },
+      svc: {
+        paddingTop: 5,
+        paddingBottom: 5
+      }
+    }
+  },
   //买家买家入口
   entrance: {
     wrapper: {
@@ -101,7 +227,8 @@ export default {
     },
     arrowRight: {
       width: 14,
-      height: 14
+      height: 14,
+      resizeMode: 'contain'
     },
     userNavText: {
       color: '#fff',
@@ -449,6 +576,30 @@ export default {
     itemBtnText: {
       fontSize: 12,
       color: '#999'
+    },
+    add: {
+      backgroundColor: '#fff'
+    },
+    group: {
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    addLabel: {
+      fontSize: 12,
+      color: '#999',
+    },
+    addAbsolute: {
+      padding: 0,
+      margin: 0,
+      flex: 1,
+      flexDirection: 'row',
+      height: 40
+    },
+    addFooter: {
+      borderTopWidth: 0,
+      backgroundColor: '#fff'
     }
   }
 }

@@ -4,7 +4,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  DeviceEventEmitter
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
@@ -34,12 +35,25 @@ export default class SellerUserInfoScreen extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        storeInfo: {},
-        addr: {}
+        storeInfo: {}
       };
     }
-    componentDidMount() { 
+    componentDidMount() {
       ScreenInit.checkLogin();
+
+      //添加地址事件侦听
+      this.eventEmitter_addr = DeviceEventEmitter.addListener('event_address_num_change', (arg) => {
+        if(arg) {
+          this.setState({
+            storeInfo: {
+              ...this.state.storeInfo,
+              addr_count: arg.addr_count,
+              addr_remain: arg.addr_remain
+            }
+          });
+        }
+      });
+
       //获取未读消息
       fetch(Config.PHPAPI + 'api/mapp/letter/unread-num?token=' + token, {
         method: 'GET'
@@ -81,7 +95,7 @@ export default class SellerUserInfoScreen extends Component {
     }
     render() {
         return (
-          <ScrollView style={styles.sinfo.storeInfo}>
+          <ScrollView>
             <View style={styles.sinfo.storeInfoWrapper}>
               <View style={[styles.common.flex, styles.sinfo.storeInfoItem]}>
                 <Text style={styles.sinfo.storeInfoItemLeft}>联系人</Text>
@@ -100,7 +114,7 @@ export default class SellerUserInfoScreen extends Component {
                 <Text style={[styles.common.flex, styles.common.flexEndh, styles.sinfo.storeInfoItemRight]}>{this.state.storeInfo.address}</Text>
               </View>
             </View>
-            <TouchableOpacity style={[styles.common.flex, styles.sinfo.address]} activeOpacity={.8} onPress={this._addrList}>
+            <TouchableOpacity style={[styles.common.flex, styles.sinfo.address]} activeOpacity={.8} onPress={this._toAddrList}>
               <View style={[styles.common.flex, styles.common.flexCenterv]}>
                 <Image style={styles.sinfo.addrIcon} source={require('../../../images/icon-position.png')}/>
                 <Text style={styles.sinfo.addrTitle}>地址管理</Text>
@@ -124,7 +138,7 @@ export default class SellerUserInfoScreen extends Component {
           </ScrollView>
         );
     }
-    _addrList = () => {
+    _toAddrList = () => {
       this.props.navigation.navigate('SellerAddrList');
     }
     _logout = () => {
@@ -162,5 +176,9 @@ export default class SellerUserInfoScreen extends Component {
             backgroundColor: 'rgba(0,0,0,.8)'
         });
       });
+    }
+    componentWillUnmount(){
+      //移除事件侦听
+      this.eventEmitter_addr && this.eventEmitter_addr.remove();
     }
 }
