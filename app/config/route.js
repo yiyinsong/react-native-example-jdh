@@ -9,6 +9,7 @@ import EntranceScreen from '../screens/entrance';
 import LoginScreen from '../screens/login';
 
 import SellerScreen from '../screens/containers/seller/index';
+import SellerStoreInfoScreen from '../screens/containers/seller/tab-home-store-info';
 import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-info';
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
 import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
@@ -45,6 +46,12 @@ export default {
         screen: SellerScreen,
         navigationOptions: {
           header: null
+        }
+      },
+      SellerStoreInfo: {
+        screen: SellerStoreInfoScreen,
+        navigationOptions: {
+          title: '店铺数据'
         }
       },
       SellerUserInfo: {

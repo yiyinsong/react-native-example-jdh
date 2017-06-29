@@ -7,8 +7,6 @@ import {
   ScrollView
 } from 'react-native';
 
-import Toast from 'react-native-root-toast';
-
 import styles from '../../../css/styles';
 
 export default class SellerAddrItemComponent extends Component {
@@ -20,10 +18,10 @@ export default class SellerAddrItemComponent extends Component {
     return (
       <View style={styles.saddr.item}>
         <Text style={styles.saddr.itemTop}>
-          <Text style={styles.saddr.itemUser}>{_data.recevier}</Text>
+          <Text style={styles.saddr.itemUser}>{_data.recevier + '  '}</Text>
           <Text style={styles.saddr.itemUser}>{_data.mobile}</Text>
         </Text>
-        <Text style={styles.saddr.itemAddr}>{_data.addr_str}</Text>
+        <Text style={styles.saddr.itemAddr}>{_data.addr_str + _data.addr}</Text>
         <View style={[styles.saddr.itemBottom, styles.common.flex]}>
           <View>
             <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.common.flexCenterv]} onPress={() => {this._setDefault()}}>
@@ -32,7 +30,7 @@ export default class SellerAddrItemComponent extends Component {
             </TouchableOpacity>
           </View>
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableOpacity activeOpacity={.8}  style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+            <TouchableOpacity activeOpacity={.8}  style={[styles.common.flexDirectionRow, styles.common.flexCenterv]} onPress={this._edit}>
               <Image source={require('../../../images/icon-addr-edit.png')} style={styles.saddr.itemIcon}/>
               <Text style={styles.saddr.itemBtnText}>编辑</Text>
             </TouchableOpacity>
@@ -51,5 +49,8 @@ export default class SellerAddrItemComponent extends Component {
   }
   _delete = () => {
     this.props.deleteHandle();
+  }
+  _edit = () => {
+    this.props.editHandle();
   }
 }

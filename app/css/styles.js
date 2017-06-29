@@ -142,7 +142,6 @@ export default {
       tabItem: {
         fontSize: 12,
         color: '#666',
-        marginRight: 5,
         paddingLeft: 10,
 
       },
@@ -600,6 +599,34 @@ export default {
     addFooter: {
       borderTopWidth: 0,
       backgroundColor: '#fff'
+    },
+    input: {
+      fontSize: 12,
+      color: '#333',
+      margin: 0,
+      padding: 0
+    }
+  },
+  storeInfo: {
+    block: {
+      marginTop: 10
+    },
+    more: {
+      marginLeft: 10,
+      marginRight: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    moreName: {
+      color: '#999',
+      fontSize: 12
+    },
+    moreNum: {
+      fontSize: 14,
+      fontWeight: '700',
+      color: '#333'
     }
   }
 }

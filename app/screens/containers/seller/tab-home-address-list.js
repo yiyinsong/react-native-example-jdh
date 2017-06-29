@@ -8,8 +8,6 @@ import {
   DeviceEventEmitter
 } from 'react-native';
 
-import Toast from 'react-native-root-toast';
-
 import styles from '../../../css/styles';
 
 import Config from '../../../config/config';
@@ -17,6 +15,7 @@ import ScreenInit from '../../../config/screenInit';
 
 import AddressItemComponent from '../../components/seller/tab-home-address-item';
 import ModalConfirm from '../../common/modal-confirm';
+import UIToast from '../../common/ui-toast';
 
 export default class SellerAddrList extends Component {
     constructor(props) {
@@ -36,6 +35,19 @@ export default class SellerAddrList extends Component {
     }
     componentDidMount() {
       ScreenInit.checkLogin();
+      this._updateData();
+      /**添加新增地址侦听**/
+      this.listener_address_add = DeviceEventEmitter.addListener('addressListAddOne', () => {
+        /**发送事件侦听，告诉账户信息地址数量改变**/
+        DeviceEventEmitter.emit('event_address_num_change',{
+          addr_count: parseInt(this.state.addr.addr_count) + 1,
+          addr_remain: parseInt(this.state.addr.addr_remain) - 1
+        });
+        /**重新刷新页面更新数据**/
+        this._updateData();
+      });
+    }
+    _updateData = () => {
       fetch(Config.PHPAPI + 'api/mapp/shop/addr-list?type=seller&token=' + token, {
         method: 'GET'
       })
@@ -50,17 +62,11 @@ export default class SellerAddrList extends Component {
             }
           });
         } else {
-          Toast.show(data.msg, {
-              duration: Toast.durations.SHORT,
-              backgroundColor: 'rgba(0,0,0,.8)'
-          });
+          UIToast(data.msg);
         }
       })
       .catch((error) => {
-        Toast.show('获取列表失败', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'rgba(0,0,0,.8)'
-        });
+        UIToast('获取列表失败');
       });
     }
     render() {
@@ -83,6 +89,7 @@ export default class SellerAddrList extends Component {
                         data={item}
                         setDefault={()=>{this._setDefaultItem(item.addr_id, index)}}
                         deleteHandle={()=>{this._deleteItem(item.addr_id, index)}}
+                        editHandle={()=>{this.props.navigation.navigate('SellerAddrAdd', {id: item.addr_id})}}
                         ></AddressItemComponent>)
                     }
                   )
@@ -135,10 +142,7 @@ export default class SellerAddrList extends Component {
               }
             });
           } else {
-            Toast.show(result.msg, {
-                duration: Toast.durations.SHORT,
-                backgroundColor: 'rgba(0,0,0,.8)'
-            });
+            UIToast(result.msg);
           }
       });
     }
@@ -179,14 +183,15 @@ export default class SellerAddrList extends Component {
             addr_remain: this.state.addr.addr_remain
           });
         } else {
-          Toast.show(result.msg, {
-              duration: Toast.durations.SHORT,
-              backgroundColor: 'rgba(0,0,0,.8)'
-          });
+          UIToast(result.msg);
         }
       });
     }
     _addNewOne = () => {
       this.props.navigation.navigate('SellerAddrAdd');
+    }
+    componentWillUnmount(){
+      //移除事件侦听
+      this.listener_address_add && this.listener_address_add.remove();
     }
 }

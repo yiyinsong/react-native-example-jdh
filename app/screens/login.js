@@ -12,10 +12,10 @@ import {
 
 import { NavigationActions, Transitioner } from 'react-navigation';
 
-import Toast from 'react-native-root-toast';
-
 import md5 from "../js/md5";
 import Config from '../config/config';
+
+import UIToast from './common/ui-toast';
 
 const styles = StyleSheet.create({
   login: {},
@@ -32,17 +32,11 @@ export default class LoginScreen extends Component {
     }
     _login = () => {
       if(this.state.username == '') {
-        Toast.show('请填写用户名', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'rgba(0,0,0,.8)'
-        });
+        UIToast('请填写用户名');
         return;
       }
       if(this.state.password == '') {
-        Toast.show('请填写密码', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'rgba(0,0,0,.8)'
-        });
+        UIToast('请填写密码');
         return;
       }
       let _time = Math.round(new Date().getTime()/1000);
@@ -76,17 +70,11 @@ export default class LoginScreen extends Component {
               this.props.navigation.goBack();
             }
           } else {
-            Toast.show(data.msg || '登录失败', {
-                duration: Toast.durations.SHORT,
-                backgroundColor: 'rgba(0,0,0,.8)'
-            });
+            UIToast(data.msg || '登录失败');
           }
       })
       .catch((err) => {
-          Toast.show(data.msg || '登录失败', {
-              duration: Toast.durations.SHORT,
-              backgroundColor: 'rgba(0,0,0,.8)'
-          });
+          UIToast(data.msg || '登录失败');
       });
     }
     render() {

@@ -173,7 +173,10 @@ export default class SellerHomeScreen extends Component {
       this.setState({userInfo: Object.assign(this.state.userInfo, {shop_logo: 'http://js.jdhui.com/asset/2.0/main/images/default-logo.png'})});
     }
     _toUserInfo = () => {
-      this.props.navigation.navigate('SellerUserInfo', {});
+      this.props.navigation.navigate('SellerUserInfo');
+    }
+    _toStoreInfo = () => {
+      this.props.navigation.navigate('SellerStoreInfo');
     }
     render() {
         return (
@@ -218,10 +221,10 @@ export default class SellerHomeScreen extends Component {
                     <Image source={require('../../../images/icon-overview-f1.png')} style={ styles.shome.dtlIcon }/>
                     <Text style={ styles.shome.dtName }>店铺数据</Text>
                   </View>
-                  <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
+                  <TouchableOpacity activeOpacity={.8} style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] } onPress={this._toStoreInfo}>
                     <Text style={ styles.shome.dtMore }>查看更多</Text>
                     <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
-                  </View>
+                  </TouchableOpacity>
                 </View>
                 <View style={ styles.shome.dd }>
                   <View style={ [styles.common.flex, styles.shome.storeDataList] }>

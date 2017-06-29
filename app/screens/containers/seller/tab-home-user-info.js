@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
-import Toast from 'react-native-root-toast';
-
 import styles from '../../../css/styles';
 
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
+
+import UIToast from '../../common/ui-toast';
 
 export default class SellerUserInfoScreen extends Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -80,17 +80,11 @@ export default class SellerUserInfoScreen extends Component {
             storeInfo: data.data
           });
         } else {
-          Toast.show(data.msg, {
-              duration: Toast.durations.SHORT,
-              backgroundColor: 'rgba(0,0,0,.8)'
-          });
+          UIToast(data.msg);
         }
       })
       .catch((error) => {
-        Toast.show('获取用户信息失败', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'rgba(0,0,0,.8)'
-        });
+        UIToast('获取用户信息失败');
       });
     }
     render() {
@@ -165,16 +159,10 @@ export default class SellerUserInfoScreen extends Component {
           })
           this.props.navigation.dispatch(resetAction);
         } else {
-          Toast.show(data.msg || '退出失败', {
-              duration: Toast.durations.SHORT,
-              backgroundColor: 'rgba(0,0,0,.8)'
-          });
+          UIToast(data.msg || '退出失败');
         }
       }).catch((err) => {
-        Toast.show('退出失败', {
-            duration: Toast.durations.SHORT,
-            backgroundColor: 'rgba(0,0,0,.8)'
-        });
+        UIToast('退出失败');
       });
     }
     componentWillUnmount(){
