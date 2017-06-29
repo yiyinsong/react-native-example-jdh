@@ -11,18 +11,11 @@ import styles from '../../../css/styles';
 
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
-import Utils from '../../../js/utils';
 
 export default class SellerHomeScreen extends Component {
     constructor(props){
       super(props);
       this.state = {
-        userInfo: {
-          shop_name: '',
-          shop_logo: '',
-          shopId: ''
-        },
-        messageCount: 0,
         storeData: {
           todayRegCount: 0,
           userCount: 0,
@@ -35,11 +28,7 @@ export default class SellerHomeScreen extends Component {
           todayOrderCount: 0,
           todayTotalAmount: 0,
           yesterdayOrderCount: 0
-        },
-        orderDataZJ: {},
-        orderDataJC: {},
-        refundNumZJ: 0,
-        refundNumJC: 0
+        }
       };
     }
     componentDidMount() {
