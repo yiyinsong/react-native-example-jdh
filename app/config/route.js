@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   TouchableOpacity,
-  StyleSheet
+  Image
 } from 'react-native';
 
 import HomeScreen from '../screens/index';
@@ -14,12 +14,7 @@ import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-inf
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
 import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
 
-const styles = StyleSheet.create({
-  headerLeftNone: {
-    width: 20,
-    height: 20
-  }
-});
+import styles from '../css/styles';
 
 export default {
       Home: {
@@ -32,7 +27,7 @@ export default {
         screen: EntranceScreen,
         navigationOptions: {
           title: '选择身份',
-          headerLeft: <TouchableOpacity style={styles.headerLeftNone}></TouchableOpacity>,
+          headerLeft: <TouchableOpacity style={styles.common.headerLeftNone}></TouchableOpacity>,
         }
       },
       //登录页
@@ -44,9 +39,28 @@ export default {
       },
       Seller: {
         screen: SellerScreen,
-        navigationOptions: {
-          header: null
-        }
+        navigationOptions: ({navigation}) => ({
+          headerStyle: {
+            backgroundColor: '#0eaaff',
+            color: '#fff',
+            height: 65,
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomColor: '#0eaaff',
+            borderBottomWidth: 1,
+            paddingTop: 20,
+          },
+          headerTitleStyle : {
+              color: '#fff',
+              fontSize: 16,
+              alignSelf: 'center',
+              fontWeight: '100'
+          },
+          headerLeft: null,
+          headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => {navigation.navigate('Login')}}>
+                <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
+            </TouchableOpacity> : null)
+        })
       },
       SellerStoreInfo: {
         screen: SellerStoreInfoScreen,

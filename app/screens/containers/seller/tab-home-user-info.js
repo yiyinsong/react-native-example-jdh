@@ -20,10 +20,10 @@ export default class SellerUserInfoScreen extends Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
       headerRight: (
         <TouchableOpacity style={styles.sinfo.headerRight} activeOpacity={.8}>
-          {navigation.state.params.messNum > 0 ?
+          {navigation.state.params && navigation.state.params.messNum > 0 ?
           <View style={styles.sinfo.mess}>
             <View style={styles.sinfo.messBadge}>
-              <Text style={styles.sinfo.messBadgeText}>{navigation.state.params.messNum || 0}</Text>
+              <Text style={styles.sinfo.messBadgeText}>{(navigation.state.params && navigation.state.params.messNum) || 0}</Text>
             </View>
           </View>
           : null

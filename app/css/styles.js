@@ -31,6 +31,25 @@ export default {
     },
     flexSelfRight: {
       alignSelf: 'flex-end'
+    },
+    iconBackArrow: {
+      width: 18,
+      height: 18,
+      marginLeft: 10,
+      resizeMode: 'contain'
+    },
+    headerBtnRight: {
+      width: 18,
+      height: 18,
+      marginRight: 10
+    },
+    tabIcon: {
+      width: 20,
+      height: 20
+    },
+    headerLeftNone: {
+      width: 20,
+      height: 20
     }
   },
   modal: {
@@ -628,5 +647,125 @@ export default {
       fontWeight: '700',
       color: '#333'
     }
+  },
+  sorder: {
+    tabTitleText: {
+      fontSize: 12
+    },
+    tabTitleUnderLine: {
+      height: 1,
+      backgroundColor: '#388bff'
+    },
+    loadingTips: {
+      color: '#999',
+      fontSize: 12,
+      padding: 5,
+      textAlign: 'center'
+    },
+    type: {
+      backgroundColor: '#fff',
+      paddingTop: 15,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    typeWrapper: {
+      borderWidth: 1,
+      borderColor: '#0eaaff',
+      borderRadius: 2
+    },
+    typeItem: {
+      paddingTop: 8,
+      paddingBottom: 8,
+      fontSize: 14,
+    },
+    typeText: {
+      textAlign: 'center',
+      color: '#0eaaff',
+      flex: 1
+    },
+    typeItemActive: {
+      backgroundColor: '#0eaaff',
+    },
+    typeTextActive: {
+      color: '#fff'
+    },
+  },
+  sorderItem: {
+    item: {
+      backgroundColor: '#fff',
+      borderBottomWidth: 1,
+      borderBottomColor: '#ddd',
+      marginBottom: 10
+    },
+    itemTitle: {
+      paddingTop: 10,
+      paddingLeft: 10,
+      paddingBottom: 5,
+      paddingRight: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ddd'
+    },
+    row: {
+      flexDirection: 'row',
+      marginBottom: 5
+    },
+    orderSn: {
+      flex: 2,
+      fontSize: 12,
+      color: '#999'
+    },
+    orderStatus: {
+      flex: 1,
+      fontSize: 12,
+      textAlign: 'right',
+      color: '#eb0000'
+    },
+    itemBody: {
+      padding: 10,
+      flexDirection: 'row'
+    },
+    imgWrapper: {
+      width: 80,
+      height: 80,
+      marginRight: 10
+    },
+    img: {
+      width: 80,
+      height: 80
+    },
+    info: {
+      flex: 1
+    },
+    infoName: {
+      fontSize: 14,
+      marginBottom: 5
+    },
+    infoAttr: {
+      fontSize: 14,
+      color: '#999',
+      marginBottom: 5
+    },
+    infoData: {
+      flexDirection: 'row'
+    },
+    infoPrice: {
+      color: '#eb0000',
+      flex: 1
+    },
+    infoNum: {
+      flex: 1,
+      textAlign: 'right'
+    },
+    itemFooter: {
+      borderTopWidth: 1,
+      borderTopColor: '#ddd',
+      padding: 10,
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
+    }
+  },
+  btn: {
+
   }
 }

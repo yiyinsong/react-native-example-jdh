@@ -4,7 +4,7 @@
  */
 
  import React, { Component } from 'react';
- import { AppRegistry, Image, StyleSheet, TouchableOpacity } from 'react-native';
+ import { AppRegistry, Image, TouchableOpacity } from 'react-native';
  import { StackNavigator } from 'react-navigation';
  //安卓实现左右切换
  // import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
@@ -14,19 +14,7 @@
 
  import Route from './app/config/route';
 
- const styles = StyleSheet.create({
-   iconBackArrow: {
-     width: 18,
-     height: 18,
-     marginLeft: 10,
-     resizeMode: 'contain'
-   },
-   headerBtnRight: {
-     width: 18,
-     height: 18,
-     marginRight: 10
-   }
- });
+ import styles from './app/css/styles';
 
  const ReactNativeJdh = StackNavigator(Route, {
    navigationOptions: ({ navigation, screenProps }) => ({
@@ -46,9 +34,9 @@
          fontWeight: '100'
      },
      headerLeft: (<TouchableOpacity onPress={ () => {navigation.goBack()} }>
-               <Image style={styles.iconBackArrow} source={require('./app/images/icon-back.png')} />
+               <Image style={styles.common.iconBackArrow} source={require('./app/images/icon-back.png')} />
            </TouchableOpacity>),
-     headerRight: <TouchableOpacity style={styles.headerBtnRight}></TouchableOpacity>
+     headerRight: <TouchableOpacity style={styles.common.headerBtnRight}></TouchableOpacity>
    }),
   //  transitionConfig: () => ({
   //     screenInterpolator:CardStackStyleInterpolator.forHorizontal,

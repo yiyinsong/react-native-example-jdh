@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   StyleSheet,
-  Image
+  Image,
+  Text
   } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
@@ -9,21 +10,18 @@ import SHomeScreen from './tab-home';
 import SGoodsScreen from './tab-goods';
 import SOrderScreen from './tab-order';
 
-const styles = StyleSheet.create({
-  icon: {
-    width: 20,
-    height: 20
-  }
-});
+import styles from '../../../css/styles';
+
 
 export default TabNavigator({
     '概览': {
       screen: SHomeScreen,
       navigationOptions: {
+        header: null,
         tabBarLabel: '概览',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-shome-active.png') : require('../../../images/icon-shome.png')}
-            style={styles.icon}
+            style={styles.common.tabIcon}
           />
         ),
       }
@@ -31,10 +29,11 @@ export default TabNavigator({
     '商品管理': {
       screen: SGoodsScreen,
       navigationOptions: {
+        headerTitle: '商品管理',
         tabBarLabel: '商品管理',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-sgoods-active.png') : require('../../../images/icon-sgoods.png')}
-            style={styles.icon}
+            style={styles.common.tabIcon}
           />
         ),
       }
@@ -42,10 +41,11 @@ export default TabNavigator({
     '订单管理': {
       screen: SOrderScreen,
       navigationOptions: {
+        headerTitle: '订单管理',
         tabBarLabel: '订单管理',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-sorder-active.png') : require('../../../images/icon-sorder.png')}
-            style={styles.icon}
+            style={styles.common.tabIcon}
           />
         ),
       }
