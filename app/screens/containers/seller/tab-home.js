@@ -60,7 +60,7 @@ export default class SellerHomeScreen extends Component {
             fetch(Config.JAVAAPI + '/shop/wap/client/order/shopOrderStatusSummary',{
                 method: 'POST',
                 body: JSON.stringify({
-                  shopId: data.data.shopId,
+                  shopId: data.data.shop_id,
                   token
                 })
             })
@@ -72,29 +72,15 @@ export default class SellerHomeScreen extends Component {
                 }
             });
             //获取退款订单数目
-            fetch(Config.JAVAAPI + '/shop/mobile/refund/blist', {
+            fetch(Config.JAVAAPI + `/shop/mobile/refund/blist?orderType=40&shopId=${data.data.shop_id}&page=1&size=0&token=${token}`, {
                 method: 'POST',
-                body: JSON.stringify({
-                  orderType: 40,
-                  shopId: data.data.shopId,
-                  page: 1,
-                  size: 0,
-                  token
-                })
             })
             .then((response) => response.json())
             .then((data) => {
                 if(data.page) this.setState({refundNumZJ: data.page.total});
             });
-            fetch(Config.JAVAAPI + '/shop/mobile/refund/blist', {
+            fetch(Config.JAVAAPI + `/shop/mobile/refund/blist?orderType=30&shopId=${data.data.shop_id}&page=1&size=0&token=${token}`, {
                 method: 'POST',
-                body: JSON.stringify({
-                  orderType: 30,
-                  shopId: data.data.shopId,
-                  page: 1,
-                  size: 0,
-                  token
-                })
             })
             .then((response) => response.json())
             .then((data) => {
