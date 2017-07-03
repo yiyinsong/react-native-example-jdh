@@ -767,5 +767,96 @@ export default {
   },
   btn: {
 
+  },
+  login: {
+    content: {
+      backgroundColor: '#fff'
+    },
+    logoImg: {
+      width: 60,
+      height: 60,
+      alignSelf: 'center'
+    },
+    icon: {
+      width: 18,
+      height: 18
+    },
+    formControl: {
+      marginLeft: 30,
+      marginRight: 30,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+      marginBottom: 10,
+      height: 40
+    },
+    input: {
+      flex: 1
+    },
+    btn: {
+      marginLeft: 30,
+      marginRight: 30,
+      marginTop: 40,
+      marginBottom: 20,
+      backgroundColor: '#f64848',
+      color: '#fff',
+      paddingTop: 12,
+      paddingBottom: 12,
+      borderRadius: 4
+    },
+    btnText: {
+      color: '#fff',
+      fontSize: 12,
+      textAlign: 'center'
+    },
+    findpw: {
+      color: '#c5c5c5',
+      textAlign: 'center',
+      fontSize: 12
+    },
+    passwordType: {
+      marginLeft: 10
+    }
+  },
+  fpw: {
+    content: {
+      backgroundColor: '#fff'
+    },
+    form: {
+      marginTop: 50,
+      marginLeft: 30,
+      marginRight: 30
+    },
+    formControl: {
+      marginBottom: 5
+    },
+    formItem: {
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+      height: 40
+    },
+    input: {
+      flex: 1,
+      color: '#333',
+      fontSize: 12
+    },
+    label: {
+      color: '#333',
+      fontSize: 12,
+      width: 50
+    },
+    send: {
+      backgroundColor: '#fe5e5e',
+      color: '#fff',
+      fontSize: 12,
+      borderRadius: 4,
+      paddingTop: 8,
+      paddingLeft: 10,
+      paddingBottom: 8,
+      paddingRight: 10,
+      marginLeft: 8
+    },
+    sendDisabled: {
+      backgroundColor: '#d8d8d8'
+    }
   }
 }

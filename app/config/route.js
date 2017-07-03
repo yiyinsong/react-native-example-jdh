@@ -7,6 +7,7 @@ import {
 import HomeScreen from '../screens/index';
 import EntranceScreen from '../screens/entrance';
 import LoginScreen from '../screens/login';
+import FindPasswordScreen from '../screens/findPassword';
 
 import SellerScreen from '../screens/containers/seller/index';
 import SellerStoreInfoScreen from '../screens/containers/seller/tab-home-store-info';
@@ -34,7 +35,15 @@ export default {
       Login: {
         screen: LoginScreen,
         navigationOptions: {
-          header: null
+          title: '登录',
+          headerLeft: <TouchableOpacity style={styles.common.headerLeftNone}></TouchableOpacity>,
+        }
+      },
+      //找回密码
+      findPassword: {
+        screen: FindPasswordScreen,
+        navigationOptions: {
+          title: '找回密码',
         }
       },
       Seller: {

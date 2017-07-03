@@ -3,31 +3,32 @@
  */
 import React, { Component } from 'react';
 import {
-    Button,
     Text,
     TextInput,
     View,
-    StyleSheet
+    Image,
+    TouchableOpacity
 } from 'react-native';
 
 import { NavigationActions, Transitioner } from 'react-navigation';
 
 import md5 from "../js/md5";
 import Config from '../config/config';
+import Utils from '../js/utils';
 
 import UIToast from './common/ui-toast';
 
-const styles = StyleSheet.create({
-  login: {},
-  formControl: {}
-});
+import styles from '../css/styles';
 
 export default class LoginScreen extends Component {
     constructor(props){
     	super(props);
     	this.state = {
         username: '',
-        password: ''
+        password: '',
+        ver: '',
+        express: true,
+        verShow: false
       };
     }
     _login = () => {
@@ -79,17 +80,49 @@ export default class LoginScreen extends Component {
     }
     render() {
         return (
-          <View style={styles.login}>
-            <View style={styles.formControl}>
-              <Text>用户名：</Text>
-              <TextInput onChangeText={(text) => this.setState({username: text})} value={this.state.username} placeholder="请输入用户名"/>
+          <View style={[styles.common.flexv, styles.login.content]}>
+            <View style={{paddingTop: Utils.height/10,paddingBottom: Utils.height/10}}>
+              <Image style={styles.login.logoImg} source={require('../images/icon-jdh.png')}/>
             </View>
-            <View style={styles.formControl}>
-              <Text>密码：</Text>
-              <TextInput onChangeText={(text) => this.setState({password: text})} value={this.state.password} placeholder="请输入密码" secureTextEntry={true}/>
+            <View style={styles.login.form}>
+              <View style={[styles.login.formControl, styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                <Image style={styles.login.icon} source={require('../images/icon-mobile.png')}/>
+                <TextInput onChangeText={(text) => this.setState({username: text})} value={this.state.username} placeholder="请输入用户名" underlineColorAndroid='transparent' style={styles.login.input}/>
+                <TouchableOpacity activeOpacity={.8} onPress={()=>{this.setState({username: ''})}}>
+                <Image style={styles.login.icon} source={require('../images/icon-reset.png')}/>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.login.formControl, styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                <Image style={styles.login.icon} source={require('../images/icon-password.png')}/>
+                <TextInput onChangeText={(text) => this.setState({password: text})} value={this.state.password} placeholder="请输入密码" secureTextEntry={this.state.express} underlineColorAndroid='transparent' style={styles.login.input}/>
+                <TouchableOpacity activeOpacity={.8} onPress={()=>{this.setState({password: ''})}}><Image style={styles.login.icon} source={require('../images/icon-reset.png')}/></TouchableOpacity>
+                {!this.state.express ?
+                <TouchableOpacity activeOpacity={.8} onPress={()=>{this.setState({express: true})}}>
+                <Image style={[styles.login.icon, styles.login.passwordType]} source={require('../images/icon-express.png')}/>
+                </TouchableOpacity>
+                : null}
+                {this.state.express ?
+                <TouchableOpacity activeOpacity={.8} onPress={()=>{this.setState({express: false})}}>
+                <Image style={[styles.login.icon, styles.login.passwordType]} source={require('../images/icon-ciphertext.png')}/>
+                </TouchableOpacity>
+                : null}
+              </View>
+              {this.state.verShow ?
+              <View style={[styles.login.formControl, styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                <Image style={styles.login.icon} source={require('../images/icon-ver.png')}/>
+                <TextInput onChangeText={(text) => this.setState({ver: text})} value={this.state.ver} placeholder="请输入验证码" underlineColorAndroid='transparent' style={styles.login.input}/>
+                <Image style={styles.login.icon} source={require('../images/icon-reset.png')}/>
+              </View>
+              : null}
+              <View>
+                <TouchableOpacity activeOpacity={.8} onPress={this._login} style={styles.login.btn}><Text style={styles.login.btnText}>登录</Text></TouchableOpacity>
+                <TouchableOpacity activeOpacity={.8}><Text style={styles.login.findpw} onPress={this._toFindPassword}>找回密码</Text></TouchableOpacity>
+              </View>
             </View>
-            <Button title="登录" onPress={this._login}/>
           </View>
       )
+    }
+    _toFindPassword = () => {
+      this.props.navigation.navigate('findPassword');
     }
 }
