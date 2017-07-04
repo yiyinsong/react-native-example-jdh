@@ -82,11 +82,15 @@ export default class FindPasswordScreen extends Component {
     }
 
     let _time = Math.round(new Date().getTime()/1000);
-    let str = 'app_key=mappmobile='+this.state.mobile+'shop_type=1time_stamp=' + _time + 'type=2c5221148d7ae84bf34e85c6499207ece';
+    let str = `app_key=mappmobile=${this.state.mobile}password=${this.state.pwd}repassword=${this.state.rpwd}smscode=${this.state.ver}time_stamp=${_time}c5221148d7ae84bf34e85c6499207ece`;
     str = md5.hex_md5(str);
 
     fetch(Config.PHPAPI + 'api/mapp/member/findpwd',{
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `mobile=${this.state.mobile}&password=${this.state.pwd}&repassword=${this.state.rpwd}&smscode=${this.state.ver}&sign=${str}&time_stamp=${_time}&app_key=mapp`
     })
     .then((response) => response.json())
     .then((data) => {
@@ -102,12 +106,13 @@ export default class FindPasswordScreen extends Component {
   }
   _sendVer = () => {
     if(this.state.sending) return;
+
     if(this.state.mobile == '') {
       UIToast('请输入手机号码');
       return;
     }
     let _time = Math.round(new Date().getTime()/1000);
-    let str = 'app_key=mappmobile='+this.state.mobile+'shop_type=1time_stamp=' + _time + 'type=2c5221148d7ae84bf34e85c6499207ece';
+    let str = `app_key=mappmobile=${this.state.mobile}shop_type=1time_stamp=${_time}type=2c5221148d7ae84bf34e85c6499207ece`;
     str = md5.hex_md5(str);
 
     fetch(Config.PHPAPI + 'api/common/index/msg-code', {
@@ -115,12 +120,12 @@ export default class FindPasswordScreen extends Component {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: 'mobile='+this.state.mobile+'&type=2&shop_type=1&sign='+str+'&time_stamp='+_time+'&app_key=mapp',
+      body: `mobile=${this.state.mobile}&type=2&shop_type=1&sign=${str}&time_stamp=${_time}&app_key=mapp`,
     })
     .then((response) => response.json())
     .then((data) => {
       this.setState({sending: true});
-
+      this.timeCountDown();
       UIToast(data.msg || '短信发送失败');
     });
   }
@@ -130,7 +135,10 @@ export default class FindPasswordScreen extends Component {
   }
   timeCountDown = () => {
     if(this.state.countDown == 0) {
-      this.setState({sending: false});
+      this.setState({
+        sending: false,
+        countDown: 60
+      });
       this.verTimer && clearTimeout(this.verTimer);
     } else {
       this.setState({countDown: --this.state.countDown});

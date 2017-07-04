@@ -41,6 +41,10 @@ export default class OrderListScreen extends Component {
           '30': 0,
           '40': 0
         },
+        pageZj: [0, 0, 0, 0, 0, 0],
+        pageJc: [0, 0, 0, 0, 0, 0, 0],
+        listZj: [[], [], [], [], [], []],
+        listJc: [[], [], [], [], [], [], []],
 
         isloading: [
           false,false,false,false,false
@@ -83,6 +87,7 @@ export default class OrderListScreen extends Component {
     componentWillMount() {
       ScreenInit.checkLogin(this);
       this._init();
+      this._getData(0);
     }
     _init = () => {
         //获取店铺信息
@@ -143,6 +148,70 @@ export default class OrderListScreen extends Component {
           console.error(error);
         });
     }
+    _getData = (i) => {
+      let _status = '';
+      let _type = this.state.type;
+      if(_type == 0) {
+        let _tp = this.state.pageZj;
+        _tp[i] = ++_tp[i];
+        this.setState({pageZj: _tp});
+      } else {
+        let _tp = this.state.pageJc;
+        _tp[i] = ++_tp[i];
+        this.setState({pageJc: _tp});
+      }
+      switch(i) {
+        case 0:
+          _status = '';
+        break;
+        case 1:
+          _status =  (_type == 0 ? 10 : 0);
+        break;
+        case 2:
+          _status = (_type == 0 ? 20 : 10);
+        break;
+        case 3:
+          _status = (_type == 0 ? 30 : 20);
+        break;
+        case 4:
+          _status = (_type == 0 ? 40 : 30);
+        break;
+        case 5:
+          _status = (_type == 0 ? '' : 40);
+        break;
+        default:
+        break;
+      }
+      /**如果是自建商品的退货退款**/
+      if(_type == 0 && i == 5) {
+
+      }
+      /**如果是即采商品的退货退款**/
+      else if(_type == 1 && i == 6) {
+
+      }
+      /**普通订单**/
+      else {
+        fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&status=${_status}&pageIndex=${_type == 1 ? this.state.pageJc[i] : this.state.pageZj[i]}&pageSize=10&token=${token}`, {
+           method: 'POST'
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.code == 1) {
+            let _data = data.obj;
+            if(_type == 0) {
+              let _temp = this.state.listZj;
+              _temp[i] = _temp[i].concat(_data.results);
+              this.setState({
+                listZj: _temp
+              });
+            } else {
+
+            }
+          }
+        });
+      }
+    }
 
     _loadingMore = ({ distanceFromEnd }) => {
       console.log(distanceFromEnd);
@@ -194,6 +263,7 @@ export default class OrderListScreen extends Component {
                   <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, this.state.type == 1 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(1)}}><Text style={[styles.sorder.typeText, this.state.type == 1 ? styles.sorder.typeTextActive : null]}>即采商品</Text></TouchableOpacity>
                 </View>
               </View>
+              {this.state.type == 0 ?
               <ScrollableTabView
               renderTabBar={() => <ScrollableTabBar renderTab={this._renderTab}/>}
               tabBarBackgroundColor='#fff'
@@ -205,7 +275,34 @@ export default class OrderListScreen extends Component {
               >
                 <View tabLabel="全部订单">
                   <FlatList
-                  data={this.state.list1}
+                  data={this.state.listZj[0]}
+                  renderItem={({item}) => <OrderItem data={item}></OrderItem>}
+                  shouldItemUpdate={this._shouldItemUpdate}
+                  onRefresh={this._refresh}
+                  refreshing={false}
+                  onEndReachedThreshold={2}
+                  onEndReached={this._loadingMore}/>
+                </View>
+                <View tabLabel='待买家付款'></View>
+                <View tabLabel='待发货'></View>
+                <View tabLabel='待买家收货'></View>
+                <View tabLabel='已完成'></View>
+                <View tabLabel='退货退款'></View>
+              </ScrollableTabView>
+              : null}
+              {this.state.type == 1 ?
+              <ScrollableTabView
+              renderTabBar={() => <ScrollableTabBar renderTab={this._renderTab}/>}
+              tabBarBackgroundColor='#fff'
+              tabBarTextStyle={styles.sorder.tabTitleText}
+              tabBarUnderlineStyle={styles.sorder.tabTitleUnderLine}
+              tabBarActiveTextColor='#388bff'
+              tabBarInactiveTextColor="#333"
+              onChangeTab={()=>{}}
+              >
+                <View tabLabel="全部订单">
+                  <FlatList
+                  data={this.state.listZj[0]}
                   renderItem={({item}) => <OrderItem data={item}></OrderItem>}
                   shouldItemUpdate={this._shouldItemUpdate}
                   onRefresh={this._refresh}
@@ -220,6 +317,7 @@ export default class OrderListScreen extends Component {
                 <View tabLabel='已完成'></View>
                 <View tabLabel='退货退款'></View>
               </ScrollableTabView>
+              : null}
             </View>
         );
     }

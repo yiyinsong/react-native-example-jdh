@@ -702,8 +702,6 @@ export default {
       paddingLeft: 10,
       paddingBottom: 5,
       paddingRight: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ddd'
     },
     row: {
       flexDirection: 'row',
@@ -712,13 +710,13 @@ export default {
     orderSn: {
       flex: 2,
       fontSize: 12,
-      color: '#999'
+      color: '#333'
     },
     orderStatus: {
       flex: 1,
       fontSize: 12,
       textAlign: 'right',
-      color: '#eb0000'
+      color: '#f23030'
     },
     itemBody: {
       padding: 10,
@@ -757,16 +755,56 @@ export default {
       textAlign: 'right'
     },
     itemFooter: {
+      padding: 10,
       borderTopWidth: 1,
       borderTopColor: '#ddd',
-      padding: 10,
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-end'
+    },
+    orderInfo: {
+      fontSize: 12,
+      color: '#aaa'
+    },
+    goods: {
+      backgroundColor: '#f5f5f5',
+      marginBottom: 1
+    },
+    totalText: {
+      padding: 10,
+      textAlign: 'right',
+      fontSize: 12,
+      color: '#333'
+    },
+    totalBig: {
+      fontSize: 16
     }
   },
   btn: {
-
+    primary: {
+      borderWidth: 1,
+      borderRadius: 3,
+      borderColor: '#1eb0ff',
+      color: '#1eb0ff',
+      paddingTop: 3,
+      paddingLeft: 15,
+      paddingBottom: 3,
+      paddingRight: 15,
+      fontSize: 11,
+      marginLeft: 10
+    },
+    danger: {
+      borderWidth: 1,
+      borderRadius: 3,
+      borderColor: '#f23030',
+      color: '#f23030',
+      paddingTop: 3,
+      paddingLeft: 15,
+      paddingBottom: 3,
+      paddingRight: 15,
+      fontSize: 11,
+      marginLeft: 10
+    }
   },
   login: {
     content: {
