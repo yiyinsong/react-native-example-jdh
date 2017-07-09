@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  InteractionManager
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -31,43 +32,45 @@ export default class SellerAddrAdd extends Component {
       };
     }
     componentDidMount() {
-      ScreenInit.checkLogin();
-      this.listener_select = DeviceEventEmitter.addListener('addressSelect', (result) => {
-        this.setState({
-          addr: result.province + result.city + result.county + result.town + result.village,
-          addrObj: result
+      InteractionManager.runAfterInteractions(() => {
+        ScreenInit.checkLogin();
+        this.listener_select = DeviceEventEmitter.addListener('addressSelect', (result) => {
+          this.setState({
+            addr: result.province + result.city + result.county + result.town + result.village,
+            addrObj: result
+          });
         });
+        if(this.state.id !== '') {
+          fetch(Config.PHPAPI + `api/mapp/shop/addr-edit?id=${this.state.id}&token=${token}`, {
+            method: 'GET'
+          })
+          .then(response => response.json())
+          .then(data => {
+            if(data.error_code == 0) {
+              let _data = data.data;
+              this.setState({
+                username: _data.recevier,
+                tel: _data.mobile,
+                addr: _data.province_name + _data.city_name + _data.district_name + _data.town_name + _data.village_name,
+                detail: _data.addr,
+                addrObj: {
+                  key: 0,
+                  province: _data.province_name,
+                  province_id: _data.province,
+                  city: _data.city_name,
+                  city_id: _data.city,
+                  county: _data.district_name,
+                  county_id: _data.district,
+                  town: _data.town_name,
+                  town_id: _data.town,
+                  village: _data.village_name,
+                  village_id: _data.village
+                }
+              });
+            }
+          });
+        }
       });
-      if(this.state.id !== '') {
-        fetch(Config.PHPAPI + `api/mapp/shop/addr-edit?id=${this.state.id}&token=${token}`, {
-          method: 'GET'
-        })
-        .then(response => response.json())
-        .then(data => {
-          if(data.error_code == 0) {
-            let _data = data.data;
-            this.setState({
-              username: _data.recevier,
-              tel: _data.mobile,
-              addr: _data.province_name + _data.city_name + _data.district_name + _data.town_name + _data.village_name,
-              detail: _data.addr,
-              addrObj: {
-                key: 0,
-                province: _data.province_name,
-                province_id: _data.province,
-                city: _data.city_name,
-                city_id: _data.city,
-                county: _data.district_name,
-                county_id: _data.district,
-                town: _data.town_name,
-                town_id: _data.town,
-                village: _data.village_name,
-                village_id: _data.village
-              }
-            });
-          }
-        });
-      }
     }
     componentWillUnmount() {
       this.backTimer && clearTimeout(this.backTimer);

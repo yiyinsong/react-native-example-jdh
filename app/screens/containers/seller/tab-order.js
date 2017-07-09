@@ -7,7 +7,8 @@ import {
     View,
     FlatList,
     TouchableOpacity,
-    Image
+    Image,
+    InteractionManager
 } from 'react-native';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -15,6 +16,7 @@ import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-ta
 import styles from '../../../css/styles';
 
 import OrderItem from '../../components/seller/tab-order-item';
+import Loading from '../../common/ui-loading';
 
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
@@ -45,49 +47,32 @@ export default class OrderListScreen extends Component {
         pageJc: [0, 0, 0, 0, 0, 0, 0],
         listZj: [[], [], [], [], [], []],
         listJc: [[], [], [], [], [], [], []],
+        tabTitleZj: ['全部订单', '待买家付款', '待发货', '待买家收货', '已完成', '退货退款'],
+        tabTitleJc: ['全部订单', '待买家付款', '待采购', '待发货', '待买家收货', '已完成', '退货退款'],
+        canloadZj: [false, false, false, false, false, false],
+        canloadJc: [false, false, false, false, false, false, false],
+        tipsZj: ['', '', '', '', '', ''],
+        tipsJc: ['', '', '', '', '', '', ''],
 
-        isloading: [
-          false,false,false,false,false
-        ],
-        list1: [{
-          orderSn: '12346789585522',
-          orderTime: '2017-03-14',
-          price: '123.25',
-          num: 502,
-          name: '第一条数据',
-          attr: '大号 优质 新鲜',
-          img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1822330511,2221549046&fm=23&gp=0.jpg',
-          status: '待付款'
-        },{
-          orderSn: '12346789585522',
-          orderTime: '2017-03-14',
-          price: '123.25',
-          num: 502,
-          name: '第一条数据',
-          attr: '大号 优质 新鲜',
-          img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1822330511,2221549046&fm=23&gp=0.jpg',
-          status: '待付款'
-        },{
-          orderSn: '12346789585522',
-          orderTime: '2017-03-14',
-          price: '123.25',
-          num: 502,
-          name: '第一条数据',
-          attr: '大号 优质 新鲜',
-          img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1822330511,2221549046&fm=23&gp=0.jpg',
-          status: '待付款'
-        }],
-        list2: [],
-        list3: [],
-        list4: [],
-        list5: [],
-        list6: []
+        loadingVisible: true
       };
     }
     componentWillMount() {
-      ScreenInit.checkLogin(this);
-      this._init();
-      this._getData(0);
+      InteractionManager.runAfterInteractions(() => {
+        ScreenInit.checkLogin(this);
+        this._init();
+        let _state = this.props.navigation.state;
+        let _initType = _state.params && _state.params.type || 0;
+        let _initIndex = _state.params && _state.params.index || 0;
+
+        if(_initType == 0) {
+          this._getData(_initIndex);
+          this._getData(0, 1);
+        } else {
+          this._getData(_initIndex);
+          this._getData(0, 0);
+        }
+      })
     }
     _init = () => {
         //获取店铺信息
@@ -148,9 +133,9 @@ export default class OrderListScreen extends Component {
           console.error(error);
         });
     }
-    _getData = (i) => {
+    _getData = (i, itype) => {
       let _status = '';
-      let _type = this.state.type;
+      let _type = itype || this.state.type;
       if(_type == 0) {
         let _tp = this.state.pageZj;
         _tp[i] = ++_tp[i];
@@ -197,6 +182,7 @@ export default class OrderListScreen extends Component {
         })
         .then((response) => response.json())
         .then((data) => {
+          this.setState({loadingVisible: false});
           if(data.code == 1) {
             let _data = data.obj;
             if(_type == 0) {
@@ -205,56 +191,56 @@ export default class OrderListScreen extends Component {
               this.setState({
                 listZj: _temp
               });
+              let _canload = this.state.canloadZj;
+              let _tips = this.state.tipsZj;
+              if(_data.pageIndex < _data.totalPage) {
+                _canload[i] = true;
+                _tips[i] = '数据加载中...';
+              } else {
+                _canload[i] = false;
+                _tips[i] = '没有更多数据！';
+              }
+              this.setState({canloadZj: _canload});
+              this.setState({tipsZj: _tips});
             } else {
-
+              let _temp = this.state.listJc;
+              _temp[i] = _temp[i].concat(_data.results);
+              this.setState({
+                listJc: _temp
+              });
+              let _canload = this.state.canloadJc;
+              let _tips = this.state.tipsJc;
+              if(_data.pageIndex < _data.totalPage) {
+                _canload[i] = true;
+                _tips[i] = '数据加载中...';
+              } else {
+                _canload[i] = false;
+                _tips[i] = '没有更多数据！';
+              }
+              this.setState({canloadJc: _canload});
+              this.setState({tipsJc: _tips});
             }
           }
         });
       }
     }
 
-    _loadingMore = ({ distanceFromEnd }) => {
-      console.log(distanceFromEnd);
-      if (this.state.isloading[0]) return;
-      this.state.isloading[0] = true;
-
-      fetch('http://order.jdhdev.jdhui.com/shop/wap/client/order/list',{
-          method: 'POST',
-          headers: new Headers({
-            'Accept': 'text/plain',
-            'Content-Type': 'text/plain'
-          })
-      })
-        .then((response) => response.json())
-        .then((responseJson) => {
-
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-        return;
-      let _result = [...this.state.list1,
-        {
-          orderSn: '12346789585522',
-          orderTime: '2017-03-14',
-          price: '123.25',
-          num: 502,
-          name: `第${Math.ceil(Math.random()*100)}条数据`,
-          attr: '大号 优质 新鲜',
-          img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1822330511,2221549046&fm=23&gp=0.jpg',
-          status: '待付款'
+    _loadingMore = (p) => {
+      if(this.state.type == 0) {
+        if(this.state.canloadZj[p]) {
+          this._getData(p);
         }
-      ];
-      this.setState({'list1': _result});
-      // this.state.isloading[0] = false;
-    }
-    _refresh = () => {
-      console.log('refresh');
+      } else {
+        if(this.state.canloadJc[p]) {
+          this._getData(p);
+        }
+      }
     }
     _shouldItemUpdate(prev, next) {
       return prev.item !== next.item;
     }
     render() {
+        let _type = this.state.type;
         return (
             <View style={styles.common.flexv}>
               <View style={styles.sorder.type}>
@@ -271,26 +257,26 @@ export default class OrderListScreen extends Component {
               tabBarUnderlineStyle={styles.sorder.tabTitleUnderLine}
               tabBarActiveTextColor='#388bff'
               tabBarInactiveTextColor="#333"
-              onChangeTab={()=>{}}
+              onChangeTab={(a)=>{this._tabHandle(a)}}
+              initialPage={0}
               >
-                <View tabLabel="全部订单">
-                  <FlatList
-                  data={this.state.listZj[0]}
-                  renderItem={({item}) => <OrderItem data={item}></OrderItem>}
-                  shouldItemUpdate={this._shouldItemUpdate}
-                  onRefresh={this._refresh}
-                  refreshing={false}
-                  onEndReachedThreshold={2}
-                  onEndReached={this._loadingMore}/>
-                </View>
-                <View tabLabel='待买家付款'></View>
-                <View tabLabel='待发货'></View>
-                <View tabLabel='待买家收货'></View>
-                <View tabLabel='已完成'></View>
-                <View tabLabel='退货退款'></View>
+                {this.state.tabTitleZj.map((v, k) => {
+                  return (
+                    <View tabLabel={v}>
+                      <FlatList
+                      data={this.state.listZj[k]}
+                      renderItem={({item}) => <OrderItem data={item} type={_type}></OrderItem>}
+                      shouldItemUpdate={this._shouldItemUpdate}
+                      onRefresh={false}
+                      refreshing={false}
+                      onEndReachedThreshold={2}
+                      onEndReached={() => this._loadingMore(k)}
+                      ListFooterComponent={() => this._flatListFooter(k)}/>
+                    </View>
+                  )
+                })}
               </ScrollableTabView>
-              : null}
-              {this.state.type == 1 ?
+              :
               <ScrollableTabView
               renderTabBar={() => <ScrollableTabBar renderTab={this._renderTab}/>}
               tabBarBackgroundColor='#fff'
@@ -298,26 +284,27 @@ export default class OrderListScreen extends Component {
               tabBarUnderlineStyle={styles.sorder.tabTitleUnderLine}
               tabBarActiveTextColor='#388bff'
               tabBarInactiveTextColor="#333"
-              onChangeTab={()=>{}}
+              onChangeTab={(a)=>{this._tabHandle(a)}}
+              initialPage={0}
               >
-                <View tabLabel="全部订单">
-                  <FlatList
-                  data={this.state.listZj[0]}
-                  renderItem={({item}) => <OrderItem data={item}></OrderItem>}
-                  shouldItemUpdate={this._shouldItemUpdate}
-                  onRefresh={this._refresh}
-                  refreshing={false}
-                  onEndReachedThreshold={2}
-                  onEndReached={this._loadingMore}/>
-                </View>
-                <View tabLabel='待买家付款'></View>
-                {this.state.type == 1 ? <View tabLabel='待采购'></View> : null}
-                <View tabLabel='待发货'></View>
-                <View tabLabel='待买家收货'></View>
-                <View tabLabel='已完成'></View>
-                <View tabLabel='退货退款'></View>
+                {this.state.tabTitleJc.map((v, k) => {
+                  return (
+                    <View tabLabel={v}>
+                      <FlatList
+                      data={this.state.listJc[k]}
+                      renderItem={({item}) => <OrderItem data={item} type={_type}></OrderItem>}
+                      shouldItemUpdate={this._shouldItemUpdate}
+                      onRefresh={false}
+                      refreshing={false}
+                      onEndReachedThreshold={2}
+                      onEndReached={() => this._loadingMore(k)}
+                      ListFooterComponent={() => this._flatListFooter(k)}/>
+                    </View>
+                  )
+                })}
               </ScrollableTabView>
-              : null}
+              }
+              <Loading visible={this.state.loadingVisible}></Loading>
             </View>
         );
     }
@@ -335,7 +322,7 @@ export default class OrderListScreen extends Component {
         alignItems: 'center'}}
       onLayout={onLayoutHandler}
     >
-      <Text style={{fontSize: 12, color: isTabActive ? '#388bff' : ''}}>{name}</Text>
+      <Text style={{fontSize: 12, color: isTabActive ? '#388bff' : '#333'}}>{name}</Text>
       {this._renderBadge(page) > 0 ?
       <View style={{position: 'relative'}}>
         <View style={{position: 'absolute',backgroundColor: '#eb0000',borderRadius: 5, top: -10,paddingLeft: 4,paddingRight: 4,height: 10}}>
@@ -401,5 +388,32 @@ export default class OrderListScreen extends Component {
           break;
       }
     }
+  }
+  _flatListFooter = (p) => {
+    if(this.state.type == 0) {
+      return (
+        <Text style={styles.common.loadingTips}>{this.state.tipsZj[p] != '' ? this.state.tipsZj[p] : null}</Text>
+      )
+    } else {
+      return (
+        <Text style={styles.common.loadingTips}>{this.state.tipsJc[p] != '' ? this.state.tipsJc[p] : null}</Text>
+      )
+    }
+  }
+  _tabHandle = (obj) => {
+    InteractionManager.runAfterInteractions(() => {
+      let _page = obj.i;
+      if(this.state.type == 0) {
+        if(this.state.listZj[_page].length == 0) {
+          this.setState({loadingVisible: true});
+          this._getData(_page);
+        }
+      } else {
+        if(this.state.listJc[_page].length == 0) {
+          this.setState({loadingVisible: true});
+          this._getData(_page);
+        }
+      }
+    })
   }
 }

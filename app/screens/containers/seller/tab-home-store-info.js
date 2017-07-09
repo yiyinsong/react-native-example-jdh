@@ -4,7 +4,8 @@ import {
   Text,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  InteractionManager
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -32,9 +33,11 @@ export default class SellerHomeScreen extends Component {
       };
     }
     componentDidMount() {
-      let Nav = this.props.navigation;
-      ScreenInit.checkLogin(this);
-      this._init();
+      InteractionManager.runAfterInteractions(() => {
+        let Nav = this.props.navigation;
+        ScreenInit.checkLogin(this);
+        this._init();
+      });
     }
     _init = () => {
         //获取店铺数据

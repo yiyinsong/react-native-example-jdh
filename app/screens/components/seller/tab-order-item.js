@@ -15,7 +15,7 @@ export default class OrderItem extends Component {
     }
     render() {
         let _data = this.props.data;
-        // {_data.operationAllowed && _data.status == 20 && }
+        let _type = this.props.type;
         return (
            <View style={styles.sorderItem.item}>
               <View style={styles.sorderItem.itemTitle}>
@@ -50,16 +50,28 @@ export default class OrderItem extends Component {
               <Text style={styles.sorderItem.totalText}>
                 <Text>共计{_data.totalQty}件商品 合计：￥</Text><Text style={styles.sorderItem.totalBig}>{_data.totalAmount}</Text>
               </Text>
-              <View style={styles.sorderItem.itemFooter}>
-
-                <TouchableHighlight>
-                  <Text style={styles.btn.primary}>发货</Text>
-                </TouchableHighlight>
+              {this._renderFooter(_data, _type)}
+           </View>
+        );
+    }
+    _renderFooter = (_data, _type) => {
+      if(_data.operationAllowed && _type == 0 && _data.status == 20) {
+        return (<View style={styles.sorderItem.itemFooter}>
+            <TouchableHighlight>
+              <Text style={styles.btn.primary}>发货</Text>
+            </TouchableHighlight>
+          </View>)
+        } else if(_data.operationAllowed && _type == 1 && _data.status == 10) {
+            return(<View style={styles.sorderItem.itemFooter}>
                 <TouchableHighlight>
                   <Text style={styles.btn.danger}>立即采购</Text>
                 </TouchableHighlight>
-              </View>
-           </View>
-        );
+                <TouchableHighlight>
+                  <Text style={styles.btn.danger}>POS支付</Text>
+                </TouchableHighlight>
+              </View>)
+        } else {
+          return null;
+        }
     }
 }

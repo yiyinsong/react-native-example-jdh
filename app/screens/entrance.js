@@ -7,7 +7,8 @@ import {
     Text,
     Button,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 } from 'react-native';
 
 import ScreenInit from '../config/screenInit';
@@ -18,7 +19,9 @@ import styles from '../css/styles';
 
 export default class EntranceScreen extends Component {
     componentDidMount() {
+      InteractionManager.runAfterInteractions(() => {
         ScreenInit.checkLogin(this);
+      });
     }
     render() {
         return (

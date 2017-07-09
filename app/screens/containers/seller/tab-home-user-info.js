@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  InteractionManager
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
@@ -39,52 +40,54 @@ export default class SellerUserInfoScreen extends Component {
       };
     }
     componentDidMount() {
-      ScreenInit.checkLogin();
+      InteractionManager.runAfterInteractions(() => {
+        ScreenInit.checkLogin();
 
-      //添加地址事件侦听
-      this.eventEmitter_addr = DeviceEventEmitter.addListener('event_address_num_change', (arg) => {
-        if(arg) {
-          this.setState({
-            storeInfo: {
-              ...this.state.storeInfo,
-              addr_count: arg.addr_count,
-              addr_remain: arg.addr_remain
-            }
-          });
-        }
-      });
-
-      //获取未读消息
-      fetch(Config.PHPAPI + 'api/mapp/letter/unread-num?token=' + token, {
-        method: 'GET'
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if(data.error_code == 0) {
-          if(typeof data.data == 'string') {
-            this.props.navigation.setParams({messNum: data.data});
+        //添加地址事件侦听
+        this.eventEmitter_addr = DeviceEventEmitter.addListener('event_address_num_change', (arg) => {
+          if(arg) {
+            this.setState({
+              storeInfo: {
+                ...this.state.storeInfo,
+                addr_count: arg.addr_count,
+                addr_remain: arg.addr_remain
+              }
+            });
           }
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-      //获取用户信息
-      fetch(Config.PHPAPI + 'api/mapp/shop/shop?type=seller&token=' + token, {
-        method: 'GET'
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if(data.error_code == 0) {
-          this.setState({
-            storeInfo: data.data
-          });
-        } else {
-          UIToast(data.msg);
-        }
-      })
-      .catch((error) => {
-        UIToast('获取用户信息失败');
+        });
+
+        //获取未读消息
+        fetch(Config.PHPAPI + 'api/mapp/letter/unread-num?token=' + token, {
+          method: 'GET'
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.error_code == 0) {
+            if(typeof data.data == 'string') {
+              this.props.navigation.setParams({messNum: data.data});
+            }
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+        //获取用户信息
+        fetch(Config.PHPAPI + 'api/mapp/shop/shop?type=seller&token=' + token, {
+          method: 'GET'
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.error_code == 0) {
+            this.setState({
+              storeInfo: data.data
+            });
+          } else {
+            UIToast(data.msg);
+          }
+        })
+        .catch((error) => {
+          UIToast('获取用户信息失败');
+        });
       });
     }
     render() {

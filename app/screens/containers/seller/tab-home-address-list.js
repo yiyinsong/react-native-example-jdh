@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  InteractionManager
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -34,17 +35,19 @@ export default class SellerAddrList extends Component {
       };
     }
     componentDidMount() {
-      ScreenInit.checkLogin();
-      this._updateData();
-      /**添加新增地址侦听**/
-      this.listener_address_add = DeviceEventEmitter.addListener('addressListAddOne', () => {
-        /**发送事件侦听，告诉账户信息地址数量改变**/
-        DeviceEventEmitter.emit('event_address_num_change',{
-          addr_count: parseInt(this.state.addr.addr_count) + 1,
-          addr_remain: parseInt(this.state.addr.addr_remain) - 1
-        });
-        /**重新刷新页面更新数据**/
+      InteractionManager.runAfterInteractions(() => {
+        ScreenInit.checkLogin();
         this._updateData();
+        /**添加新增地址侦听**/
+        this.listener_address_add = DeviceEventEmitter.addListener('addressListAddOne', () => {
+          /**发送事件侦听，告诉账户信息地址数量改变**/
+          DeviceEventEmitter.emit('event_address_num_change',{
+            addr_count: parseInt(this.state.addr.addr_count) + 1,
+            addr_remain: parseInt(this.state.addr.addr_remain) - 1
+          });
+          /**重新刷新页面更新数据**/
+          this._updateData();
+        });
       });
     }
     _updateData = () => {

@@ -50,7 +50,14 @@ export default {
     headerLeftNone: {
       width: 20,
       height: 20
-    }
+    },
+    loadingTips: {
+      color: '#999',
+      fontSize: 12,
+      paddingTop: 5,
+      paddingBottom: 10,
+      textAlign: 'center'
+    },
   },
   modal: {
     container: {
@@ -175,6 +182,17 @@ export default {
         paddingTop: 5,
         paddingBottom: 5
       }
+    }
+  },
+  loading: {
+    spinner: {
+      position: 'absolute',
+    },
+    content: {
+      border: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      borderRadius: 4,
+      padding: 4
     }
   },
   //买家买家入口
