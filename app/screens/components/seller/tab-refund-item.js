@@ -12,8 +12,6 @@ import styles from '../../../css/styles';
 export default class OrderItem extends Component {
     constructor(props){
     	super(props);
-      this.attr = this.props.props;
-      this.navgoods = this.props.navgoods || false;
     }
     render() {
         let _data = this.props.data;
@@ -22,17 +20,20 @@ export default class OrderItem extends Component {
            <View style={styles.sorderItem.item}>
               <View style={styles.sorderItem.itemTitle}>
                 <View style={styles.sorderItem.row}>
-                  <Text style={styles.sorderItem.orderSn}>订单号：{_data.orderSn}</Text>
+                  <Text style={styles.sorderItem.orderSn}>退款单号：{_data.orderRefundSn}</Text>
                   <Text style={styles.sorderItem.orderStatus}>{_data.statusName}</Text>
                 </View>
                 <View style={styles.sorderItem.row}>
-                  <Text style={[styles.sorderItem.orderInfo, styles.common.flex]}>订单时间：{_data.ctime}</Text>
-                  <Text style={styles.sorderItem.orderInfo}>收货人：{_data.receiver}</Text>
+                  <Text style={[styles.sorderItem.orderInfo, styles.common.flex]}>订单号：{_data.order && _data.order.orderSn}</Text>
+                  <Text style={styles.sorderItem.orderInfo}>收货人：{_data.order && _data.order.receiver}</Text>
+                </View>
+                <View style={styles.sorderItem.row}>
+                  <Text style={[styles.sorderItem.orderInfo, styles.common.flex]}>申请时间：{_data.ctime}</Text>
                 </View>
               </View>
               {
                   _data.goods.map((v, k) => {
-                  return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => {this._toDetail(_data.orderSn, v)}}>
+                  return (<TouchableHighlight style={styles.sorderItem.goods}>
                     <View style={styles.sorderItem.itemBody}>
                       <View style={styles.sorderItem.imgWrapper}>
                         <Image style={styles.sorderItem.img} source={{uri: v.imgUrlSmall}} />
@@ -49,45 +50,43 @@ export default class OrderItem extends Component {
                   </TouchableHighlight>)
                 })
               }
-              <Text style={styles.sorderItem.totalText}>
-                <Text>共计{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalQty}件商品 合计：￥</Text><Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalGoodsAmount}</Text>
-              </Text>
-              {this.navgoods ? <View><Text style={styles.sorderItem.totalCount}>总计：￥<Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalAmount : _data.totalAmount}</Text></Text></View> : null}
+              <View>
+                <Text style={styles.sorderItem.refundCountText}>
+                  <Text>订单金额：</Text>
+                  <Text style={styles.sorderItem.refundCountSmall}>￥</Text>
+                  <Text style={styles.sorderItem.refundCountBig}>{_data.order && _data.order.totalAmount}</Text>
+                </Text>
+              </View>
+              <View style={styles.sorderItem.refundCount}>
+                <Text style={styles.sorderItem.refundCountText}>
+                  <Text>申请退款：</Text>
+                  <Text style={styles.sorderItem.refundCountSmall}>￥</Text>
+                  <Text style={styles.sorderItem.refundCountBig}>{_data.refundAmount}</Text>
+                </Text>
+              </View>
               {this._renderFooter(_data, _type)}
            </View>
         );
     }
     _renderFooter = (_data, _type) => {
-      if(_data.operationAllowed && _type == 0 && _data.status == 20) {
-        return (<View style={styles.sorderItem.itemFooter}>
+      if(_data.isNow == 1) {
+        if(_data.status == 10) {
+          return (<View style={styles.sorderItem.itemFooter}>
             <TouchableHighlight>
-              <Text style={styles.btn.primary}>发货</Text>
+            <Text style={styles.btn.primary}>审核</Text>
             </TouchableHighlight>
-            <TouchableHighlight>
-              <Text style={styles.btn.primary}>不发货</Text>
-            </TouchableHighlight>
-          </View>)
-        } else if(_data.operationAllowed && _type == 1 && _data.status == 10) {
+            </View>)
+        } else if(_data.status == 30) {
             return(<View style={styles.sorderItem.itemFooter}>
                 <TouchableHighlight>
-                  <Text style={styles.btn.danger}>立即采购</Text>
-                </TouchableHighlight>
-                <TouchableHighlight>
-                  <Text style={styles.btn.danger}>POS支付</Text>
+                  <Text style={styles.btn.danger}>处理退款</Text>
                 </TouchableHighlight>
               </View>)
         } else {
           return null;
         }
-    }
-    _toDetail = (sn, goodsInfo) => {
-      if(this.navgoods) {
-
       } else {
-        this.attr.navigation.navigate('SellerOrderDetail', {
-          ordersn: sn,
-          type: this.props.type
-        });
+        return null;
       }
     }
 }

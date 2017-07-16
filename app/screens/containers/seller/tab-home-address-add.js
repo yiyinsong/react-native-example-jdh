@@ -17,6 +17,7 @@ import ScreenInit from '../../../config/screenInit';
 
 import ModalAddress from '../../common/modal-address';
 import UIToast from '../../common/ui-toast';
+import Loading from '../../common/ui-loading';
 
 export default class SellerAddrAdd extends Component {
     constructor(props) {
@@ -41,11 +42,13 @@ export default class SellerAddrAdd extends Component {
           });
         });
         if(this.state.id !== '') {
+          this.setState({loadingVisible: true});
           fetch(Config.PHPAPI + `api/mapp/shop/addr-edit?id=${this.state.id}&token=${token}`, {
             method: 'GET'
           })
           .then(response => response.json())
           .then(data => {
+            this.setState({loadingVisible: false});
             if(data.error_code == 0) {
               let _data = data.data;
               this.setState({
@@ -68,6 +71,9 @@ export default class SellerAddrAdd extends Component {
                 }
               });
             }
+          })
+          .catch((error) => {
+            this.setState({loadingVisible: false});
           });
         }
       });
@@ -112,6 +118,7 @@ export default class SellerAddrAdd extends Component {
               </TouchableOpacity>
             </View>
             <ModalAddress key={0}></ModalAddress>
+            <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         );
     }

@@ -17,6 +17,7 @@ import Config from '../config/config';
 import Utils from '../js/utils';
 
 import UIToast from './common/ui-toast';
+import Loading from './common/ui-loading';
 
 import styles from '../css/styles';
 
@@ -28,7 +29,8 @@ export default class LoginScreen extends Component {
         password: '',
         ver: '',
         express: true,
-        verShow: false
+        verShow: false,
+        loadingVisible: false
       };
     }
     _login = () => {
@@ -40,6 +42,7 @@ export default class LoginScreen extends Component {
         UIToast('请填写密码');
         return;
       }
+      this.setState({loadingVisible: true});
       let _time = Math.round(new Date().getTime()/1000);
       let str = 'app_key=mapppassword='+this.state.password+'time_stamp=' + _time + 'username='+this.state.username+'c5221148d7ae84bf34e85c6499207ece';
       str = md5.hex_md5(str);
@@ -53,6 +56,7 @@ export default class LoginScreen extends Component {
       })
       .then((response) => response.json())
       .then((data) => {
+          this.setState({loadingVisible: false});
           if(data.error_code == 0) {
             storage.save({
               key: 'user',
@@ -75,6 +79,7 @@ export default class LoginScreen extends Component {
           }
       })
       .catch((err) => {
+          this.setState({loadingVisible: false});
           UIToast(data.msg || '登录失败');
       });
     }
@@ -119,6 +124,7 @@ export default class LoginScreen extends Component {
                 <TouchableOpacity activeOpacity={.8}><Text style={styles.login.findpw} onPress={this._toFindPassword}>找回密码</Text></TouchableOpacity>
               </View>
             </View>
+            <Loading visible={this.state.loadingVisible}></Loading>
           </View>
       )
     }

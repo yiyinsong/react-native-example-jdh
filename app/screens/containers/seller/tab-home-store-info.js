@@ -13,6 +13,8 @@ import styles from '../../../css/styles';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 
+import Loading from '../../common/ui-loading';
+
 export default class SellerHomeScreen extends Component {
     constructor(props){
       super(props);
@@ -29,10 +31,12 @@ export default class SellerHomeScreen extends Component {
           todayOrderCount: 0,
           todayTotalAmount: 0,
           yesterdayOrderCount: 0
-        }
+        },
+        loadingVisible: false
       };
     }
     componentDidMount() {
+      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
         let Nav = this.props.navigation;
         ScreenInit.checkLogin(this);
@@ -49,6 +53,7 @@ export default class SellerHomeScreen extends Component {
         })
         .then((response) => response.json())
         .then((data) => {
+          this.setState({loadingVisible: false});
           if(data.flag == 0) {
             let _r = data.data;
             this.setState({storeData: {
@@ -63,6 +68,7 @@ export default class SellerHomeScreen extends Component {
           }
         })
         .catch((error) => {
+          this.setState({loadingVisible: false});
           console.error(error);
         });
         //获取店铺数据（By Java）
@@ -152,6 +158,7 @@ export default class SellerHomeScreen extends Component {
                 </View>
               </View>
             </ScrollView>
+            <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         );
     }

@@ -51,6 +51,15 @@ export default {
       width: 20,
       height: 20
     },
+    headerGray: {
+      backgroundColor: '#f5f5f5',
+      height: 65,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomColor: '#ddd',
+      borderBottomWidth: 1,
+      paddingTop: 20,
+    },
     loadingTips: {
       color: '#999',
       fontSize: 12,
@@ -713,7 +722,8 @@ export default {
       backgroundColor: '#fff',
       borderBottomWidth: 1,
       borderBottomColor: '#ddd',
-      marginBottom: 10
+      marginBottom: 10,
+      paddingBottom: 10
     },
     itemTitle: {
       paddingTop: 10,
@@ -773,7 +783,10 @@ export default {
       textAlign: 'right'
     },
     itemFooter: {
-      padding: 10,
+      marginTop: 10,
+      paddingTop: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
       borderTopWidth: 1,
       borderTopColor: '#ddd',
       flex: 1,
@@ -789,13 +802,42 @@ export default {
       marginBottom: 1
     },
     totalText: {
-      padding: 10,
+      paddingTop: 5,
+      paddingLeft: 10,
+      paddingRight: 10,
       textAlign: 'right',
       fontSize: 12,
       color: '#333'
     },
     totalBig: {
       fontSize: 16
+    },
+    refundCount: {
+      paddingBottom: 10
+    },
+    refundCountText: {
+      textAlign: 'right',
+      fontSize: 12,
+      color: "#333",
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 5,
+      lineHeight: 18
+    },
+    refundCountSmall: {
+      color: '#cf0000'
+    },
+    refundCountBig: {
+      color: '#cf0000',
+      fontSize: 16
+    },
+    totalCount: {
+      textAlign: 'right',
+      color: '#cf0000',
+      fontSize: 12,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 2
     }
   },
   btn: {
@@ -913,6 +955,11 @@ export default {
     },
     sendDisabled: {
       backgroundColor: '#d8d8d8'
+    }
+  },
+  sorderDetail: {
+    content: {
+      backgroundColor: '#fff'
     }
   }
 }

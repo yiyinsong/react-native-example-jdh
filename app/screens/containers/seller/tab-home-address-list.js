@@ -17,6 +17,7 @@ import ScreenInit from '../../../config/screenInit';
 import AddressItemComponent from '../../components/seller/tab-home-address-item';
 import ModalConfirm from '../../common/modal-confirm';
 import UIToast from '../../common/ui-toast';
+import Loading from '../../common/ui-loading';
 
 export default class SellerAddrList extends Component {
     constructor(props) {
@@ -31,10 +32,12 @@ export default class SellerAddrList extends Component {
         modalParams: {
           id: '',
           index: -1
-        }
+        },
+        loadingVisible: false
       };
     }
     componentDidMount() {
+      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
         ScreenInit.checkLogin();
         this._updateData();
@@ -56,6 +59,7 @@ export default class SellerAddrList extends Component {
       })
       .then((response) => response.json())
       .then((data) => {
+        this.setState({loadingVisible: false});
         if(data.error_code == 0) {
           this.setState({
             addr: {
@@ -69,6 +73,7 @@ export default class SellerAddrList extends Component {
         }
       })
       .catch((error) => {
+        this.setState({loadingVisible: false});
         UIToast('获取列表失败');
       });
     }
@@ -111,6 +116,7 @@ export default class SellerAddrList extends Component {
                 this._deleteConfirm(arg);
               }
             }} params={this.state.modalParams}></ModalConfirm>
+            <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         );
     }

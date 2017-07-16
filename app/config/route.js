@@ -15,6 +15,8 @@ import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-inf
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
 import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
 
+import SellerOrderDetailScreen from '../screens/containers/seller/tab-order-detail';
+
 import styles from '../css/styles';
 
 export default {
@@ -93,6 +95,13 @@ export default {
         screen: SellerAddrAddScreen,
         navigationOptions: {
           title: '添加新地址'
+        }
+      },
+      SellerOrderDetail: {
+        screen: SellerOrderDetailScreen,
+        navigationOptions: {
+          title: '订单详情',
+          headerStyle: styles.common.headerGray
         }
       }
 }

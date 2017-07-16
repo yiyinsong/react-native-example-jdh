@@ -16,6 +16,7 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 
 import UIToast from '../../common/ui-toast';
+import Loading from '../../common/ui-loading';
 
 export default class SellerUserInfoScreen extends Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -36,10 +37,12 @@ export default class SellerUserInfoScreen extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        storeInfo: {}
+        storeInfo: {},
+        loadingVisible: false
       };
     }
     componentDidMount() {
+      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
         ScreenInit.checkLogin();
 
@@ -77,6 +80,7 @@ export default class SellerUserInfoScreen extends Component {
         })
         .then((response) => response.json())
         .then((data) => {
+          this.setState({loadingVisible: false});
           if(data.error_code == 0) {
             this.setState({
               storeInfo: data.data
@@ -86,6 +90,7 @@ export default class SellerUserInfoScreen extends Component {
           }
         })
         .catch((error) => {
+          this.setState({loadingVisible: false});
           UIToast('获取用户信息失败');
         });
       });
@@ -132,6 +137,7 @@ export default class SellerUserInfoScreen extends Component {
                 <Text style={styles.sinfo.logoutText}>退出登录</Text>
               </TouchableOpacity>
             </View>
+            <Loading visible={this.state.loadingVisible}></Loading>
           </ScrollView>
         );
     }

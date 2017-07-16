@@ -224,7 +224,7 @@ export default class ModalAddress extends Component{
               </TouchableOpacity>
               : null}
             </View>
-            <ScrollView horizontal={true} scrollEnabled={false} ref="scrollView">
+            <ScrollView horizontal={true} scrollEnabled={false} ref="scrollView" showsHorizontalScrollIndicator={false}>
               <ScrollView style={[styles.modal.address.sv,{width: Utils.width}]}>
                 <View style={styles.modal.address.svc}>
                   {this.state.list[0] && this.state.list[0].map((v, k) => {

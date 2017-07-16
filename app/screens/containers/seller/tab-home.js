@@ -8,11 +8,14 @@ import {
   InteractionManager
 } from 'react-native';
 
+
 import styles from '../../../css/styles';
 
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
+
+import Loading from '../../common/ui-loading';
 
 export default class SellerHomeScreen extends Component {
     constructor(props){
@@ -40,12 +43,13 @@ export default class SellerHomeScreen extends Component {
         orderDataZJ: {},
         orderDataJC: {},
         refundNumZJ: 0,
-        refundNumJC: 0
+        refundNumJC: 0,
+        loadingVisible: false
       };
     }
     componentDidMount() {
+      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
-        let Nav = this.props.navigation;
         ScreenInit.checkLogin(this);
         this._init();
       })
@@ -58,6 +62,7 @@ export default class SellerHomeScreen extends Component {
         .then((response) => response.json())
         .then((data) => {
           if(data.error_code == 0) {
+            this.setState({loadingVisible: false});
             this.setState({userInfo: data.data});
             //获取订单条数
             fetch(Config.JAVAAPI + '/shop/wap/client/order/shopOrderStatusSummary',{
@@ -92,6 +97,7 @@ export default class SellerHomeScreen extends Component {
           }
         })
         .catch((error) => {
+          this.setState({loadingVisible: false});
           console.error(error);
         });
         //获取未读消息
@@ -391,6 +397,7 @@ export default class SellerHomeScreen extends Component {
                 </View>
               </View>
             </ScrollView>
+            <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         );
     }
