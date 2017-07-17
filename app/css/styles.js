@@ -1,6 +1,9 @@
 export default {
   //公用样式
   common: {
+    init: {
+      backgroundColor: '#f5f5f5'
+    },
     flex: {
       flex: 1,
       flexDirection: 'row',
@@ -210,33 +213,29 @@ export default {
       backgroundColor: '#fff'
     },
     h1: {
-      fontSize: 20,
+      fontSize: 18,
       textAlign: 'center',
       marginTop: 50,
       color: '#000',
     },
     h5: {
-      fontSize: 12,
+      fontSize: 11,
       textAlign: 'center',
       marginTop: 10,
-      color: '#333',
+      color: '#999',
     },
     icon: {
       resizeMode: 'contain',
       alignSelf: 'center'
     },
     iconText: {
-      color: '#333',
+      color: '#666',
       textAlign: 'center',
+      marginTop: 5,
+      fontSize: 12
     },
     entr: {
-      marginTop: 100
-    },
-    touch1: {
-      marginRight: 20
-    },
-    touch2: {
-      marginLeft: 20
+      marginTop: 100,
     }
   },
   //卖家中心
@@ -449,6 +448,9 @@ export default {
       width: 14,
       height: 14,
       lineHeight: 13
+    },
+    borderNone: {
+      borderBottomWidth: 0
     }
   },
   //账户信息
@@ -721,7 +723,7 @@ export default {
     item: {
       backgroundColor: '#fff',
       borderBottomWidth: 1,
-      borderBottomColor: '#ddd',
+      borderBottomColor: '#eee',
       marginBottom: 10,
       paddingBottom: 10
     },
@@ -958,8 +960,89 @@ export default {
     }
   },
   sorderDetail: {
-    content: {
-      backgroundColor: '#fff'
+    log: {
+      backgroundColor: '#fff',
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderTopWidth: 1,
+      borderTopColor: '#eee',
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      marginBottom: 10
+    },
+    logItem: {
+      position: 'relative',
+    },
+    logLeft: {
+      width: 16,
+      position: 'absolute',
+      top: 0,
+      left: 15,
+      bottom: 0,
+    },
+    logLine: {
+      width: 1,
+      backgroundColor: '#ddd',
+      marginLeft: 6
+    },
+    logLineActive: {
+      marginTop: 18
+    },
+    logCircle: {
+      width: 12,
+      height: 12,
+      backgroundColor: '#ddd',
+      borderRadius: 5,
+      borderWidth: 3,
+      borderColor: 'rgba(255, 255, 255, 0)',
+      position: 'absolute',
+      top: 15
+    },
+    logCircleActive: {
+      backgroundColor: '#0eaaff',
+      borderColor: 'rgba(4, 170, 255, .3)'
+    },
+    logRight: {
+      marginLeft: 40,
+      marginRight: 10,
+      borderTopColor: '#f5f5f5',
+      borderTopWidth: 1,
+      paddingTop: 10,
+      paddingBottom: 5
+    },
+    logRightActive: {
+      borderTopWidth: 0
+    },
+    logText: {
+      fontSize: 12,
+      color: '#999',
+      marginBottom: 5
+    },
+    logTextActive: {
+      color: '#0eaaff',
+    },
+    block: {
+      backgroundColor: '#fff',
+      borderTopWidth: 1,
+      borderTopColor: '#eee',
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      padding: 10,
+      marginBottom: 10
+    },
+    userItem: {
+      marginTop: 2,
+      marginBottom: 2
+    },
+    userText: {
+      fontSize: 12,
+      color: '#666',
+    },
+    orderInfoText: {
+      fontSize: 12,
+      color: '#999',
+      marginTop: 2,
+      marginBottom: 2
     }
   }
 }

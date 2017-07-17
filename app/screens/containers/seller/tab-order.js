@@ -59,8 +59,8 @@ export default class OrderListScreen extends Component {
         tipsJc: ['', '', '', '', '', '', '', '', ''],
 
         loadingVisible: true,
+        activeIndex: 0
       };
-      this.activeIndex = 0;
       this.sliderTimer = null;
     }
     componentWillMount() {
@@ -357,7 +357,7 @@ export default class OrderListScreen extends Component {
     render() {
         let _type = this.state.type;
         return (
-            <View style={styles.common.flexv}>
+            <View style={[styles.common.flexv, styles.common.init]}>
               <View style={styles.sorder.type}>
                 <View style={[styles.sorder.typeWrapper, styles.common.flexDirectionRow]}>
                   <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 0 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(0)}}><Text style={[styles.sorder.typeText, _type == 0 ? styles.sorder.typeTextActive : null]}>自建商品</Text></TouchableOpacity>
@@ -380,12 +380,13 @@ export default class OrderListScreen extends Component {
                         <View tabLabel={v}>
                           <FlatList
                           data={this.state.listZj[k]}
-                          renderItem={({item}) => this.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+                          renderItem={({item}) => this.state.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
                           onRefresh={false}
                           refreshing={false}
                           onEndReachedThreshold={2}
                           onEndReached={() => this._loadingMore(k)}
-                          ListFooterComponent={() => this._flatListFooter(k)}/>
+                          ListFooterComponent={() => this._flatListFooter(k)}
+                          style={styles.common.init}/>
                         </View>
                       )
                     })}
@@ -406,12 +407,13 @@ export default class OrderListScreen extends Component {
                       <View tabLabel={v}>
                         <FlatList
                         data={this.state.listJc[k]}
-                        renderItem={({item}) => this.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+                        renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
                         onRefresh={false}
                         refreshing={false}
                         onEndReachedThreshold={2}
                         onEndReached={() => this._loadingMore(k)}
-                        ListFooterComponent={() => this._flatListFooter(k)}/>
+                        ListFooterComponent={() => this._flatListFooter(k)}
+                        style={styles.common.init}/>
                       </View>
                     )
                   })}
@@ -422,7 +424,7 @@ export default class OrderListScreen extends Component {
         );
     }
     _selectType = (t) => {
-      this.activeIndex = 0;
+      this.setState({activeIndex: 0});
       this.setState({type: t});
     }
     _renderTab_zj = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
@@ -436,7 +438,7 @@ export default class OrderListScreen extends Component {
         alignItems: 'center'}}
       onLayout={onLayoutHandler}
     >
-      <Text style={{fontSize: 12, color: page == this.activeIndex ? '#388bff' : '#333'}}>{name}</Text>
+      <Text style={{fontSize: 12, color: page == this.state.activeIndex ? '#388bff' : '#333'}}>{name}</Text>
       {this._renderBadge_zj(page) > 0 ?
       <View style={{position: 'relative'}}>
         <View style={{position: 'absolute',backgroundColor: '#eb0000',borderRadius: 5, top: -10,paddingLeft: 4,paddingRight: 4,height: 10}}>
@@ -459,7 +461,7 @@ export default class OrderListScreen extends Component {
       alignItems: 'center'}}
     onLayout={onLayoutHandler}
   >
-    <Text style={{fontSize: 12, color: page == this.activeIndex ? '#388bff' : '#333'}}>{name}</Text>
+    <Text style={{fontSize: 12, color: page == this.state.activeIndex ? '#388bff' : '#333'}}>{name}</Text>
     {this._renderBadge_jc(page) > 0 ?
     <View style={{position: 'relative'}}>
       <View style={{position: 'absolute',backgroundColor: '#eb0000',borderRadius: 5, top: -10,paddingLeft: 4,paddingRight: 4,height: 10}}>
@@ -551,7 +553,7 @@ export default class OrderListScreen extends Component {
   }
   _tabHandle = (obj) => {
       let _page = obj.i;
-      this.activeIndex = obj.i;
+      this.setState({activeIndex: obj.i});
       if(this.state.type == 0) {
         if(this.state.listZj[_page].length == 0 && this.state.tipsZj[_page] != '没有更多数据！') {
           this.sliderTimer = setTimeout(() => {

@@ -16,6 +16,7 @@ import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-
 import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
 
 import SellerOrderDetailScreen from '../screens/containers/seller/tab-order-detail';
+import SellerRefundDetailScreen from '../screens/containers/seller/tab-order-refund-detail';
 
 import styles from '../css/styles';
 
@@ -101,6 +102,13 @@ export default {
         screen: SellerOrderDetailScreen,
         navigationOptions: {
           title: '订单详情',
+          headerStyle: styles.common.headerGray
+        }
+      },
+      //退款详情
+      SellerRefundDetail: {
+        screen: SellerRefundDetailScreen,
+        navigationOptions: {
           headerStyle: styles.common.headerGray
         }
       }

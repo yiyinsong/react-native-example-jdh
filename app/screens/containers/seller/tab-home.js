@@ -209,7 +209,7 @@ export default class SellerHomeScreen extends Component {
               </View>
               <Image source={require('../../../images/seller-home-bg.png')} style={ [{width: Utils.width, height: Utils.width * .355}] }/>
             </View>
-            <ScrollView>
+            <ScrollView style={styles.common.init}>
               <View style={ styles.shome.dl }>
                 <View style={ [styles.common.flex, styles.shome.dt] }>
                   <View style={ [styles.common.flex, styles.common.flexCenterv] }>

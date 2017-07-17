@@ -12,6 +12,7 @@ import styles from '../../../css/styles';
 export default class OrderItem extends Component {
     constructor(props){
     	super(props);
+      this.attr = this.props.props;
     }
     render() {
         let _data = this.props.data;
@@ -33,7 +34,7 @@ export default class OrderItem extends Component {
               </View>
               {
                   _data.goods.map((v, k) => {
-                  return (<TouchableHighlight style={styles.sorderItem.goods}>
+                  return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => this._toRefundDetail(_data)}>
                     <View style={styles.sorderItem.itemBody}>
                       <View style={styles.sorderItem.imgWrapper}>
                         <Image style={styles.sorderItem.img} source={{uri: v.imgUrlSmall}} />
@@ -88,5 +89,8 @@ export default class OrderItem extends Component {
       } else {
         return null;
       }
+    }
+    _toRefundDetail = (item) => {
+      this.attr.navigation.navigate('SellerRefundDetail', {id: item.id, shopid: item.shopId});
     }
 }

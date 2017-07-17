@@ -97,7 +97,7 @@ export default class SellerUserInfoScreen extends Component {
     }
     render() {
         return (
-          <ScrollView>
+          <ScrollView style={styles.common.init}>
             <View style={styles.sinfo.storeInfoWrapper}>
               <View style={[styles.common.flex, styles.sinfo.storeInfoItem]}>
                 <Text style={styles.sinfo.storeInfoItemLeft}>联系人</Text>

@@ -98,7 +98,7 @@ export default class SellerHomeScreen extends Component {
     render() {
         return (
           <View style={ styles.shome.container }>
-            <ScrollView>
+            <ScrollView style={styles.common.init}>
               <View style={ [styles.shome.dl, styles.storeInfo.block] }>
                 <View style={ [styles.common.flex, styles.shome.dt] }>
                   <View style={ [styles.common.flex, styles.common.flexCenterv] }>
@@ -147,11 +147,11 @@ export default class SellerHomeScreen extends Component {
               <View style={ styles.shome.dl }>
                 <View style={ [styles.common.flex, styles.shome.dt] }>
                   <View style={ [styles.common.flex, styles.common.flexCenterv] }>
-                    <Text style={ styles.shome.dtName }>更多统计</Text>
+                    <Text style={ styles.shome.dtName}>更多统计</Text>
                   </View>
                 </View>
                 <View style={ styles.shome.dd }>
-                  <View style={[styles.common.flexDirectionRow, styles.storeInfo.more, styles.common.flexCenterv]}>
+                  <View style={[styles.common.flexDirectionRow, styles.storeInfo.more, styles.common.flexCenterv, styles.shome.borderNone]}>
                     <Text style={[styles.common.flex, styles.storeInfo.moreName]}>昨日被浏览商品数</Text>
                     <Text style={styles.storeInfo.moreNum}>{this.state.storeData.yesterdayCount}</Text>
                   </View>

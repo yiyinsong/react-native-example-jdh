@@ -28,16 +28,16 @@ export default class EntranceScreen extends Component {
             <View style={[styles.common.flexv, styles.entrance.wrapper]}>
               <Text style={styles.entrance.h1}>请选择你要进入的个人中心</Text>
               <Text style={styles.entrance.h5}>卖家界面和买家界面可在个人中心进行切换</Text>
-              <View style={[styles.common.flex, styles.common.flexCenterh, styles.entrance.entr]}>
-                <View>
-                  <TouchableOpacity onPress={ () => this._selectIdentity(0) } activeOpacity={.8} style={styles.entrance.touch1}>
-                    <Image source={require('../images/id-seller.png')} style={[styles.entrance.icon, {width: Utils.width * .3, height: Utils.width * .3}]} />
-                    <Text style={styles.entrance.iconText}>管理电子货架</Text>
+              <View style={[styles.common.flexDirectionRow, styles.entrance.entr, {paddingLeft: Utils.width * .1, paddingRight: Utils.width * .1}]}>
+                <View style={[styles.common.flex, styles.common.flexCenterh]}>
+                  <TouchableOpacity onPress={ () => this._selectIdentity(0) } activeOpacity={.8}>
+                    <Image source={require('../images/id-seller.png')} style={[styles.entrance.icon, {width: Utils.width * .2, height: Utils.width * .2}]} />
+                    <Text style={styles.entrance.iconText}>管理店铺</Text>
                   </TouchableOpacity>
                 </View>
-                <View>
-                  <TouchableOpacity onPress={ () => this._selectIdentity(1) } activeOpacity={.8} style={styles.entrance.touch2}>
-                    <Image source={require('../images/id-buyer.png')} style={[styles.entrance.icon, {width: Utils.width * .3, height: Utils.width * .3}]} />
+                <View style={[styles.common.flex, styles.common.flexCenterh]}>
+                  <TouchableOpacity onPress={ () => this._selectIdentity(1) } activeOpacity={.8}>
+                    <Image source={require('../images/id-buyer.png')} style={[styles.entrance.icon, {width: Utils.width * .2, height: Utils.width * .2}]} />
                     <Text style={styles.entrance.iconText}>我要采购</Text>
                   </TouchableOpacity>
                 </View>
