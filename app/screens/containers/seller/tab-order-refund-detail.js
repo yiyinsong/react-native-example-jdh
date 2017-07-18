@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   InteractionManager
 } from 'react-native';
 
@@ -16,12 +17,20 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 
 export default class OrderDetailScreen extends Component{
+  static navigationOptions = ({ navigation, screenProps }) => ({
+    headerTitle: navigation.state.params.title,
+  });
+
   constructor(props){
   	super(props);
     let _query = this.props.navigation.state.params;
   	this.state = {
       loadingVisible: false,
       data: {
+        bodyShow: false,
+        refund: {},
+        order: {},
+        trace: []
       },
       id: _query.id,
       shopid: _query.shopid
@@ -37,10 +46,57 @@ export default class OrderDetailScreen extends Component{
   render() {
     let _data = this.state.data;
     return (
-      <View>
-        <ScrollView style={[styles.common.init]}>
-
+      <View style={[styles.common.flexv, styles.common.init]}>
+        { this.state.bodyShow ?
+        <ScrollView>
+          <Text style={styles.srefundDetail.title}>最新进度</Text>
+          <View style={styles.sorderDetail.log}>
+          {_data.trace.map((v, k) => {
+            return (
+              <View style={styles.sorderDetail.logItem}>
+                <View style={styles.sorderDetail.logLeft}>
+                  <View style={[styles.common.flex, styles.sorderDetail.logLine, k == 0  ? styles.sorderDetail.logLineActive : '']}></View>
+                  <View style={[styles.sorderDetail.logCircle, k == 0 ? styles.sorderDetail.logCircleActive : '']}></View>
+                </View>
+                <View style={[styles.sorderDetail.logRight, k == 0 ? styles.sorderDetail.logRightActive : '']}>
+                  <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.content}</Text>
+                  <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.ctime}</Text>
+                </View>
+              </View>
+            )
+          })}
+          </View>
+          <View style={styles.srefundDetail.info}>
+            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+              <Text style={styles.srefundDetail.dt}>售后类型</Text>
+              <Text style={styles.srefundDetail.dd}>{_data.refund.type == 1 ? '退款' : '退货退款'}</Text>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+              <Text style={styles.srefundDetail.dt}>是否收到货</Text>
+              <Text style={styles.srefundDetail.dd}>{_data.refund.isRecevied == 1 ? '已收货' : '未收货'}</Text>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+              <Text style={styles.srefundDetail.dt}>售后原因</Text>
+              <Text style={styles.srefundDetail.dd}>{_data.refund.refundReasonName}</Text>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+              <Text style={styles.srefundDetail.dt}>退款金额</Text>
+              <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+              <Text style={styles.srefundDetail.dt}>退款说明</Text>
+              <Text style={styles.srefundDetail.dd}>{_data.refund.refundNote}</Text>
+            </View>
+          </View>
+          <View style={styles.srefundDetail.order}>
+            <View style={[styles.common.flex, styles.srefundDetail.ol]}>
+              <Text style={styles.srefundDetail.orderSn}>订单号：</Text>
+              <Text style={styles.srefundDetail.oderTime}>订单时间：</Text>
+            </View>
+            <TouchableHighlight underlayColor='#f5f5f5' style={styles.srefundDetail.or} onPress={() => {this._toOrderDetail()}}><Text>查看详情</Text></TouchableHighlight>
+          </View>
         </ScrollView>
+        : null }
         <Loading visible={this.state.loadingVisible}></Loading>
       </View>
     );
@@ -51,8 +107,83 @@ export default class OrderDetailScreen extends Component{
     })
     .then(response => response.json())
     .then((data) => {
-        this.setState({loadingVisible: false});
-        this.setState({data: data});
+      if(data.refund) {
+        switch(data.refund.refundReason) {
+            case 1:
+                data.refund.refundReasonName = '退运费';
+            break;
+            case 2:
+                data.refund.refundReasonName = '商品瑕疵';
+            break;
+            case 3:
+                data.refund.refundReasonName = '质量问题';
+            break;
+            case 4:
+                _data.refund.refundReasonName = '颜色/尺寸/参数不符';
+            break;
+            case 5:
+                _data.refund.refundReasonName = '少件/漏发';
+            break;
+            case 6:
+                data.refund.refundReasonName = '收到商品时候有划痕/破损';
+            break;
+            case 7:
+                _data.refund.refundReasonName = '假冒品牌';
+            break;
+            case 8:
+                _data.refund.refundReasonName = '发票问题';
+            break;
+            case 99:
+                data.refund.refundReasonName = '其他';
+            break;
+            default:
+                data.refund.refundReasonName = '';
+            break;
+        }
+      }
+      switch(data.refund.status) {
+        case -10:
+            data.refund.statusName = '退款失败';
+        break;
+        case 0:
+            data.refund.statusName = '退款关闭';
+        break;
+        case 10:
+            data.refund.statusName = '待审核';
+        break;
+        case 20:
+            data.refund.statusName = '待买家退货';
+        break;
+        case 30:
+            data.refund.statusName = '退货待退款';
+        break;
+        case 40:
+            if(data.refund.payStatus == 1) {
+                data.refund.statusName = '退款中';
+            } else if(data.refund.payStatus == 2) {
+                data.refund.statusName = '退款失败';
+            } else if(data.refund.payStatus == 3) {
+                data.refund.statusName = '退款成功';
+            } else if(data.refund.payStatus == 4) {
+                data.refund.statusName = '退款成功';
+            } else if(data.refund.payStatus == 5) {
+                data.refund.statusName = '待退款';
+            } else {
+                data.refund.statusName = '同意退货退款';
+            }
+        break;
+        case 50:
+            data.refund.statusName = '卖家拒绝退款';
+        break;
+        case 60:
+            data.refund.statusName = '待平台介入';
+        break;
+        default:
+            data.refund.statusName = '';
+        break;
+      }
+      this.setState({loadingVisible: false, data: data, bodyShow: true});
+      this.props.navigation.setParams({title: data.refund.statusName});
     });
   }
 }

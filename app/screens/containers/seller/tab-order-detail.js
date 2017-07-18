@@ -22,6 +22,7 @@ export default class OrderDetailScreen extends Component{
   	this.state = {
       loadingVisible: false,
       data: {
+        bodyShow: false,
         goods: [],
         actions: []
       },
@@ -39,8 +40,9 @@ export default class OrderDetailScreen extends Component{
   render() {
     let _data = this.state.data;
     return (
-      <View>
-        <ScrollView style={styles.common.init}>
+      <View style={[styles.common.flexv, styles.common.init]}>
+        {this.state.bodyShow ?
+        <ScrollView>
           <OrderItem data={_data} type={this.state.type} props={this.props} navgoods={true}></OrderItem>
           <View style={styles.sorderDetail.log}>
           {_data.actions.map((v, k) => {
@@ -94,7 +96,8 @@ export default class OrderDetailScreen extends Component{
             {_data.rec_time ? <View><Text style={styles.sorderDetail.orderInfoText}>收货时间：{_data.rec_time}</Text></View> : null }
           </View>
         </ScrollView>
-      <Loading visible={this.state.loadingVisible}></Loading>
+        : null}
+        <Loading visible={this.state.loadingVisible}></Loading>
       </View>
     );
   }
@@ -106,7 +109,7 @@ export default class OrderDetailScreen extends Component{
     .then((data) => {
         this.setState({loadingVisible: false});
         if (data.code == 1) {
-            this.setState({data: data.obj});
+            this.setState({data: data.obj, bodyShow: true});
         } else {
           UIToast(data.message || '加载数据失败');
         }

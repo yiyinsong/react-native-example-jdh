@@ -1044,5 +1044,36 @@ export default {
       marginTop: 2,
       marginBottom: 2
     }
+  },
+  srefundDetail: {
+    title: {
+      fontSize: 14,
+      padding: 10,
+      color: '#333',
+      backgroundColor: '#fff'
+    },
+    info: {
+      backgroundColor: '#fff',
+      borderTopWidth: 1,
+      borderTopColor: '#eee',
+      marginTop: 10,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    dl: {
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee'
+    },
+    dt: {
+      width: 80,
+      color: '#666',
+      fontSize: 12
+    },
+    dd: {
+      color: '#333',
+      fontSize: 12
+    }
   }
 }
