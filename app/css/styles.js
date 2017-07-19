@@ -1074,6 +1074,49 @@ export default {
     dd: {
       color: '#333',
       fontSize: 12
+    },
+    order:  {
+      backgroundColor: '#fff',
+      borderTopWidth: 1,
+      borderTopColor: '#eee',
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      marginTop: 10,
+      marginBottom: 10,
+      padding: 10
+    },
+    orderSn: {
+      fontSize: 13,
+      color: '#333'
+    },
+    orderTime: {
+      fontSize: 11,
+      color: '#999'
+    },
+    or: {
+      borderWidth: 1,
+      borderColor: '#eee',
+      paddingLeft: 10,
+      paddingRight: 10,
+      borderRadius: 3,
+      height: 30,
+      justifyContent : 'center'
+    },
+    ortxt: {
+      fontSize: 12,
+      color: '#333',
+    },
+  },
+  footerBtn: {
+    b1: {
+      backgroundColor: '#fe5e5e',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 40
+    },
+    text: {
+      color: '#fff',
+      fontSize: 12
     }
   }
 }

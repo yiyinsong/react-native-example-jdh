@@ -29,11 +29,12 @@ export default class OrderDetailScreen extends Component{
       data: {
         bodyShow: false,
         refund: {},
-        order: {},
         trace: []
       },
       id: _query.id,
-      shopid: _query.shopid
+      shopid: _query.shopid,
+      ordersn: _query.ordersn,
+      ctime: _query.ctime
     };
   }
   componentWillMount() {
@@ -48,54 +49,67 @@ export default class OrderDetailScreen extends Component{
     return (
       <View style={[styles.common.flexv, styles.common.init]}>
         { this.state.bodyShow ?
-        <ScrollView>
-          <Text style={styles.srefundDetail.title}>最新进度</Text>
-          <View style={styles.sorderDetail.log}>
-          {_data.trace.map((v, k) => {
-            return (
-              <View style={styles.sorderDetail.logItem}>
-                <View style={styles.sorderDetail.logLeft}>
-                  <View style={[styles.common.flex, styles.sorderDetail.logLine, k == 0  ? styles.sorderDetail.logLineActive : '']}></View>
-                  <View style={[styles.sorderDetail.logCircle, k == 0 ? styles.sorderDetail.logCircleActive : '']}></View>
+        <View style={styles.common.flexv}>
+          <ScrollView>
+            <Text style={styles.srefundDetail.title}>最新进度</Text>
+            <View style={styles.sorderDetail.log}>
+            {_data.trace.map((v, k) => {
+              return (
+                <View style={styles.sorderDetail.logItem}>
+                  <View style={styles.sorderDetail.logLeft}>
+                    <View style={[styles.common.flex, styles.sorderDetail.logLine, k == 0  ? styles.sorderDetail.logLineActive : '']}></View>
+                    <View style={[styles.sorderDetail.logCircle, k == 0 ? styles.sorderDetail.logCircleActive : '']}></View>
+                  </View>
+                  <View style={[styles.sorderDetail.logRight, k == 0 ? styles.sorderDetail.logRightActive : '']}>
+                    <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.content}</Text>
+                    <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.ctime}</Text>
+                  </View>
                 </View>
-                <View style={[styles.sorderDetail.logRight, k == 0 ? styles.sorderDetail.logRightActive : '']}>
-                  <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.content}</Text>
-                  <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.ctime}</Text>
-                </View>
+              )
+            })}
+            </View>
+            <View style={styles.srefundDetail.info}>
+              <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                <Text style={styles.srefundDetail.dt}>售后类型</Text>
+                <Text style={styles.srefundDetail.dd}>{_data.refund.type == 1 ? '退款' : '退货退款'}</Text>
               </View>
-            )
-          })}
+              <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                <Text style={styles.srefundDetail.dt}>是否收到货</Text>
+                <Text style={styles.srefundDetail.dd}>{_data.refund.isRecevied == 1 ? '已收货' : '未收货'}</Text>
+              </View>
+              <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                <Text style={styles.srefundDetail.dt}>售后原因</Text>
+                <Text style={styles.srefundDetail.dd}>{_data.refund.refundReasonName}</Text>
+              </View>
+              <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                <Text style={styles.srefundDetail.dt}>退款金额</Text>
+                <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
+              </View>
+              <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                <Text style={styles.srefundDetail.dt}>退款说明</Text>
+                <Text style={styles.srefundDetail.dd}>{_data.refund.refundNote}</Text>
+              </View>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.order]}>
+              <View style={styles.common.flexv}>
+                <Text style={styles.srefundDetail.orderSn}>订单号：</Text>
+                <Text style={styles.srefundDetail.orderTime}>订单时间：</Text>
+              </View>
+              <TouchableHighlight underlayColor='#f5f5f5' style={styles.srefundDetail.or} onPress={() => {this._toOrderDetail()}}><Text style={styles.srefundDetail.ortxt}>查看详情</Text></TouchableHighlight>
+            </View>
+          </ScrollView>
+          <View style={styles.common.flexDirectionRow}>
+          { _data.refund.isNow == 1 && _data.refund.status == 10 ?
+            <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._examine()}}><Text style={styles.footerBtn.text}>审核</Text></TouchableHighlight>
+            : null }
+            { _data.refund.isNow == 1 && _data.refund.status == 40 && _data.refund.payStatus == 5 ?
+            <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._pay(0)}}><Text style={styles.footerBtn.text}>打款</Text></TouchableHighlight>
+            : null }
+            { _data.refund.isNow == 1 && _data.refund.type == 2 && _data.refund.status == 30 ?
+            <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._pay(1)}}><Text style={styles.footerBtn.text}>确认收货并打款</Text></TouchableHighlight>
+            : null }
           </View>
-          <View style={styles.srefundDetail.info}>
-            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
-              <Text style={styles.srefundDetail.dt}>售后类型</Text>
-              <Text style={styles.srefundDetail.dd}>{_data.refund.type == 1 ? '退款' : '退货退款'}</Text>
-            </View>
-            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
-              <Text style={styles.srefundDetail.dt}>是否收到货</Text>
-              <Text style={styles.srefundDetail.dd}>{_data.refund.isRecevied == 1 ? '已收货' : '未收货'}</Text>
-            </View>
-            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
-              <Text style={styles.srefundDetail.dt}>售后原因</Text>
-              <Text style={styles.srefundDetail.dd}>{_data.refund.refundReasonName}</Text>
-            </View>
-            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
-              <Text style={styles.srefundDetail.dt}>退款金额</Text>
-              <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
-            </View>
-            <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
-              <Text style={styles.srefundDetail.dt}>退款说明</Text>
-              <Text style={styles.srefundDetail.dd}>{_data.refund.refundNote}</Text>
-            </View>
-          </View>
-          <View style={styles.srefundDetail.order}>
-            <View style={[styles.common.flex, styles.srefundDetail.ol]}>
-              <Text style={styles.srefundDetail.orderSn}>订单号：</Text>
-              <Text style={styles.srefundDetail.oderTime}>订单时间：</Text>
-            </View>
-            <TouchableHighlight underlayColor='#f5f5f5' style={styles.srefundDetail.or} onPress={() => {this._toOrderDetail()}}><Text>查看详情</Text></TouchableHighlight>
-          </View>
-        </ScrollView>
+        </View>
         : null }
         <Loading visible={this.state.loadingVisible}></Loading>
       </View>
@@ -185,5 +199,15 @@ export default class OrderDetailScreen extends Component{
       this.setState({loadingVisible: false, data: data, bodyShow: true});
       this.props.navigation.setParams({title: data.refund.statusName});
     });
+  }
+  _toOrderDetail = () => {
+    this.props.navigation.navigate('SellerOrderDetail', {
+      ordersn: this.state.ordersn,
+      type: this.state.data.refund.orderType == 40 ? 0 : 1
+    });
+  }
+  _examine = () => {}
+  _pay = (t) => {
+
   }
 }

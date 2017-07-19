@@ -230,7 +230,7 @@ export default class OrderListScreen extends Component {
               let _tips = this.state.tipsJc;
               if(_data.pageIndex < _data.totalPage) {
                 _canload[i] = true;
-                _tips[i] = '数据加载中...';
+                _tips[i] = '数据加载中...'; 
               } else {
                 _canload[i] = false;
                 _tips[i] = '没有更多数据！';

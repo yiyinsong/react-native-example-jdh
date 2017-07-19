@@ -91,6 +91,6 @@ export default class OrderItem extends Component {
       }
     }
     _toRefundDetail = (item) => {
-      this.attr.navigation.navigate('SellerRefundDetail', {id: item.id, shopid: item.shopId});
+      this.attr.navigation.navigate('SellerRefundDetail', {id: item.id, shopid: item.shopId, ordersn: item.order.mainOrderSn || item.order.orderSn, ctime: item.order.ctime});
     }
 }
