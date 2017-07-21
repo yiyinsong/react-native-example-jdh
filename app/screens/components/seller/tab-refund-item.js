@@ -73,13 +73,13 @@ export default class OrderItem extends Component {
       if(_data.isNow == 1) {
         if(_data.status == 10) {
           return (<View style={styles.sorderItem.itemFooter}>
-            <TouchableHighlight>
+            <TouchableHighlight style={styles.btn.container}>
             <Text style={styles.btn.primary}>审核</Text>
             </TouchableHighlight>
             </View>)
         } else if(_data.status == 30) {
             return(<View style={styles.sorderItem.itemFooter}>
-                <TouchableHighlight>
+                <TouchableHighlight style={styles.btn.container}>
                   <Text style={styles.btn.danger}>处理退款</Text>
                 </TouchableHighlight>
               </View>)

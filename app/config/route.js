@@ -15,7 +15,9 @@ import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-inf
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
 import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
 
+import SellerOrderSearchScreen from '../screens/containers/seller/tab-order-search';
 import SellerOrderDetailScreen from '../screens/containers/seller/tab-order-detail';
+import SellerOrderDeliverScreen from '../screens/containers/seller/tab-order-deliver';
 import SellerRefundDetailScreen from '../screens/containers/seller/tab-order-refund-detail';
 
 import styles from '../css/styles';
@@ -69,7 +71,7 @@ export default {
               fontWeight: '100'
           },
           headerLeft: null,
-          headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => {navigation.navigate('Login')}}>
+          headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }}>
                 <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
             </TouchableOpacity> : null)
         })
@@ -98,10 +100,26 @@ export default {
           title: '添加新地址'
         }
       },
+      //搜索订单
+      SellerOrderSearch: {
+        screen: SellerOrderSearchScreen,
+        navigationOptions: {
+          title: '订单搜索',
+          headerStyle: styles.common.headerGray
+        }
+      },
       SellerOrderDetail: {
         screen: SellerOrderDetailScreen,
         navigationOptions: {
           title: '订单详情',
+          headerStyle: styles.common.headerGray
+        }
+      },
+      //发货
+      SellerOrderDeliver: {
+        screen: SellerOrderDeliverScreen,
+        navigationOptions: {
+          title: '发货',
           headerStyle: styles.common.headerGray
         }
       },

@@ -60,19 +60,19 @@ export default class OrderItem extends Component {
     _renderFooter = (_data, _type) => {
       if(_data.operationAllowed && _type == 0 && _data.status == 20) {
         return (<View style={styles.sorderItem.itemFooter}>
-            <TouchableHighlight>
+            <TouchableHighlight underlayColor="#f5f5f5" onPress={this._deliver} style={styles.btn.container}>
               <Text style={styles.btn.primary}>发货</Text>
             </TouchableHighlight>
-            <TouchableHighlight>
+            <TouchableHighlight style={styles.btn.container}>
               <Text style={styles.btn.primary}>不发货</Text>
             </TouchableHighlight>
           </View>)
         } else if(_data.operationAllowed && _type == 1 && _data.status == 10) {
             return(<View style={styles.sorderItem.itemFooter}>
-                <TouchableHighlight>
+                <TouchableHighlight style={styles.btn.container}>
                   <Text style={styles.btn.danger}>立即采购</Text>
                 </TouchableHighlight>
-                <TouchableHighlight>
+                <TouchableHighlight style={styles.btn.container}>
                   <Text style={styles.btn.danger}>POS支付</Text>
                 </TouchableHighlight>
               </View>)
@@ -89,5 +89,8 @@ export default class OrderItem extends Component {
           type: this.props.type
         });
       }
+    }
+    _deliver = () => {
+      this.attr.navigation.navigate('SellerOrderDeliver');
     }
 }

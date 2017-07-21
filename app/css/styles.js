@@ -4,6 +4,9 @@ export default {
     init: {
       backgroundColor: '#f5f5f5'
     },
+    initWhite: {
+      backgroundColor: '#fff',
+    },
     flex: {
       flex: 1,
       flexDirection: 'row',
@@ -843,6 +846,9 @@ export default {
     }
   },
   btn: {
+    container: {
+      marginLeft: 10
+    },
     primary: {
       borderWidth: 1,
       borderRadius: 3,
@@ -853,7 +859,6 @@ export default {
       paddingBottom: 3,
       paddingRight: 15,
       fontSize: 11,
-      marginLeft: 10
     },
     danger: {
       borderWidth: 1,
@@ -865,7 +870,6 @@ export default {
       paddingBottom: 3,
       paddingRight: 15,
       fontSize: 11,
-      marginLeft: 10
     }
   },
   login: {
@@ -1116,6 +1120,21 @@ export default {
     },
     text: {
       color: '#fff',
+      fontSize: 12
+    }
+  },
+  sorderSearch: {
+    inputContainer: {
+      backgroundColor: '#eee',
+      padding: 10
+    },
+    input: {
+      backgroundColor: '#fff',
+      paddingLeft: 5,
+      paddingRight: 5,
+      paddingTop: 0,
+      paddingBottom: 0,
+      height: 24,
       fontSize: 12
     }
   }

@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     Image,
     InteractionManager,
-    ScrollView
 } from 'react-native';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -78,6 +77,7 @@ export default class OrderListScreen extends Component {
           this._getData(_initIndex);
           this._getData(0, 0);
         }
+        this.props.navigation.setParams({type: _initType});
       })
     }
     componentWillUnmount() {
@@ -218,8 +218,7 @@ export default class OrderListScreen extends Component {
                 _canload[i] = false;
                 _tips[i] = '没有更多数据！';
               }
-              this.setState({canloadZj: _canload});
-              this.setState({tipsZj: _tips});
+              this.setState({canloadZj: _canload, tipsZj: _tips});
             } else {
               let _temp = this.state.listJc;
               _temp[i] = _temp[i].concat(_data.results);
@@ -230,13 +229,12 @@ export default class OrderListScreen extends Component {
               let _tips = this.state.tipsJc;
               if(_data.pageIndex < _data.totalPage) {
                 _canload[i] = true;
-                _tips[i] = '数据加载中...'; 
+                _tips[i] = '数据加载中...';
               } else {
                 _canload[i] = false;
                 _tips[i] = '没有更多数据！';
               }
-              this.setState({canloadJc: _canload});
-              this.setState({tipsJc: _tips});
+              this.setState({canloadJc: _canload, tipsJc: _tips});
             }
           }
         });
@@ -259,7 +257,6 @@ export default class OrderListScreen extends Component {
                 });
             });
         }
-
 
         _list.forEach((v, k) => {
             switch(v.status) {
@@ -320,8 +317,7 @@ export default class OrderListScreen extends Component {
             _canload[i] = false;
             _tips[i] = '没有更多数据！';
           }
-          this.setState({canloadZj: _canload});
-          this.setState({tipsZj: _tips});
+          this.setState({canloadZj: _canload, tipsZj: _tips});
         } else {
           let _temp = this.state.listJc;
           _temp[i] = _temp[i].concat(_list);
@@ -337,8 +333,7 @@ export default class OrderListScreen extends Component {
             _canload[i] = false;
             _tips[i] = '没有更多数据！';
           }
-          this.setState({canloadJc: _canload});
-          this.setState({tipsJc: _tips});
+          this.setState({canloadJc: _canload, tipsJc: _tips});
         }
     });
     }
@@ -424,8 +419,8 @@ export default class OrderListScreen extends Component {
         );
     }
     _selectType = (t) => {
-      this.setState({activeIndex: 0});
-      this.setState({type: t});
+      this.setState({activeIndex: 0, type: t});
+      this.props.navigation.setParams({type: t});
     }
     _renderTab_zj = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
     return <TouchableOpacity activeOpacity={.8}

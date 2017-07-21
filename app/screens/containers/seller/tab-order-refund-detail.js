@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import styles from '../../../css/styles';
-import OrderItem from '../../components/seller/tab-order-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import Config from '../../../config/config';
