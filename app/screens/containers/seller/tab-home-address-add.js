@@ -80,7 +80,7 @@ export default class SellerAddrAdd extends Component {
     }
     componentWillUnmount() {
       this.backTimer && clearTimeout(this.backTimer);
-      this.listener_select.remove();
+      this.listener_select && this.listener_select.remove();
     }
     render() {
         return (
@@ -117,7 +117,7 @@ export default class SellerAddrAdd extends Component {
                 <Text style={styles.saddr.footerBtn}>保存</Text>
               </TouchableOpacity>
             </View>
-            <ModalAddress key={0}></ModalAddress>
+            <ModalAddress keys={0}></ModalAddress>
             <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         );

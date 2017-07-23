@@ -23,7 +23,7 @@ export default class ModalAddress extends Component{
           index: [-1, -1, -1, -1, -1],
           tindex: 0,
           level: this.props.level || 5,
-          key: this.props.key || 0,
+          keys: this.props.keys || 0,
           backup_index: [-1, -1, -1, -1, -1],
           backup_tindex: 0,
           backup_result: [],
@@ -40,7 +40,7 @@ export default class ModalAddress extends Component{
     componentDidMount(){
       /**绑定显示事件侦听**/
       this.listener_show = DeviceEventEmitter.addListener('addressShow', (initData) => {
-        if(initData.key != this.state.key) return;
+        if(initData.keys != this.state.keys) return;
         /**如果是第一次打开，并且有数据，初始化数据**/
         if(this.state.init) {
           this.setState({visible: true});
@@ -312,7 +312,7 @@ export default class ModalAddress extends Component{
     render(){
         return(
             <Modal
-                animationType='slide'
+                animationType='fade'
                 onRequestClose={() => this._close()}
                 visible={this.state.visible}
                 transparent={true}
@@ -358,7 +358,7 @@ export default class ModalAddress extends Component{
         });
         if(type == this.state.level - 1) {
             DeviceEventEmitter.emit('addressSelect', {
-              key: this.state.key,
+              keys: this.state.keys,
               province: (this.state.result[0] && this.state.result[0].provice_name) || '',
               province_id: (this.state.result[0] && this.state.result[0].region_id) || '',
               city: (this.state.result[1] && this.state.result[1].city_name) || '',

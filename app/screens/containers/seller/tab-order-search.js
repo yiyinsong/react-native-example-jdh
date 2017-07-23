@@ -6,7 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  InteractionManager
+  InteractionManager,
+  DeviceEventEmitter
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -33,7 +34,16 @@ export default class OrderSearchScreen extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       ScreenInit.checkLogin(this);
+      this.listener_deliver_success = DeviceEventEmitter.addListener('deliverSuccess', (result) => {
+        if(this.state.type == 0) {
+          //如果是全部订单，则更改订单状态
+          this._search(this.state.keyword);
+        }
+      });
     });
+  }
+  componentWillUnmount() {
+    this.listener_deliver_success && this.listener_deliver_success.remove();
   }
   render() {
     let _type = this.state.type;

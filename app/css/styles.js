@@ -681,6 +681,43 @@ export default {
     }
   },
   sorder: {
+    tab: {
+      backgroundColor: '#fff',
+      height: 50,
+      borderBottomWidth: 1,
+      borderBottomColor: '#f1f1f1'
+    },
+    tabItem: {
+      position: 'relative',
+      justifyContent: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: '#fff'
+    },
+    tabActive: {
+      borderBottomColor: '#388bff'
+    },
+    tabActiveText: {
+      color: '#388bff'
+    },
+    tabText: {
+      textAlign: 'center',
+      fontSize: 12,
+      color: '#333'
+    },
+    tabBadge: {
+      position: 'absolute',
+      backgroundColor: '#eb0000',
+      borderRadius: 5,
+      top: -2,
+      paddingLeft: 4,
+      paddingRight: 4,
+      height: 10,
+      justifyContent: 'center'
+    },
+    tabBadgeText: {
+      fontSize: 9,
+      color: '#fff',
+    },
     tabTitleText: {
       fontSize: 12
     },
@@ -848,6 +885,16 @@ export default {
   btn: {
     container: {
       marginLeft: 10
+    },
+    primarySolid: {
+      backgroundColor: '#0eaaff',
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    text: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 14
     },
     primary: {
       borderWidth: 1,
@@ -1136,6 +1183,95 @@ export default {
       paddingBottom: 0,
       height: 24,
       fontSize: 12
+    }
+  },
+  deliver: {
+    container: {
+      paddingLeft: 20,
+      paddingRight: 20
+    },
+    title: {
+      fontSize: 16,
+      textAlign: 'center',
+      color: "#000",
+      marginTop: 20
+    },
+    typeText: {
+      color: '#333'
+    },
+    label: {
+      width: 70,
+      color: '#333',
+      fontSize: 14
+    },
+    item: {
+      marginTop: 10,
+      marginBottom: 5
+    },
+    radioGroup: {
+      height: 30,
+      padding: 0,
+      margin: 0
+    },
+    itemBlock: {
+      borderWidth: 1,
+      borderColor: '#f5f5f5',
+      borderRadius: 2,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
+      margin: 0,
+      position: 'relative',
+      height: 36
+    },
+    multi: {
+      height: 80
+    },
+    radio: {
+      paddingLeft: 0
+    },
+    input: {
+      color: '#333',
+      height: 36,
+      padding: 0,
+      margin: 0
+    },
+    textarea: {
+      color: '#333',
+      height: 80,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingTop: 5,
+      paddingBottom: 5,
+      margin: 0,
+      textAlignVertical: 'top'
+    },
+    selectIcon: {
+      width: 16,
+      height: 16
+    },
+    select: {
+      opacity: 0,
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 2
+    },
+    selectText: {
+      fontSize: 14,
+      color: "#888"
+    },
+    activeText: {
+      color: '#333'
+    },
+    tips: {
+      color: '#333',
+      fontSize: 12,
+      marginTop: 10,
+      marginBottom: 10
     }
   }
 }

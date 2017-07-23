@@ -5,7 +5,8 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  InteractionManager
+  InteractionManager,
+  DeviceEventEmitter
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -35,7 +36,14 @@ export default class OrderDetailScreen extends Component{
     InteractionManager.runAfterInteractions(() => {
       ScreenInit.checkLogin(this);
       this._init();
-    })
+    });
+    //添加发货成功侦听事件
+    this.listener_deliver_success = DeviceEventEmitter.addListener('deliverSuccess', (result) => {
+      this._init();
+    });
+  }
+  componentWillUnmount() {
+    this.listener_deliver_success && this.listener_deliver_success.remove();
   }
   render() {
     let _data = this.state.data;

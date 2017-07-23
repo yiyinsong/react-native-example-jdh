@@ -5,13 +5,13 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
+    ScrollView,
     FlatList,
     TouchableOpacity,
     Image,
     InteractionManager,
+    DeviceEventEmitter
 } from 'react-native';
-
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
 import styles from '../../../css/styles';
 
@@ -30,6 +30,7 @@ export default class OrderListScreen extends Component {
         type: 0,
         shopId: '',
         orderNumZj: {
+          '-10': 0,
           '-1': 0,
           '10': 0,
           '20': 0,
@@ -38,6 +39,7 @@ export default class OrderListScreen extends Component {
           '40': 0
         },
         orderNumJc: {
+          '-10': 0,
           '-1': 0,
           '0': 0,
           '10': 0,
@@ -46,21 +48,18 @@ export default class OrderListScreen extends Component {
           '31': 0,
           '40': 0
         },
-        pageZj: [0, 0, 0, 0, 0, 0, 0, 0],
-        pageJc: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        listZj: [[], [], [], [], [], [], [], []],
-        listJc: [[], [], [], [], [], [], [], [], []],
-        tabTitleZj: ['全部订单', '待买家付款', '待发货', '已发货', '已收货', '已完成', '已取消', '退货退款'],
-        tabTitleJc: ['全部订单', '待买家付款', '待采购', '待发货', '已发货', '已收货', '已完成', '已取消', '退货退款'],
-        canloadZj: [false, false, false, false, false, false, false, false],
-        canloadJc: [false, false, false, false, false, false, false, false, false],
-        tipsZj: ['', '', '', '', '', '', '', ''],
-        tipsJc: ['', '', '', '', '', '', '', '', ''],
+        pageZj: 0,
+        pageJc: 0,
+        listZj: [],
+        listJc: [],
+        canloadZj: false,
+        canloadJc: false,
+        tipsZj: '',
+        tipsJc: '',
 
         loadingVisible: true,
         activeIndex: 0
       };
-      this.sliderTimer = null;
     }
     componentWillMount() {
       InteractionManager.runAfterInteractions(() => {
@@ -70,18 +69,22 @@ export default class OrderListScreen extends Component {
         let _initType = _state.params && _state.params.type || 0;
         let _initIndex = _state.params && _state.params.index || 0;
 
-        if(_initType == 0) {
-          this._getData(_initIndex);
-          this._getData(0, 1);
-        } else {
-          this._getData(_initIndex);
-          this._getData(0, 0);
-        }
+        this._getData(_initIndex);
         this.props.navigation.setParams({type: _initType});
       })
+      this.listener_deliver_success = DeviceEventEmitter.addListener('deliverSuccess', (result) => {
+        if(this.state.type == 0) {
+          //如果是全部订单，则更改订单状态
+          this._reset();
+          this._init();
+          requestAnimationFrame(()=>{
+            this._getData(this.state.activeIndex);
+          });
+        }
+      });
     }
     componentWillUnmount() {
-      this.sliderTimer && clearTimeout(this.sliderTimer);
+      this.listener_deliver_success && this.listener_deliver_success.remove();
     }
     _init = () => {
         //获取店铺信息
@@ -142,16 +145,30 @@ export default class OrderListScreen extends Component {
           console.error(error);
         });
     }
-    _getData = (i, itype) => {
+    _reset = () => {
+      this.setState({
+        pageZj: 0,
+        pageJc: 0,
+        listZj: [],
+        listJc: [],
+        canloadZj: false,
+        canloadJc: false,
+        tipsZj: '',
+        tipsJc: '',
+
+        loadingVisible: true,
+      });
+    }
+    _getData = (i) => {
       let _status = '';
-      let _type = itype || this.state.type;
+      let _type = this.state.type;
       if(_type == 0) {
         let _tp = this.state.pageZj;
-        _tp[i] = ++_tp[i];
+        _tp = ++_tp;
         this.setState({pageZj: _tp});
       } else {
         let _tp = this.state.pageJc;
-        _tp[i] = ++_tp[i];
+        _tp = ++_tp;
         this.setState({pageJc: _tp});
       }
       switch(i) {
@@ -195,44 +212,51 @@ export default class OrderListScreen extends Component {
       }
       /**普通订单**/
       else {
-        fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&status=${_status}&pageIndex=${_type == 1 ? this.state.pageJc[i] : this.state.pageZj[i]}&pageSize=10&token=${token}`, {
+        let _tempIndex = i;
+        fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&status=${_status}&pageIndex=${_type == 1 ? this.state.pageJc : this.state.pageZj}&pageSize=10&token=${token}`, {
            method: 'POST'
         })
         .then((response) => response.json())
         .then((data) => {
+          if(_tempIndex != this.state.activeIndex || _type != this.state.type) return;
           this.setState({loadingVisible: false});
           if(data.code == 1) {
             let _data = data.obj;
             if(_type == 0) {
-              let _temp = this.state.listZj;
-              _temp[i] = _temp[i].concat(_data.results);
+              let _temp;
+              if(this.state.pageZj == 1) {
+                _temp = [];
+              } else {
+                _temp = this.state.listZj;
+              }
+              _temp = _temp.concat(_data.results);
               this.setState({
                 listZj: _temp
               });
-              let _canload = this.state.canloadZj;
-              let _tips = this.state.tipsZj;
+              let _canload = '';
+              let _tips = '';
               if(_data.pageIndex < _data.totalPage) {
-                _canload[i] = true;
-                _tips[i] = '数据加载中...';
+                _canload = true;
+                _tips = '数据加载中...';
               } else {
-                _canload[i] = false;
-                _tips[i] = '没有更多数据！';
+                _canload = false;
+                _tips = '没有更多数据！';
               }
               this.setState({canloadZj: _canload, tipsZj: _tips});
             } else {
               let _temp = this.state.listJc;
-              _temp[i] = _temp[i].concat(_data.results);
+              _temp = _temp.concat(_data.results);
               this.setState({
                 listJc: _temp
               });
-              let _canload = this.state.canloadJc;
-              let _tips = this.state.tipsJc;
+              let _canload = '';
+              let _tips = '';
               if(_data.pageIndex < _data.totalPage) {
-                _canload[i] = true;
-                _tips[i] = '数据加载中...';
+                _canload = true;
+                _tips = '数据加载中...';
               } else {
-                _canload[i] = false;
-                _tips[i] = '没有更多数据！';
+                _canload = false;
+                _tips = '没有更多数据！';
               }
               this.setState({canloadJc: _canload, tipsJc: _tips});
             }
@@ -241,11 +265,14 @@ export default class OrderListScreen extends Component {
       }
     }
     _getRefundData = (_type, i) => {
-      fetch(Config.JAVAAPI + `shop/mobile/refund/blist?orderType[0]=${_type == 1 ? 30 : 40}&status=&page=${_type == 1 ? this.state.pageJc[i] : this.state.pageZj[i]}&token=${token}`, {
+      let _tempIndex = i;
+      fetch(Config.JAVAAPI + `shop/mobile/refund/blist?orderType[0]=${_type == 1 ? 30 : 40}&status=&page=${_type == 1 ? this.state.pageJc : this.state.pageZj}&token=${token}`, {
          method: 'POST'
       })
       .then((response) => response.json())
       .then((data) => {
+        if(_tempIndex != this.state.activeIndex || _type != this.state.type) return;
+
         this.setState({loadingVisible: false});
         let _list = data.page.list;
         if(data.orders) {
@@ -302,36 +329,41 @@ export default class OrderListScreen extends Component {
             }
         });
 
+        let _temp = [];
         if(_type == 0) {
-          let _temp = this.state.listZj;
-          _temp[i] = _temp[i].concat(_list);
+          if(this.state.pageZj != 1) {
+            _temp = this.state.listZj;
+          }
+          _temp = _temp.concat(_list);
           this.setState({
             listZj: _temp
           });
           let _canload = this.state.canloadZj;
           let _tips = this.state.tipsZj;
           if(data.page.pageNum < data.page.pages) {
-            _canload[i] = true;
-            _tips[i] = '数据加载中...';
+            _canload = true;
+            _tips = '数据加载中...';
           } else {
-            _canload[i] = false;
-            _tips[i] = '没有更多数据！';
+            _canload = false;
+            _tips = '没有更多数据！';
           }
           this.setState({canloadZj: _canload, tipsZj: _tips});
         } else {
-          let _temp = this.state.listJc;
-          _temp[i] = _temp[i].concat(_list);
+          if(this.state.pageJc != 1) {
+            _temp = this.state.listZj;
+          }
+          _temp = _temp.concat(_list);
           this.setState({
             listJc: _temp
           });
           let _canload = this.state.canloadJc;
           let _tips = this.state.tipsJc;
           if(data.page.pageNum < data.page.pages) {
-            _canload[i] = true;
-            _tips[i] = '数据加载中...';
+            _canload = true;
+            _tips = '数据加载中...';
           } else {
-            _canload[i] = false;
-            _tips[i] = '没有更多数据！';
+            _canload = false;
+            _tips = '没有更多数据！';
           }
           this.setState({canloadJc: _canload, tipsJc: _tips});
         }
@@ -340,11 +372,11 @@ export default class OrderListScreen extends Component {
 
     _loadingMore = (p) => {
       if(this.state.type == 0) {
-        if(this.state.canloadZj[p]) {
+        if(this.state.canloadZj) {
           this._getData(p);
         }
       } else {
-        if(this.state.canloadJc[p]) {
+        if(this.state.canloadJc) {
           this._getData(p);
         }
       }
@@ -360,209 +392,230 @@ export default class OrderListScreen extends Component {
                 </View>
               </View>
               {this.state.type == 0 ?
-                  <ScrollableTabView
-                  renderTabBar={() => <ScrollableTabBar renderTab={this._renderTab_zj}/>}
-                  tabBarBackgroundColor='#fff'
-                  tabBarTextStyle={styles.sorder.tabTitleText}
-                  tabBarUnderlineStyle={styles.sorder.tabTitleUnderLine}
-                  tabBarActiveTextColor='#388bff'
-                  tabBarInactiveTextColor="#333"
-                  onChangeTab={(a)=>{this._tabHandle(a)}}
-                  initialPage={0}
-                  >
-                    {this.state.tabTitleZj.map((v, k) => {
-                      return (
-                        <View tabLabel={v}>
-                          <FlatList
-                          data={this.state.listZj[k]}
-                          renderItem={({item}) => this.state.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
-                          onRefresh={false}
-                          refreshing={false}
-                          onEndReachedThreshold={2}
-                          onEndReached={() => this._loadingMore(k)}
-                          ListFooterComponent={() => this._flatListFooter(k)}
-                          style={styles.common.init}/>
-                        </View>
-                      )
-                    })}
-                  </ScrollableTabView>
-                :
-                <ScrollableTabView
-                renderTabBar={() => <ScrollableTabBar renderTab={this._renderTab_jc}/>}
-                tabBarBackgroundColor='#fff'
-                tabBarTextStyle={styles.sorder.tabTitleText}
-                tabBarUnderlineStyle={styles.sorder.tabTitleUnderLine}
-                tabBarActiveTextColor='#388bff'
-                tabBarInactiveTextColor="#333"
-                onChangeTab={(a)=>{this._tabHandle(a)}}
-                initialPage={0}
-                >
-                  {this.state.tabTitleJc.map((v, k) => {
-                    return (
-                      <View tabLabel={v}>
-                        <FlatList
-                        data={this.state.listJc[k]}
-                        renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
-                        onRefresh={false}
-                        refreshing={false}
-                        onEndReachedThreshold={2}
-                        onEndReached={() => this._loadingMore(k)}
-                        ListFooterComponent={() => this._flatListFooter(k)}
-                        style={styles.common.init}/>
-                      </View>
-                    )
-                  })}
-                </ScrollableTabView>
-              }
+              <View style={styles.common.flexv}>
+                <View style={styles.sorder.tab}>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewZj">
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(0)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 0 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 0 ? styles.sorder.tabActiveText : '']}>全部订单</Text>
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(1)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 1 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 1 ? styles.sorder.tabActiveText : '']}>待买家付款</Text>
+                            {this.state.orderNumZj['10'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 28}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['10']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(2)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 2 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 2 ? styles.sorder.tabActiveText : '']}>待发货</Text>
+                            {this.state.orderNumZj['20'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['20']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(3)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 3 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 3 ? styles.sorder.tabActiveText : '']}>已发货</Text>
+                            {this.state.orderNumZj['30'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['30']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(4)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 4 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 4 ? styles.sorder.tabActiveText : '']}>已收货</Text>
+                            {this.state.orderNumZj['31'] > 0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['31']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(5)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 5 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 5 ? styles.sorder.tabActiveText : '']}>已完成</Text>
+                            {this.state.orderNumZj['40']>0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['40']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(6)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 6 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 6 ? styles.sorder.tabActiveText : '']}>已取消</Text>
+                            {this.state.orderNumZj['-10']>0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['-10']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(7)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 7 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 7 ? styles.sorder.tabActiveText : '']}>退货退款</Text>
+                            {this.state.orderNumZj['-1'] > 0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 20}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['-1']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                  </ScrollView>
+                </View>
+                <FlatList
+                  data={this.state.listZj}
+                  renderItem={({item}) => this.state.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+                  onRefresh={false}
+                  refreshing={false}
+                  onEndReachedThreshold={2}
+                  onEndReached={() => this._loadingMore(this.state.activeIndex)}
+                  ListFooterComponent={this._flatListFooter}
+                  style={styles.common.init}/>
+              </View>
+              :
+              <View style={styles.common.flexv}>
+                <View style={styles.sorder.tab}>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewJc">
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(0)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 0 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 0 ? styles.sorder.tabActiveText : '']}>全部订单</Text>
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(1)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 1 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 1 ? styles.sorder.tabActiveText : '']}>待买家付款</Text>
+                            {this.state.orderNumJc['0'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 28}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['0']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(2)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 2 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 2 ? styles.sorder.tabActiveText : '']}>待采购</Text>
+                            {this.state.orderNumJc['10'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['10']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(3)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 3 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 3 ? styles.sorder.tabActiveText : '']}>待发货</Text>
+                            {this.state.orderNumJc['20'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['20']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(4)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 4 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 4 ? styles.sorder.tabActiveText : '']}>已发货</Text>
+                            {this.state.orderNumJc['30'] > 0 ?
+                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['30']}</Text>
+                              </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(5)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 5 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 5 ? styles.sorder.tabActiveText : '']}>已收货</Text>
+                            {this.state.orderNumJc['31'] > 0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['31']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(6)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 6 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 6 ? styles.sorder.tabActiveText : '']}>已完成</Text>
+                            {this.state.orderNumJc['40']>0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['40']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(7)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 7 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 7 ? styles.sorder.tabActiveText : '']}>已取消</Text>
+                            {this.state.orderNumJc['-10']>0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['-10']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(8)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 8 ? styles.sorder.tabActive : '']}>
+                          <View>
+                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 8 ? styles.sorder.tabActiveText : '']}>退货退款</Text>
+                            {this.state.orderNumJc['-1'] > 0 ?
+                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 20}]}>
+                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['-1']}</Text>
+                            </View>
+                            : null}
+                          </View>
+                        </TouchableOpacity>
+                  </ScrollView>
+                </View>
+                <FlatList
+                  data={this.state.listJc}
+                  renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+                  onRefresh={false}
+                  refreshing={false}
+                  onEndReachedThreshold={2}
+                  onEndReached={() => this._loadingMore(this.state.activeIndex)}
+                  ListFooterComponent={this._flatListFooter}
+                  style={styles.common.init}/>
+              </View>}
               <Loading visible={this.state.loadingVisible}></Loading>
             </View>
         );
     }
     _selectType = (t) => {
+      this._reset();
       this.setState({activeIndex: 0, type: t});
       this.props.navigation.setParams({type: t});
+      requestAnimationFrame(()=>{
+        if(t == 0) {
+          this.refs.scrollViewZj.scrollTo(0, 0);
+        } else {
+          this.refs.scrollViewJc.scrollTo(0, 0);
+        }
+        this._getData(0);
+      });
     }
-    _renderTab_zj = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
-    return <TouchableOpacity activeOpacity={.8}
-      key={`${name}_${page}`}
-      onPress={() => onPressHandler(page)}
-      style={{
-        flexDirection: 'row',
-        width: Utils.width/4,
-        justifyContent: 'center',
-        alignItems: 'center'}}
-      onLayout={onLayoutHandler}
-    >
-      <Text style={{fontSize: 12, color: page == this.state.activeIndex ? '#388bff' : '#333'}}>{name}</Text>
-      {this._renderBadge_zj(page) > 0 ?
-      <View style={{position: 'relative'}}>
-        <View style={{position: 'absolute',backgroundColor: '#eb0000',borderRadius: 5, top: -10,paddingLeft: 4,paddingRight: 4,height: 10}}>
-          <Text style={{fontSize: 9, color: '#fff',lineHeight: 10}}>
-          {this._renderBadge_zj(page)}
-          </Text>
-        </View>
-      </View> : null
-       }
-    </TouchableOpacity>;
-  }
-  _renderTab_jc = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
-  return <TouchableOpacity activeOpacity={.8}
-    key={`${name}_${page}`}
-    onPress={() => onPressHandler(page)}
-    style={{
-      flexDirection: 'row',
-      width: Utils.width/4,
-      justifyContent: 'center',
-      alignItems: 'center'}}
-    onLayout={onLayoutHandler}
-  >
-    <Text style={{fontSize: 12, color: page == this.state.activeIndex ? '#388bff' : '#333'}}>{name}</Text>
-    {this._renderBadge_jc(page) > 0 ?
-    <View style={{position: 'relative'}}>
-      <View style={{position: 'absolute',backgroundColor: '#eb0000',borderRadius: 5, top: -10,paddingLeft: 4,paddingRight: 4,height: 10}}>
-        <Text style={{fontSize: 9, color: '#fff',lineHeight: 10}}>
-        {this._renderBadge_jc(page)}
-        </Text>
-      </View>
-    </View> : null
-     }
-  </TouchableOpacity>;
-}
-  _renderBadge_zj = (p) => {
-    let _state = this.state;
-    switch (p) {
-      case 0:
-        return 0;
-        break;
-      case 1:
-        return _state.orderNumZj['10'];
-        break;
-      case 2:
-        return _state.orderNumZj['20'];
-        break;
-      case 3:
-        return _state.orderNumZj['30'];
-        break;
-      case 4:
-        return _state.orderNumZj['31'];
-        break;
-      case 5:
-        return _state.orderNumZj['40'];
-        break;
-      case 6:
-        return _state.orderNumZj['-10'];
-        break;
-      case 7:
-        return _state.orderNumZj['-1'];
-        break;
-      default:
-        return 0;
-        break;
-    }
-  }
-  _renderBadge_jc = (p) => {
-    let _state = this.state;
-    switch (p) {
-      case 0:
-        return 0;
-        break;
-      case 1:
-        return _state.orderNumJc['0'];
-        break;
-      case 2:
-        return _state.orderNumJc['10'];
-        break;
-      case 3:
-        return _state.orderNumJc['20'];
-        break;
-      case 4:
-        return _state.orderNumJc['30'];
-        break;
-      case 5:
-        return _state.orderNumJc['31'];
-        break;
-      case 6:
-        return _state.orderNumJc['40'];
-        break;
-      case 7:
-        return _state.orderNumJc['-10'];
-        break;
-      case 8:
-        return _state.orderNumJc['-1'];
-        break;
-      default:
-        return 0;
-        break;
-    }
-  }
-  _flatListFooter = (p) => {
-    if(this.state.type == 0) {
-      return (
-        <Text style={styles.common.loadingTips}>{this.state.tipsZj[p] != '' ? this.state.tipsZj[p] : null}</Text>
-      )
-    } else {
-      return (
-        <Text style={styles.common.loadingTips}>{this.state.tipsJc[p] != '' ? this.state.tipsJc[p] : null}</Text>
-      )
-    }
-  }
-  _tabHandle = (obj) => {
-      let _page = obj.i;
-      this.setState({activeIndex: obj.i});
+    _flatListFooter = () => {
       if(this.state.type == 0) {
-        if(this.state.listZj[_page].length == 0 && this.state.tipsZj[_page] != '没有更多数据！') {
-          this.sliderTimer = setTimeout(() => {
-            this.setState({loadingVisible: true});
-            this._getData(_page);
-          }, 250);
-        }
+        return (
+          <Text style={styles.common.loadingTips}>{this.state.tipsZj != '' ? this.state.tipsZj : null}</Text>
+        )
       } else {
-        if(this.state.listJc[_page].length == 0 && this.state.tipsJc[_page] != '没有更多数据！') {
-          this.sliderTimer = setTimeout(() => {
-            this.setState({loadingVisible: true});
-            this._getData(_page);
-          }, 250);
-        }
+        return (
+          <Text style={styles.common.loadingTips}>{this.state.tipsJc != '' ? this.state.tipsJc : null}</Text>
+        )
       }
-  }
+    }
+    _tabHandle = (k) => {
+        this._reset();
+        this.setState({activeIndex: k});
+        requestAnimationFrame(()=>{
+          this._getData(k);
+        });
+    }
 }
