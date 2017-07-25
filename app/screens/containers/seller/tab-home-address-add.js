@@ -125,7 +125,7 @@ export default class SellerAddrAdd extends Component {
     _openAddressPanel = () => {
       if(this.state.id != '') {
         let _addr = this.state.addrObj;
-        DeviceEventEmitter.emit('addressShow', {key: 0, init: {
+        DeviceEventEmitter.emit('addressShow', {keys: 0, init: {
           province_id: _addr.province_id,
           city_id: _addr.city_id,
           county_id: _addr.county_id,
@@ -133,7 +133,7 @@ export default class SellerAddrAdd extends Component {
           village_id: _addr.village_id
         }});
       } else {
-        DeviceEventEmitter.emit('addressShow', {key: 0});
+        DeviceEventEmitter.emit('addressShow', {keys: 0});
       }
 
     }

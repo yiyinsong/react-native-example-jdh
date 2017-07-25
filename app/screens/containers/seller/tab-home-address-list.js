@@ -28,11 +28,6 @@ export default class SellerAddrList extends Component {
           addr_remain: 0,
           list: []
         },
-        modalShow: false,
-        modalParams: {
-          id: '',
-          index: -1
-        },
         loadingVisible: false
       };
     }
@@ -109,13 +104,14 @@ export default class SellerAddrList extends Component {
                 <Text style={styles.saddr.footerBtn}>+新增地址</Text>
               </TouchableOpacity>
             </View>
-            <ModalConfirm visible={this.state.modalShow}
+            <ModalConfirm
             data={{
               text: '确认删除？',
               confirm: (arg) => {
                 this._deleteConfirm(arg);
               }
-            }} params={this.state.modalParams}></ModalConfirm>
+            }}
+            keys={0}></ModalConfirm>
             <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         );
@@ -156,18 +152,15 @@ export default class SellerAddrList extends Component {
       });
     }
     _deleteItem = (_id, index) => {
-      this.setState({
-        modalParams: {
+      DeviceEventEmitter.emit('confirmShow', {
+        keys: 0,
+        params: {
           id: _id,
           index
-        },
-        modalShow: true
+        }
       });
     }
     _deleteConfirm = (arg) => {
-      this.setState({
-        modalShow: false
-      });
       fetch(Config.PHPAPI + 'api/mapp/shop/addr-del', {
         method: 'POST',
         headers: {

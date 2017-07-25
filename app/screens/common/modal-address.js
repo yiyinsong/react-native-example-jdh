@@ -40,6 +40,7 @@ export default class ModalAddress extends Component{
     componentDidMount(){
       /**绑定显示事件侦听**/
       this.listener_show = DeviceEventEmitter.addListener('addressShow', (initData) => {
+        alert(initData.keys + ':' + this.state.keys);
         if(initData.keys != this.state.keys) return;
         /**如果是第一次打开，并且有数据，初始化数据**/
         if(this.state.init) {

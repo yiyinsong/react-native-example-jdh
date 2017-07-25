@@ -5,7 +5,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  InteractionManager
+  InteractionManager,
+  Modal
 } from 'react-native';
 
 
@@ -44,7 +45,9 @@ export default class SellerHomeScreen extends Component {
         orderDataJC: {},
         refundNumZJ: 0,
         refundNumJC: 0,
-        loadingVisible: false
+        loadingVisible: false,
+        qrcodeVisible:  false,
+        qrcodeSrc: Config.PHPAPI + `api/mapp/shop/qrcode?token=${token}`
       };
     }
     componentDidMount() {
@@ -196,14 +199,14 @@ export default class SellerHomeScreen extends Component {
                     <View style={ styles.shome.userData }>
                       <Text style={ styles.shome.userName } numberOfLines={1}>{ this.state.userInfo.shop_name }</Text>
                       <View style={ styles.shome.idTab }>
-                        <Text style={ [styles.shome.userName, styles.shome.idTabText] }>切换至买家</Text>
+                        <Text style={ [styles.shome.userName, styles.shome.idTabText] }>我要采购</Text>
                         <Image source={require('../../../images/icon-user-tab.png')} style={ styles.shome.idTabImg } />
                       </View>
                     </View>
                   </View>
                   <View style={ styles.shome.userToOther }>
                     <Image source={require('../../../images/icon-share.png')} style={ styles.shome.userShare } />
-                    <Image source={require('../../../images/icon-qrcode.png')} style={ styles.shome.userQrcode } />
+                    <TouchableOpacity activeOpacity={.8} onPress={() => {this.setState({qrcodeVisible: true})}}><Image source={require('../../../images/icon-qrcode.png')} style={ styles.shome.userQrcode }/></TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -398,6 +401,11 @@ export default class SellerHomeScreen extends Component {
               </View>
             </ScrollView>
             <Loading visible={this.state.loadingVisible}></Loading>
+            <Modal animationType={"fade"} visible={this.state.qrcodeVisible} transparent={true} onRequestClose={()=>this.setState({qrcodeVisible: false})}>
+              <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({qrcodeVisible: false})}>
+                <Image source={{uri: this.state.qrcodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
+              </TouchableOpacity>
+          </Modal>
           </View>
         );
     }

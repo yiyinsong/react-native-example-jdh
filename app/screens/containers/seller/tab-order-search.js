@@ -7,15 +7,18 @@ import {
   TouchableOpacity,
   TextInput,
   InteractionManager,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Modal
 } from 'react-native';
 
 import styles from '../../../css/styles';
 import OrderItem from '../../components/seller/tab-order-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
+import ModalConfirm from '../../common/modal-confirm';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
+import Utils from '../../../js/utils';
 
 export default class OrderSearchScreen extends Component {
   constructor(props) {
@@ -28,17 +31,17 @@ export default class OrderSearchScreen extends Component {
       list: [],
       page: 0,
       loadingVisible: false,
-      canload: false
+      canload: false,
+      posCodeVisible: false,
+      posCodeSrc: ''
     };
   }
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       ScreenInit.checkLogin(this);
-      this.listener_deliver_success = DeviceEventEmitter.addListener('deliverSuccess', (result) => {
-        if(this.state.type == 0) {
+      this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
           //如果是全部订单，则更改订单状态
           this._search(this.state.keyword);
-        }
       });
     });
   }
@@ -50,11 +53,18 @@ export default class OrderSearchScreen extends Component {
     return (
       <View style={[styles.common.flexv, styles.common.initWhite]}>
         <View style={styles.sorderSearch.inputContainer}>
-          <TextInput onChangeText={ text => this._search(text)} value={this.state.keyword} underlineColorAndroid="transparent" style={styles.sorderSearch.input} autoFocus={true} placeholder="请输入订单号/商品名称"/>
+          <TextInput onChangeText={ text => this.setState({keyword: text})}
+          value={this.state.keyword}
+          underlineColorAndroid="transparent"
+          style={styles.sorderSearch.input}
+          autoFocus={true}
+          placeholder="请输入订单号/商品名称"
+          ref="searchInput"
+          onSubmitEditing={this._submit}/>
         </View>
         <FlatList
         data={this.state.list}
-        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)}></OrderItem>}
         onRefresh={false}
         refreshing={false}
         onEndReachedThreshold={2}
@@ -62,6 +72,24 @@ export default class OrderSearchScreen extends Component {
         ListFooterComponent={() => this._flatListFooter()}
         style={styles.common.init}/>
         <Loading visible={this.state.loadingVisible}></Loading>
+        <ModalConfirm
+        data={{
+          text: '是否不发货？',
+          confirm: (arg) => {
+            this._refuseDeliver(arg);
+          }
+        }}
+        keys={2}></ModalConfirm>
+        <Modal
+          visible={this.state.posCodeVisible}
+          animationType={'fade'}
+          transparent = {true}
+          onRequestClose={()=> this.setState({posCodeVisible: false})}
+      >
+      <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
+        <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
+      </TouchableOpacity>
+      </Modal>
       </View>
     );
   }
@@ -96,6 +124,8 @@ export default class OrderSearchScreen extends Component {
         }
         this.setState({tips: _tips, canload: _canload});
       }
+    }).catch((error) => {
+      console.log(error);
     });
   }
   _search = (text) => {
@@ -106,10 +136,9 @@ export default class OrderSearchScreen extends Component {
       tips: '',
       _canload: false
     });
-    this.timer && clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
+    requestAnimationFrame(() => {
       this._getData();
-    }, 800);
+    });
   }
   _loadingMore = () => {
       if(!this.state.canload) return;
@@ -119,5 +148,38 @@ export default class OrderSearchScreen extends Component {
       return (
         <Text style={styles.common.loadingTips}>{this.state.tips != '' ? this.state.tips : null}</Text>
       )
+    }
+    /**不发货**/
+    _openRefuseDeliverModal = (id) => {
+      DeviceEventEmitter.emit('confirmShow', {
+        keys: 2,
+        params: {
+          id
+        }
+      });
+    }
+    _refuseDeliver = (arg) => {
+      fetch(Config.JAVAAPI+`shop/wap/client/order/noDeliver?id=${arg.id}&token=${token}`,{
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then((_res)=>{
+            if (_res.code==1) {
+                UIToast( _res.message || '操作成功');
+                DeviceEventEmitter.emit('sellerOrderUpdate');
+            }else{
+                UIToast(_res.message || '操作失败');
+            }
+        })
+    }
+    _submit = () => {
+      this.refs.searchInput.blur();
+      this._search(this.state.keyword);
+    }
+    _posPay = (sn) => {
+      this.setState({
+        posCodeVisible: true,
+        posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
+      });
     }
 }

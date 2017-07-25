@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Image,
     InteractionManager,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    Modal
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -18,7 +19,8 @@ import styles from '../../../css/styles';
 import OrderItem from '../../components/seller/tab-order-item';
 import RefundItem from '../../components/seller/tab-refund-item';
 import Loading from '../../common/ui-loading';
-
+import UIToast from '../../common/ui-toast';
+import ModalConfirm from '../../common/modal-confirm';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
@@ -58,7 +60,10 @@ export default class OrderListScreen extends Component {
         tipsJc: '',
 
         loadingVisible: true,
-        activeIndex: 0
+        activeIndex: 0,
+
+        posCodeVisible: false,
+        posCodeSrc: ''
       };
     }
     componentWillMount() {
@@ -72,7 +77,7 @@ export default class OrderListScreen extends Component {
         this._getData(_initIndex);
         this.props.navigation.setParams({type: _initType});
       })
-      this.listener_deliver_success = DeviceEventEmitter.addListener('deliverSuccess', (result) => {
+      this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
         if(this.state.type == 0) {
           //如果是全部订单，则更改订单状态
           this._reset();
@@ -383,6 +388,8 @@ export default class OrderListScreen extends Component {
     }
     render() {
         let _type = this.state.type;
+        let _orderNumZj = this.state.orderNumZj;
+        let _orderNumJc = this.state.orderNumJc;
         return (
             <View style={[styles.common.flexv, styles.common.init]}>
               <View style={styles.sorder.type}>
@@ -395,86 +402,25 @@ export default class OrderListScreen extends Component {
               <View style={styles.common.flexv}>
                 <View style={styles.sorder.tab}>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewZj">
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(0)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 0 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 0 ? styles.sorder.tabActiveText : '']}>全部订单</Text>
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(1)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 1 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 1 ? styles.sorder.tabActiveText : '']}>待买家付款</Text>
-                            {this.state.orderNumZj['10'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 28}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['10']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(2)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 2 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 2 ? styles.sorder.tabActiveText : '']}>待发货</Text>
-                            {this.state.orderNumZj['20'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['20']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(3)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 3 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 3 ? styles.sorder.tabActiveText : '']}>已发货</Text>
-                            {this.state.orderNumZj['30'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['30']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(4)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 4 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 4 ? styles.sorder.tabActiveText : '']}>已收货</Text>
-                            {this.state.orderNumZj['31'] > 0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['31']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(5)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 5 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 5 ? styles.sorder.tabActiveText : '']}>已完成</Text>
-                            {this.state.orderNumZj['40']>0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['40']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(6)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 6 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 6 ? styles.sorder.tabActiveText : '']}>已取消</Text>
-                            {this.state.orderNumZj['-10']>0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['-10']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(7)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 7 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 7 ? styles.sorder.tabActiveText : '']}>退货退款</Text>
-                            {this.state.orderNumZj['-1'] > 0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 20}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumZj['-1']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
+                    { this._renderTab(0, '全部订单', false, 0)}
+                    { this._renderTab(1, '待买家付款', _orderNumZj['10'], Utils.width/4 * .5 + 28)}
+                    { this._renderTab(2, '待发货', _orderNumZj['20'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(3, '已发货', _orderNumZj['30'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(4, '已收货', _orderNumZj['31'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(5, '已完成', _orderNumZj['40'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(6, '已取消', _orderNumZj['-10'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(7, '退货退款', _orderNumZj['-1'], Utils.width/4 * .5 + 20)}
                   </ScrollView>
                 </View>
                 <FlatList
                   data={this.state.listZj}
-                  renderItem={({item}) => this.state.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+                  renderItem={({item}) => this.state.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem
+                  data={item}
+                  type={_type}
+                  props={this.props}
+                  refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
+                  ></OrderItem>
+                }
                   onRefresh={false}
                   refreshing={false}
                   onEndReachedThreshold={2}
@@ -486,96 +432,20 @@ export default class OrderListScreen extends Component {
               <View style={styles.common.flexv}>
                 <View style={styles.sorder.tab}>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewJc">
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(0)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 0 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 0 ? styles.sorder.tabActiveText : '']}>全部订单</Text>
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(1)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 1 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 1 ? styles.sorder.tabActiveText : '']}>待买家付款</Text>
-                            {this.state.orderNumJc['0'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 28}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['0']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(2)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 2 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 2 ? styles.sorder.tabActiveText : '']}>待采购</Text>
-                            {this.state.orderNumJc['10'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['10']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(3)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 3 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 3 ? styles.sorder.tabActiveText : '']}>待发货</Text>
-                            {this.state.orderNumJc['20'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['20']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(4)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 4 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 4 ? styles.sorder.tabActiveText : '']}>已发货</Text>
-                            {this.state.orderNumJc['30'] > 0 ?
-                              <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                                <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['30']}</Text>
-                              </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(5)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 5 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 5 ? styles.sorder.tabActiveText : '']}>已收货</Text>
-                            {this.state.orderNumJc['31'] > 0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['31']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(6)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 6 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 6 ? styles.sorder.tabActiveText : '']}>已完成</Text>
-                            {this.state.orderNumJc['40']>0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['40']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(7)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 7 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 7 ? styles.sorder.tabActiveText : '']}>已取消</Text>
-                            {this.state.orderNumJc['-10']>0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 15}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['-10']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(8)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == 8 ? styles.sorder.tabActive : '']}>
-                          <View>
-                            <Text style={[styles.sorder.tabText, this.state.activeIndex == 8 ? styles.sorder.tabActiveText : '']}>退货退款</Text>
-                            {this.state.orderNumJc['-1'] > 0 ?
-                            <View style={[styles.sorder.tabBadge, {left: Utils.width/4 * .5 + 20}]}>
-                              <Text style={styles.sorder.tabBadgeText}>{this.state.orderNumJc['-1']}</Text>
-                            </View>
-                            : null}
-                          </View>
-                        </TouchableOpacity>
+                    { this._renderTab(0, '全部订单', false, 0)}
+                    { this._renderTab(1, '待买家付款', _orderNumJc['0'], Utils.width/4 * .5 + 28)}
+                    { this._renderTab(2, '待采购', _orderNumJc['10'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(3, '待发货', _orderNumJc['20'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(4, '已发货', _orderNumJc['30'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(5, '已收货', _orderNumJc['31'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(6, '已完成', _orderNumJc['40'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(7, '已取消', _orderNumJc['-10'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(8, '退货退款', _orderNumJc['-1'], Utils.width/4 * .5 + 20)}
                   </ScrollView>
                 </View>
                 <FlatList
                   data={this.state.listJc}
-                  renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props}></OrderItem>}
+                  renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props} posPay={(sn) => this._posPay(sn)}></OrderItem>}
                   onRefresh={false}
                   refreshing={false}
                   onEndReachedThreshold={2}
@@ -584,6 +454,24 @@ export default class OrderListScreen extends Component {
                   style={styles.common.init}/>
               </View>}
               <Loading visible={this.state.loadingVisible}></Loading>
+              <ModalConfirm
+              data={{
+                text: '是否不发货？',
+                confirm: (arg) => {
+                  this._refuseDeliver(arg);
+                }
+              }}
+              keys={1}></ModalConfirm>
+              <Modal
+                visible={this.state.posCodeVisible}
+                animationType={'fade'}
+                transparent = {true}
+                onRequestClose={()=> this.setState({posCodeVisible: false})}
+            >
+            <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
+              <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
+            </TouchableOpacity>
+            </Modal>
             </View>
         );
     }
@@ -617,5 +505,53 @@ export default class OrderListScreen extends Component {
         requestAnimationFrame(()=>{
           this._getData(k);
         });
+    }
+    /**渲染tab**/
+    _renderTab = (i, txt, badge, bageLeft) => {
+      return (
+        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(i)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == i ? styles.sorder.tabActive : '']}>
+          <View>
+            <Text style={[styles.sorder.tabText, this.state.activeIndex == i ? styles.sorder.tabActiveText : '']}>{txt}</Text>
+            {badge && badge > 0 ?
+              <View style={[styles.sorder.tabBadge, {left: bageLeft}]}>
+                <Text style={styles.sorder.tabBadgeText}>{badge}</Text>
+              </View>
+            : null}
+          </View>
+        </TouchableOpacity>
+      )
+    }
+    /**不发货**/
+    _openRefuseDeliverModal = (id) => {
+      DeviceEventEmitter.emit('confirmShow', {
+        keys: 1,
+        params: {
+          id
+        }
+      });
+    }
+    _refuseDeliver = (arg) => {
+      fetch(Config.JAVAAPI+`shop/wap/client/order/noDeliver?id=${arg.id}&token=${token}`,{
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then((_res)=>{
+            if (_res.code==1) {
+                UIToast( _res.message || '操作成功');
+                this._reset();
+                this._init();
+                requestAnimationFrame(()=>{
+                  this._getData(this.state.activeIndex);
+                });
+            }else{
+                UIToast(_res.message || '操作失败');
+            }
+        })
+    }
+    _posPay = (sn) => {
+      this.setState({
+        posCodeVisible: true,
+        posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
+      });
     }
 }

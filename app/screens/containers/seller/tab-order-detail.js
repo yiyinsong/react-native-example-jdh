@@ -6,15 +6,18 @@ import {
   Image,
   TouchableOpacity,
   InteractionManager,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Modal
 } from 'react-native';
 
 import styles from '../../../css/styles';
 import OrderItem from '../../components/seller/tab-order-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
+import ModalConfirm from '../../common/modal-confirm';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
+import Utils from '../../../js/utils';
 
 export default class OrderDetailScreen extends Component{
   constructor(props){
@@ -28,7 +31,9 @@ export default class OrderDetailScreen extends Component{
         actions: []
       },
       ordersn: _query.ordersn,
-      type: _query.type
+      type: _query.type,
+      posCodeVisible: false,
+      posCodeSrc: ''
     };
   }
   componentWillMount() {
@@ -38,7 +43,7 @@ export default class OrderDetailScreen extends Component{
       this._init();
     });
     //添加发货成功侦听事件
-    this.listener_deliver_success = DeviceEventEmitter.addListener('deliverSuccess', (result) => {
+    this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
       this._init();
     });
   }
@@ -51,7 +56,14 @@ export default class OrderDetailScreen extends Component{
       <View style={[styles.common.flexv, styles.common.init]}>
         {this.state.bodyShow ?
         <ScrollView>
-          <OrderItem data={_data} type={this.state.type} props={this.props} navgoods={true}></OrderItem>
+          <OrderItem
+          data={_data}
+          type={this.state.type}
+          props={this.props}
+          navgoods={true}
+          refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
+          posPay={(sn) => this._posPay(sn)}
+          ></OrderItem>
           <View style={styles.sorderDetail.log}>
           {_data.actions.map((v, k) => {
             return (
@@ -106,6 +118,24 @@ export default class OrderDetailScreen extends Component{
         </ScrollView>
         : null}
         <Loading visible={this.state.loadingVisible}></Loading>
+        <ModalConfirm
+        data={{
+          text: '是否不发货？',
+          confirm: (arg) => {
+            this._refuseDeliver(arg);
+          }
+        }}
+        keys={3}></ModalConfirm>
+        <Modal
+          visible={this.state.posCodeVisible}
+          animationType={'fade'}
+          transparent = {true}
+          onRequestClose={()=> this.setState({posCodeVisible: false})}
+      >
+      <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
+        <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
+      </TouchableOpacity>
+      </Modal>
       </View>
     );
   }
@@ -121,6 +151,35 @@ export default class OrderDetailScreen extends Component{
         } else {
           UIToast(data.message || '加载数据失败');
         }
+    });
+  }
+  /**不发货**/
+  _openRefuseDeliverModal = (id) => {
+    DeviceEventEmitter.emit('confirmShow', {
+      keys: 3,
+      params: {
+        id
+      }
+    });
+  }
+  _refuseDeliver = (arg) => {
+    fetch(Config.JAVAAPI+`shop/wap/client/order/noDeliver?id=${arg.id}&token=${token}`,{
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then((_res)=>{
+          if (_res.code==1) {
+              UIToast( '操作成功');
+              DeviceEventEmitter.emit('sellerOrderUpdate');
+          }else{
+              UIToast(_res.message || '操作失败');
+          }
+      })
+  }
+  _posPay = (sn) => {
+    this.setState({
+      posCodeVisible: true,
+      posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
     });
   }
 }

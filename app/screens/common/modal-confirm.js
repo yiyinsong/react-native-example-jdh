@@ -4,6 +4,7 @@ import {
     View,
     TouchableOpacity,
     Modal,
+    DeviceEventEmitter
 } from 'react-native';
 
 import styles from '../../css/styles';
@@ -23,10 +24,20 @@ export default class ModalConfirm extends Component{
     constructor(props){
         super(props)
         this.state = {
-          visible: this.props.visible,
+          keys: this.props.keys || 0,
+          visible: false,
           data: this.props.data,
-          params: this.props.params
+          params: {}
         };
+    }
+    componentDidMount() {
+        this.listener_show = DeviceEventEmitter.addListener('confirmShow', (data) => {
+          if(data.keys != this.state.keys) return;
+          this.setState({ visible: true, data: data.data || this.state.data, params: data.params });
+        });
+    }
+    componentWillUnmount() {
+      this.listener_show && this.listener_show.remove();
     }
     _close=()=>{
       this.state.data.cancel && this.state.data.cancel();
@@ -35,9 +46,6 @@ export default class ModalConfirm extends Component{
     _confirm = () => {
       this.state.data.confirm && this.state.data.confirm.call(null, this.state.params);
       this.setState({ visible: false });
-    }
-    componentWillReceiveProps(props) {
-        this.setState({ visible: props.visible, data: props.data, params: props.params });
     }
     _renderContent=()=>{
         return (

@@ -107,8 +107,8 @@ export default {
         backgroundColor: '#fe5e5e',
         borderWidth: 1,
         borderColor: '#fe5e5e',
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 6,
+        paddingBottom: 6,
         flex: 1,
         marginRight: 8
       },
@@ -122,10 +122,8 @@ export default {
         backgroundColor: '#fff',
         borderWidth: 1,
         borderColor: '#ddd',
-        color: '#333',
-        fontSize: 12,
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 6,
+        paddingBottom: 6,
         textAlign: 'center',
         flex: 1,
         marginLeft: 8
@@ -245,7 +243,6 @@ export default {
   shome: {
     container: {
       flex: 1,
-      overflow: 'hidden'
     },
     head: {
       position: 'relative',
@@ -303,7 +300,7 @@ export default {
       fontSize: 8,
       textAlign: 'center',
       lineHeight: 13,
-      color: '#ff7d15'
+      color: '#fe0000'
     },
     userHeadIcon: {
       width: 65,
@@ -333,11 +330,6 @@ export default {
       width: 110,
       height: 34
     },
-    userToOther: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'flex-end'
-    },
     userShare: {
       width: 20,
       height: 20
@@ -346,7 +338,6 @@ export default {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-end',
-      paddingBottom: 5
     },
     userQrcode: {
       width: 20,
@@ -432,7 +423,7 @@ export default {
     },
     orderText: {
       fontSize: 12,
-      color: '#000',
+      color: '#091c2f',
       marginTop: 5
     },
     orderBadge: {
@@ -1272,6 +1263,11 @@ export default {
       fontSize: 12,
       marginTop: 10,
       marginBottom: 10
+    }
+  },
+  ewm: {
+    container: {
+      backgroundColor: 'rgba(0, 0, 0, .6)'
     }
   }
 }

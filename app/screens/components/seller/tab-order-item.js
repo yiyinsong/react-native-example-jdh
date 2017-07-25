@@ -63,16 +63,16 @@ export default class OrderItem extends Component {
             <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._deliver(_data.orderSn, _data.id)} style={styles.btn.container}>
               <Text style={styles.btn.primary}>发货</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={styles.btn.container}>
+            <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._refuseDeliver(_data.id)}>
               <Text style={styles.btn.primary}>不发货</Text>
             </TouchableHighlight>
           </View>)
         } else if(_data.operationAllowed && _type == 1 && _data.status == 10) {
             return(<View style={styles.sorderItem.itemFooter}>
-                <TouchableHighlight style={styles.btn.container}>
+                <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container}>
                   <Text style={styles.btn.danger}>立即采购</Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.btn.container}>
+                <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._posPay(_data.orderSn)}>
                   <Text style={styles.btn.danger}>POS支付</Text>
                 </TouchableHighlight>
               </View>)
@@ -97,5 +97,11 @@ export default class OrderItem extends Component {
         type: this.props.type,
         fromdetail: this.navgoods ? 1 : 0
       });
+    }
+    _refuseDeliver = (id) => {
+      this.props.refuseDeliver && this.props.refuseDeliver.call(null, id);
+    }
+    _posPay = (sn) => {
+      this.props.posPay && this.props.posPay.call(null, sn);
     }
 }

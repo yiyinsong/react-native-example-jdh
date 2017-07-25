@@ -255,7 +255,7 @@ export default class OrderSearchScreen extends Component {
         .then((data) => {
             if(data.code == 1) {
               //通知订单列表、详情、搜索等页面发货成功
-              DeviceEventEmitter.emit('deliverSuccess', {id: this.state.orderid});
+              DeviceEventEmitter.emit('sellerOrderUpdate', {id: this.state.orderid});
               //如果是从订单详情进入，则返回，否则替换当前页面
               if(this.state.fromdetail == 1) {
                 this.props.navigation.goBack();
@@ -285,7 +285,7 @@ export default class OrderSearchScreen extends Component {
       .then((_res)=>{
           if (_res.code==1) {
             //通知订单列表、详情、搜索等页面发货成功
-            DeviceEventEmitter.emit('deliverSuccess', {id: this.state.orderid});
+            DeviceEventEmitter.emit('sellerOrderUpdate', {id: this.state.orderid});
             //如果是从订单详情进入，则返回，否则替换当前页面
             if(this.state.fromdetail == 1) {
               this.props.navigation.goBack();
