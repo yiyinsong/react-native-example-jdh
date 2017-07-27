@@ -38,7 +38,8 @@ export default class OrderListScreen extends Component {
           '20': 0,
           '30': 0,
           '31': 0,
-          '40': 0
+          '40': 0,
+          '1010': 0
         },
         orderNumJc: {
           '-10': 0,
@@ -167,6 +168,7 @@ export default class OrderListScreen extends Component {
     _getData = (i) => {
       let _status = '';
       let _type = this.state.type;
+      let payOfflineStatus = '';
       if(_type == 0) {
         let _tp = this.state.pageZj;
         _tp = ++_tp;
@@ -184,32 +186,33 @@ export default class OrderListScreen extends Component {
           _status =  (_type == 0 ? 10 : 0);
         break;
         case 2:
-          _status = (_type == 0 ? 20 : 10);
+          _status = 10;
+          payOfflineStatus = (_type == 0 ? 10 : 0);
         break;
         case 3:
-          _status = (_type == 0 ? 30 : 20);
+          _status = 20;
         break;
         case 4:
-          _status = (_type == 0 ? 31 : 30);
+          _status = 30;
         break;
         case 5:
-          _status = (_type == 0 ? 40 : 31);
+          _status = 31;
         break;
         case 6:
-          _status = (_type == 0 ? -10 : 40);
+          _status = 40;
         break;
         case 7:
-          _status = (_type == 0 ? '' : -10);
+          _status = -10;
         break;
         case 8:
-          _status = (_type == 0 ? '' : '');
+          _status = "";
         break;
         default:
         break;
       }
       /**如果是自建商品的退货退款**/
-      if(_type == 0 && i == 7) {
-        this._getRefundData(0, 7);
+      if(_type == 0 && i == 8) {
+        this._getRefundData(0, 8);
       }
       /**如果是即采商品的退货退款**/
       else if(_type == 1 && i == 8) {
@@ -218,7 +221,7 @@ export default class OrderListScreen extends Component {
       /**普通订单**/
       else {
         let _tempIndex = i;
-        fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&status=${_status}&pageIndex=${_type == 1 ? this.state.pageJc : this.state.pageZj}&pageSize=10&token=${token}`, {
+        fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&status=${_status}&pageIndex=${_type == 1 ? this.state.pageJc : this.state.pageZj}&pageSize=10&token=${token}&payOfflineStatus=${payOfflineStatus}`, {
            method: 'POST'
         })
         .then((response) => response.json())
@@ -404,21 +407,28 @@ export default class OrderListScreen extends Component {
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewZj">
                     { this._renderTab(0, '全部订单', false, 0)}
                     { this._renderTab(1, '待买家付款', _orderNumZj['10'], Utils.width/4 * .5 + 28)}
-                    { this._renderTab(2, '待发货', _orderNumZj['20'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(3, '已发货', _orderNumZj['30'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(4, '已收货', _orderNumZj['31'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(5, '已完成', _orderNumZj['40'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(6, '已取消', _orderNumZj['-10'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(7, '退货退款', _orderNumZj['-1'], Utils.width/4 * .5 + 20)}
+                    { this._renderTab(2, '待确认收款', _orderNumZj['1010'], Utils.width/4 * .5 + 28)}
+                    { this._renderTab(3, '待发货', _orderNumZj['20'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(4, '已发货', _orderNumZj['30'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(5, '已收货', _orderNumZj['31'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(6, '已完成', _orderNumZj['40'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(7, '已取消', _orderNumZj['-10'], Utils.width/4 * .5 + 15)}
+                    { this._renderTab(8, '退货退款', _orderNumZj['-1'], Utils.width/4 * .5 + 20)}
                   </ScrollView>
                 </View>
                 <FlatList
                   data={this.state.listZj}
-                  renderItem={({item}) => this.state.activeIndex == 7 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem
+                  renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem
                   data={item}
                   type={_type}
                   props={this.props}
                   refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
+                  confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
+                      text: '是否确认已收到货款？',
+                      confirm: (arg) => {
+                        this._confirmReceipt(arg);
+                      }
+                  }, params: id})}
                   ></OrderItem>
                 }
                   onRefresh={false}
@@ -454,14 +464,7 @@ export default class OrderListScreen extends Component {
                   style={styles.common.init}/>
               </View>}
               <Loading visible={this.state.loadingVisible}></Loading>
-              <ModalConfirm
-              data={{
-                text: '是否不发货？',
-                confirm: (arg) => {
-                  this._refuseDeliver(arg);
-                }
-              }}
-              keys={1}></ModalConfirm>
+              <ModalConfirm keys={1}></ModalConfirm>
               <Modal
                 visible={this.state.posCodeVisible}
                 animationType={'fade'}
@@ -476,6 +479,7 @@ export default class OrderListScreen extends Component {
         );
     }
     _selectType = (t) => {
+      if(this.state.type == t) return;
       this._reset();
       this.setState({activeIndex: 0, type: t});
       this.props.navigation.setParams({type: t});
@@ -525,6 +529,12 @@ export default class OrderListScreen extends Component {
     _openRefuseDeliverModal = (id) => {
       DeviceEventEmitter.emit('confirmShow', {
         keys: 1,
+        data: {
+          text: '是否不发货？',
+          confirm: (arg) => {
+            this._refuseDeliver(arg);
+          }
+        },
         params: {
           id
         }
@@ -537,7 +547,7 @@ export default class OrderListScreen extends Component {
       .then(response => response.json())
       .then((_res)=>{
             if (_res.code==1) {
-                UIToast( _res.message || '操作成功');
+                UIToast('操作成功');
                 this._reset();
                 this._init();
                 requestAnimationFrame(()=>{
@@ -553,5 +563,18 @@ export default class OrderListScreen extends Component {
         posCodeVisible: true,
         posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
       });
+    }
+    _confirmReceipt = (id) => {
+      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then((_res)=>{
+          if (_res.code==1) {
+            DeviceEventEmitter.emit('sellerOrderUpdate');
+          } else {
+            UIToast('确认收款失败');
+          }
+      })
     }
 }

@@ -134,6 +134,59 @@ export default {
         textAlign: 'center'
       },
     },
+    prompt: {
+      content: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 4
+      },
+      container: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        position: 'relative'
+      },
+      error: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        bottom: 45,
+      },
+      errorText: {
+        color: '#fff',
+        fontSize: 10,
+        textAlign: 'center',
+        backgroundColor: '#000',
+        borderRadius: 3,
+        paddingTop: 3,
+        paddingBottom: 3,
+      },
+      text: {
+        fontSize: 12,
+        color: '#333',
+        textAlign: 'center'
+      },
+      input: {
+        marginTop: 10,
+        borderWidth: 1,
+        borderColor: '#eee',
+        height: 30,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 12
+      },
+      triangle: {
+        width: 0,
+        height: 0,
+        borderLeftWidth: 3,
+        borderLeftColor: 'transparent',
+        borderRightWidth: 3,
+        borderRightColor: 'transparent',
+        borderTopWidth: 5,
+        borderTopColor: '#000',
+        alignSelf: 'center'
+      }
+    },
     address: {
       content: {
         backgroundColor: '#fff'
@@ -323,16 +376,17 @@ export default {
       zIndex: 2,
       textAlign: 'center',
       textAlignVertical: 'center',
-      width: 110,
-      height: 34
+      width: 81,
+      height: 25,
+      fontSize: 12
     },
     idTabImg: {
-      width: 110,
-      height: 34
+      width: 81,
+      height: 25
     },
     userShare: {
-      width: 20,
-      height: 20
+      width: 16,
+      height: 16
     },
     userToOther: {
       flex: 1,
@@ -340,8 +394,8 @@ export default {
       justifyContent: 'flex-end',
     },
     userQrcode: {
-      width: 20,
-      height: 20,
+      width: 16,
+      height: 16,
       marginLeft: 20
     },
     userInfo: {

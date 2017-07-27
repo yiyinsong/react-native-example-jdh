@@ -64,7 +64,12 @@ export default class OrderSearchScreen extends Component {
         </View>
         <FlatList
         data={this.state.list}
-        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)}></OrderItem>}
+        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)} confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
+            text: '是否确认已收到货款？',
+            confirm: (arg) => {
+              this._confirmReceipt(arg);
+            }
+        }, params: id})}></OrderItem>}
         onRefresh={false}
         refreshing={false}
         onEndReachedThreshold={2}
@@ -72,14 +77,7 @@ export default class OrderSearchScreen extends Component {
         ListFooterComponent={() => this._flatListFooter()}
         style={styles.common.init}/>
         <Loading visible={this.state.loadingVisible}></Loading>
-        <ModalConfirm
-        data={{
-          text: '是否不发货？',
-          confirm: (arg) => {
-            this._refuseDeliver(arg);
-          }
-        }}
-        keys={2}></ModalConfirm>
+        <ModalConfirm keys={2}></ModalConfirm>
         <Modal
           visible={this.state.posCodeVisible}
           animationType={'fade'}
@@ -153,6 +151,12 @@ export default class OrderSearchScreen extends Component {
     _openRefuseDeliverModal = (id) => {
       DeviceEventEmitter.emit('confirmShow', {
         keys: 2,
+        data: {
+          text: '是否不发货？',
+          confirm: (arg) => {
+            this._refuseDeliver(arg);
+          }
+        },
         params: {
           id
         }
@@ -165,7 +169,7 @@ export default class OrderSearchScreen extends Component {
       .then(response => response.json())
       .then((_res)=>{
             if (_res.code==1) {
-                UIToast( _res.message || '操作成功');
+                UIToast('操作成功');
                 DeviceEventEmitter.emit('sellerOrderUpdate');
             }else{
                 UIToast(_res.message || '操作失败');
@@ -181,5 +185,18 @@ export default class OrderSearchScreen extends Component {
         posCodeVisible: true,
         posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
       });
+    }
+    _confirmReceipt = (id) => {
+      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then((_res)=>{
+          if (_res.code==1) {
+            DeviceEventEmitter.emit('sellerOrderUpdate');
+          } else {
+            UIToast('确认收款失败');
+          }
+      })
     }
 }

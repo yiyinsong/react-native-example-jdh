@@ -91,8 +91,8 @@ export default class OrderDetailScreen extends Component{
             </View>
             <View style={[styles.common.flexDirectionRow, styles.srefundDetail.order]}>
               <View style={styles.common.flexv}>
-                <Text style={styles.srefundDetail.orderSn}>订单号：</Text>
-                <Text style={styles.srefundDetail.orderTime}>订单时间：</Text>
+                <Text style={styles.srefundDetail.orderSn}>订单号：{this.state.ordersn}</Text>
+                <Text style={styles.srefundDetail.orderTime}>订单时间：{this.state.ctime}</Text>
               </View>
               <TouchableHighlight underlayColor='#f5f5f5' style={styles.srefundDetail.or} onPress={() => {this._toOrderDetail()}}><Text style={styles.srefundDetail.ortxt}>查看详情</Text></TouchableHighlight>
             </View>

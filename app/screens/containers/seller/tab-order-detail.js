@@ -15,6 +15,7 @@ import OrderItem from '../../components/seller/tab-order-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import ModalConfirm from '../../common/modal-confirm';
+import ModalPrompt from '../../common/modal-prompt';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
@@ -63,6 +64,12 @@ export default class OrderDetailScreen extends Component{
           navgoods={true}
           refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
           posPay={(sn) => this._posPay(sn)}
+          confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 3, data: {
+            text: '是否确认已收到货款？',
+            confirm: (arg) => {
+              this._confirmReceipt(arg);
+            }
+          },params: id})}
           ></OrderItem>
           <View style={styles.sorderDetail.log}>
           {_data.actions.map((v, k) => {
@@ -83,26 +90,26 @@ export default class OrderDetailScreen extends Component{
           <View style={styles.sorderDetail.block}>
             <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
               <Text style={styles.sorderDetail.userText}>收货人：</Text>
-              <Text style={styles.sorderDetail.userText}>{_data.receiver}</Text>
+              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.receiver}</Text>
             </View>
             <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
               <Text style={styles.sorderDetail.userText}>收货地址：</Text>
-              {_data.provinceName ? <Text style={styles.sorderDetail.userText}>{(_data.provinceName || '') + (_data.cityName || '') + (_data.districtName || '') + (_data.townName || '') + (_data.villageName || '') + _data.address}</Text> : null }
+              {_data.provinceName ? <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{(_data.provinceName || '') + (_data.cityName || '') + (_data.districtName || '') + (_data.townName || '') + (_data.villageName || '') + _data.address}</Text> : null }
             </View>
             <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
               <Text style={styles.sorderDetail.userText}>收货人手机号：</Text>
-              <Text style={styles.sorderDetail.userText}>{_data.mobile}</Text>
+              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.mobile}</Text>
             </View>
             { _data.logisticsCompany ?
             <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
               <Text style={styles.sorderDetail.userText}>物流公司：</Text>
-              <Text style={styles.sorderDetail.userText}>{_data.logisticsCompany}</Text>
+              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.logisticsCompany}</Text>
             </View>
             : null }
             { _data.logisticsSn ?
             <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
               <Text style={styles.sorderDetail.userText}>物流单号：</Text>
-              <Text style={styles.sorderDetail.userText}>{_data.logisticsSn}</Text>
+              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.logisticsSn}</Text>
             </View>
             : null }
           </View>
@@ -118,14 +125,7 @@ export default class OrderDetailScreen extends Component{
         </ScrollView>
         : null}
         <Loading visible={this.state.loadingVisible}></Loading>
-        <ModalConfirm
-        data={{
-          text: '是否不发货？',
-          confirm: (arg) => {
-            this._refuseDeliver(arg);
-          }
-        }}
-        keys={3}></ModalConfirm>
+        <ModalConfirm keys={3}></ModalConfirm>
         <Modal
           visible={this.state.posCodeVisible}
           animationType={'fade'}
@@ -136,6 +136,12 @@ export default class OrderDetailScreen extends Component{
         <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
       </TouchableOpacity>
       </Modal>
+      <ModalPrompt data={{
+        text: '请输入新的价格',
+        confirm: (r, p) => {
+          this._modifyPrice(r, p);
+        }
+      }} keys={0} notClose={true}/>
       </View>
     );
   }
@@ -157,6 +163,12 @@ export default class OrderDetailScreen extends Component{
   _openRefuseDeliverModal = (id) => {
     DeviceEventEmitter.emit('confirmShow', {
       keys: 3,
+      data: {
+        text: '是否不发货？',
+        confirm: (arg) => {
+          this._refuseDeliver(arg);
+        }
+      },
       params: {
         id
       }
@@ -181,5 +193,44 @@ export default class OrderDetailScreen extends Component{
       posCodeVisible: true,
       posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
     });
+  }
+  _modifyPrice = (newPrice, params) => {
+    if(newPrice == '') {
+      DeviceEventEmitter.emit('promptTips', {keys: 0, error: '请输入新价格'});
+    } else if (!/(^[1-9]\d*(\.\d{1,2})?$)|(^0\.\d{1,2}$)/.test(newPrice)) {
+      DeviceEventEmitter.emit('promptTips', {keys: 0, error: '格式错误或最多只能小数点后两位'});
+    } else if(newPrice > 1000000000) {
+      DeviceEventEmitter.emit('promptTips', {keys: 0, error: '最多不能大于1000000000'});
+    } else {
+      DeviceEventEmitter.emit('promptTips', {keys: 0, error: ''});
+      DeviceEventEmitter.emit('promptHide',{keys: 0});
+      fetch(Config.JAVAAPI+`shop/wap/client/order/adjustPrice?orderSn=${params.sn}&adjustmentAmount=${newPrice}&token=${token}`, {
+          method: 'POST'
+        })
+        .then(response => response.json())
+        .then((result) => {
+            if(result.code == 1) {
+                this._init();
+            } else {
+                UIToast(result.message || '修改失败');
+            }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+  _confirmReceipt = (id) => {
+    fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then((_res)=>{
+        if (_res.code==1) {
+          DeviceEventEmitter.emit('sellerOrderUpdate');
+        } else {
+          UIToast('确认收款失败');
+        }
+    })
   }
 }

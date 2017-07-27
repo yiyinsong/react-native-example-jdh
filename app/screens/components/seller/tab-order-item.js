@@ -4,7 +4,8 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableHighlight
+    TouchableHighlight,
+    DeviceEventEmitter
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -52,6 +53,7 @@ export default class OrderItem extends Component {
               <Text style={styles.sorderItem.totalText}>
                 <Text>共计{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalQty}件商品 合计：￥</Text><Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalGoodsAmount}</Text>
               </Text>
+              {this._renderAdjustPrice(_type, _data)}
               {this.navgoods ? <View><Text style={styles.sorderItem.totalCount}>总计：￥<Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalAmount : _data.totalAmount}</Text></Text></View> : null}
               {this._renderFooter(_data, _type)}
            </View>
@@ -76,6 +78,24 @@ export default class OrderItem extends Component {
                   <Text style={styles.btn.danger}>POS支付</Text>
                 </TouchableHighlight>
               </View>)
+        }
+        else if(_data.operationAllowed && _type == 0 && _data.status == 10 &&  _data.payType == 1 && _data.offlinePayStatus == 10) {
+          return (
+            <View style={styles.sorderItem.itemFooter}>
+              <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => {this._confirmReceipt(_data.id)}}>
+                <Text style={styles.btn.danger}>确认收款</Text>
+              </TouchableHighlight>
+            </View>
+          )
+        } else if(this.navgoods && _data.operationAllowed && ( ( _type == 0 && _data.status == 10) || ( _type == 1 && _data.status == 0))) {
+          return (
+            <View style={styles.sorderItem.itemFooter}>
+            {_data.payType == 0 ?
+            <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._modifyPrice(_type == 0 ? _data.orderSn : _data.jxOrder.orderSn)}>
+              <Text style={styles.btn.danger}>修改价格</Text>
+            </TouchableHighlight>
+            : null}
+          </View>)
         } else {
           return null;
         }
@@ -88,6 +108,33 @@ export default class OrderItem extends Component {
           ordersn: sn,
           type: this.props.type
         });
+      }
+    }
+    _renderAdjustPrice = (_type, _data) => {
+      if(this.navgoods && _type == 1 && _data.status == 0 && _data.jxOrder.adjustmentAmount) {
+        return(
+          <View>
+            <Text style={styles.sorderItem.totalText}>
+              <Text>调整金额：￥</Text>
+              <Text style={styles.sorderItem.totalBig}>
+                {_data.jxOrder.adjustmentAmount}
+              </Text>
+            </Text>
+        </View>
+        )
+      } else if (this.navgoods && _data.adjustmentAmount) {
+        return (
+          <View>
+              <Text style={styles.sorderItem.totalText}>
+                <Text>调整金额：￥</Text>
+                <Text style={styles.sorderItem.totalBig}>
+                  {_data.adjustmentAmount}
+                </Text>
+              </Text>
+          </View>
+        )
+      } else {
+        return null;
       }
     }
     _deliver = (sn, id) => {
@@ -103,5 +150,11 @@ export default class OrderItem extends Component {
     }
     _posPay = (sn) => {
       this.props.posPay && this.props.posPay.call(null, sn);
+    }
+    _modifyPrice = (sn) => {
+      DeviceEventEmitter.emit('promptShow', {keys: 0, params: {sn}});
+    }
+    _confirmReceipt = (id) => {
+      this.props.confirmReceipt && this.props.confirmReceipt.call(null, id);
     }
 }
