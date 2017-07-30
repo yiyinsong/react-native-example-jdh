@@ -15,6 +15,7 @@ export default class OrderItem extends Component {
     	super(props);
       this.attr = this.props.props;
       this.navgoods = this.props.navgoods || false;
+      this.refundExamine = this.props.refundExamine || false;
     }
     render() {
         let _data = this.props.data;
@@ -51,10 +52,15 @@ export default class OrderItem extends Component {
                 })
               }
               <Text style={styles.sorderItem.totalText}>
-                <Text>共计{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalQty}件商品 合计：￥</Text><Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalGoodsAmount}</Text>
+                <Text>共计{_type == 1 && _data.status == 0 ? _data.jxOrder.totalQty : _data.totalQty}件商品 合计：￥</Text><Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalGoodsAmount : _data.totalGoodsAmount}</Text>
               </Text>
+              {this.refundExamine ?
+              <Text style={styles.sorderItem.totalText}>
+                <Text>运费：￥</Text><Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.predictFreight : _data.predictFreight}</Text>
+              </Text>
+              :null}
               {this._renderAdjustPrice(_type, _data)}
-              {this.navgoods ? <View><Text style={styles.sorderItem.totalCount}>总计：￥<Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalAmount : _data.totalAmount}</Text></Text></View> : null}
+              {(this.navgoods || this.refundExamine) ? <View><Text style={styles.sorderItem.totalCount}>总计：￥<Text style={styles.sorderItem.totalBig}>{_type == 1 && _data.status == 0 ? _data.jxOrder.totalAmount : _data.totalAmount}</Text></Text></View> : null}
               {this._renderFooter(_data, _type)}
            </View>
         );

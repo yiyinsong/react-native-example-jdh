@@ -7,7 +7,7 @@
  import { AppRegistry, Image, TouchableOpacity } from 'react-native';
  import { StackNavigator } from 'react-navigation';
  //安卓实现左右切换
- // import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
+ // import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 
  //初始化项目
  import Init from './app/config/init';
@@ -38,15 +38,31 @@
            </TouchableOpacity>),
      headerRight: <TouchableOpacity style={styles.common.headerBtnRight}></TouchableOpacity>
    }),
-  //  transitionConfig: () => ({
-  //     screenInterpolator:CardStackStyleInterpolator.forHorizontal,
-  //  })
+  // transitionConfig: () => ({
+  //   screenInterpolator: (sceneProps) => {
+  //     if (sceneProps.scene.route.withoutAnimation) return null;
+  //     return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps)
+  //   },
+  // }),
  });
 
  const prevGetStateForAction = ReactNativeJdh.router.getStateForAction;
  ReactNativeJdh.router.getStateForAction = (action, state) => {
      if(state && action.type === 'ReplaceRoute') {
        const routes = state.routes.slice(0, state.routes.length - 1);
+       routes.push(action);
+       return {
+         ...state,
+         routes,
+         index: routes.length - 1
+       }
+     } else if(state && action.type === 'ReplaceMultiRoute') {
+       let replaceNumber = 1;
+       if(action.replaceNumber && action.replaceNumber <= state.routes.length) {
+         replaceNumber = action.replaceNumber;
+       }
+       state.routes.splice(state.routes.length - replaceNumber, replaceNumber);
+       const routes = state.routes;
        routes.push(action);
        return {
          ...state,

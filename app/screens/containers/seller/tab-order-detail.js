@@ -26,8 +26,8 @@ export default class OrderDetailScreen extends Component{
     let _query = this.props.navigation.state.params;
   	this.state = {
       loadingVisible: false,
+      bodyShow: false,
       data: {
-        bodyShow: false,
         goods: [],
         actions: []
       },

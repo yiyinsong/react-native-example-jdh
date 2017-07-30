@@ -100,7 +100,7 @@ export default class OrderListScreen extends Component {
         .then((response) => response.json())
         .then((data) => {
           if(data.error_code == 0) {
-            this.setState({shopId: data.data.shop_id});
+            this.state.shopId = data.data.shop_id;
             //获取订单条数
             fetch(Config.JAVAAPI + '/shop/wap/client/order/shopOrderStatusSummary',{
                 method: 'POST',
@@ -172,11 +172,11 @@ export default class OrderListScreen extends Component {
       if(_type == 0) {
         let _tp = this.state.pageZj;
         _tp = ++_tp;
-        this.setState({pageZj: _tp});
+        this.state.pageZj = _tp;
       } else {
         let _tp = this.state.pageJc;
         _tp = ++_tp;
-        this.setState({pageJc: _tp});
+        this.state.pageJc = _tp;
       }
       switch(i) {
         case 0:
@@ -238,9 +238,6 @@ export default class OrderListScreen extends Component {
                 _temp = this.state.listZj;
               }
               _temp = _temp.concat(_data.results);
-              this.setState({
-                listZj: _temp
-              });
               let _canload = '';
               let _tips = '';
               if(_data.pageIndex < _data.totalPage) {
@@ -250,13 +247,10 @@ export default class OrderListScreen extends Component {
                 _canload = false;
                 _tips = '没有更多数据！';
               }
-              this.setState({canloadZj: _canload, tipsZj: _tips});
+              this.setState({listZj: _temp, canloadZj: _canload, tipsZj: _tips});
             } else {
               let _temp = this.state.listJc;
               _temp = _temp.concat(_data.results);
-              this.setState({
-                listJc: _temp
-              });
               let _canload = '';
               let _tips = '';
               if(_data.pageIndex < _data.totalPage) {
@@ -266,7 +260,7 @@ export default class OrderListScreen extends Component {
                 _canload = false;
                 _tips = '没有更多数据！';
               }
-              this.setState({canloadJc: _canload, tipsJc: _tips});
+              this.setState({listJc: _temp, canloadJc: _canload, tipsJc: _tips});
             }
           }
         });
@@ -343,9 +337,6 @@ export default class OrderListScreen extends Component {
             _temp = this.state.listZj;
           }
           _temp = _temp.concat(_list);
-          this.setState({
-            listZj: _temp
-          });
           let _canload = this.state.canloadZj;
           let _tips = this.state.tipsZj;
           if(data.page.pageNum < data.page.pages) {
@@ -355,15 +346,12 @@ export default class OrderListScreen extends Component {
             _canload = false;
             _tips = '没有更多数据！';
           }
-          this.setState({canloadZj: _canload, tipsZj: _tips});
+          this.setState({listZj: _temp, canloadZj: _canload, tipsZj: _tips});
         } else {
           if(this.state.pageJc != 1) {
-            _temp = this.state.listZj;
+            _temp = this.state.listJc;
           }
           _temp = _temp.concat(_list);
-          this.setState({
-            listJc: _temp
-          });
           let _canload = this.state.canloadJc;
           let _tips = this.state.tipsJc;
           if(data.page.pageNum < data.page.pages) {
@@ -373,7 +361,7 @@ export default class OrderListScreen extends Component {
             _canload = false;
             _tips = '没有更多数据！';
           }
-          this.setState({canloadJc: _canload, tipsJc: _tips});
+          this.setState({listJc: _temp, canloadJc: _canload, tipsJc: _tips});
         }
     });
     }
@@ -505,7 +493,7 @@ export default class OrderListScreen extends Component {
     }
     _tabHandle = (k) => {
         this._reset();
-        this.setState({activeIndex: k});
+        this.state.activeIndex = k;
         requestAnimationFrame(()=>{
           this._getData(k);
         });

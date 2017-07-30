@@ -1171,6 +1171,11 @@ export default {
       color: '#333',
       fontSize: 12
     },
+    ddr: {
+      color: '#ff0000',
+      fontSize: 12,
+      textAlign: 'right'
+    },
     order:  {
       backgroundColor: '#fff',
       borderTopWidth: 1,
@@ -1208,10 +1213,24 @@ export default {
       backgroundColor: '#fe5e5e',
       justifyContent: 'center',
       alignItems: 'center',
-      height: 40
+      height: 39,
+      borderTopWidth: 1,
+      borderTopColor: '#fe5e5e'
+    },
+    b2: {
+      backgroundColor: '#fff',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 39,
+      borderTopWidth: 1,
+      borderTopColor: '#eee'
     },
     text: {
       color: '#fff',
+      fontSize: 12
+    },
+    text2: {
+      color: '#fe5e5e',
       fontSize: 12
     }
   },
@@ -1322,6 +1341,36 @@ export default {
   ewm: {
     container: {
       backgroundColor: 'rgba(0, 0, 0, .6)'
+    }
+  },
+  sexamine: {
+    info: {
+      marginTop: 0,
+      borderTopWidth: 0
+    },
+    time: {
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+      paddingTop: 10,
+      paddingBottom: 10,
+      color: '#333'
+    },
+    order: {
+      marginTop: 10,
+      borderTopWidth: 1,
+      borderTopColor: '#eee'
+    },
+    borderNone: {
+      borderBottomWidth: 0
+    }
+  },
+  refuse: {
+    container: {
+      paddingTop: 40,
+    },
+    redText:{
+      fontSize: 12,
+      color: '#ff0000'
     }
   }
 }

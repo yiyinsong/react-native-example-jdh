@@ -98,7 +98,7 @@ export default class OrderSearchScreen extends Component {
     if(_page == 0) {
       this.setState({loadingVisible: true});
     }
-    this.setState({page: ++_page});
+    this.state.page = ++_page;
     fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&keyword=${_kw}&pageIndex=${_page}&pageSize=10&token=${token}`, {
        method: 'POST'
     })
@@ -109,9 +109,6 @@ export default class OrderSearchScreen extends Component {
         let _data = data.obj;
         let _temp = this.state.list;
         _temp = _temp.concat(_data.results);
-        this.setState({
-          list: _temp
-        });
         let _tips = '';
         let _canload = false;
         if(_data.pageIndex < _data.totalPage) {
@@ -120,7 +117,7 @@ export default class OrderSearchScreen extends Component {
         } else {
           _tips = '没有更多数据！';
         }
-        this.setState({tips: _tips, canload: _canload});
+        this.setState({list: _temp, tips: _tips, canload: _canload});
       }
     }).catch((error) => {
       console.log(error);

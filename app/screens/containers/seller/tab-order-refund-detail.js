@@ -4,7 +4,6 @@ import {
   Text,
   ScrollView,
   Image,
-  TouchableOpacity,
   TouchableHighlight,
   InteractionManager
 } from 'react-native';
@@ -25,15 +24,16 @@ export default class OrderDetailScreen extends Component{
     let _query = this.props.navigation.state.params;
   	this.state = {
       loadingVisible: false,
+      bodyShow: false,
       data: {
-        bodyShow: false,
         refund: {},
         trace: []
       },
       id: _query.id,
       shopid: _query.shopid,
       ordersn: _query.ordersn,
-      ctime: _query.ctime
+      ctime: _query.ctime,
+      totalAmount: _query.totalAmount
     };
   }
   componentWillMount() {
@@ -83,6 +83,7 @@ export default class OrderDetailScreen extends Component{
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>退款金额</Text>
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
+                <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.totalAmount}</Text>
               </View>
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>退款说明</Text>
@@ -132,19 +133,19 @@ export default class OrderDetailScreen extends Component{
                 data.refund.refundReasonName = '质量问题';
             break;
             case 4:
-                _data.refund.refundReasonName = '颜色/尺寸/参数不符';
+                data.refund.refundReasonName = '颜色/尺寸/参数不符';
             break;
             case 5:
-                _data.refund.refundReasonName = '少件/漏发';
+                data.refund.refundReasonName = '少件/漏发';
             break;
             case 6:
                 data.refund.refundReasonName = '收到商品时候有划痕/破损';
             break;
             case 7:
-                _data.refund.refundReasonName = '假冒品牌';
+                data.refund.refundReasonName = '假冒品牌';
             break;
             case 8:
-                _data.refund.refundReasonName = '发票问题';
+                data.refund.refundReasonName = '发票问题';
             break;
             case 99:
                 data.refund.refundReasonName = '其他';
@@ -205,7 +206,15 @@ export default class OrderDetailScreen extends Component{
       type: this.state.data.refund.orderType == 40 ? 0 : 1
     });
   }
-  _examine = () => {}
+  _examine = () => {
+    this.props.navigation.navigate('SellerRefundExamine', {
+      id: this.state.id,
+      shopid: this.state.shopid,
+      ordersn: this.state.ordersn,
+      type: this.state.data.refund.orderType == 40 ? 0 : 1,
+      totalAmount: this.state.totalAmount
+    });
+  }
   _pay = (t) => {
 
   }

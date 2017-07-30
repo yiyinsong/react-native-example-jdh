@@ -73,13 +73,13 @@ export default class OrderItem extends Component {
       if(_data.isNow == 1) {
         if(_data.status == 10) {
           return (<View style={styles.sorderItem.itemFooter}>
-            <TouchableHighlight style={styles.btn.container}>
+            <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._toExamine(_data)} style={styles.btn.container}>
             <Text style={styles.btn.primary}>审核</Text>
             </TouchableHighlight>
             </View>)
         } else if(_data.status == 30) {
             return(<View style={styles.sorderItem.itemFooter}>
-                <TouchableHighlight style={styles.btn.container}>
+                <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._toRefundDetail(_data)}>
                   <Text style={styles.btn.danger}>处理退款</Text>
                 </TouchableHighlight>
               </View>)
@@ -91,6 +91,21 @@ export default class OrderItem extends Component {
       }
     }
     _toRefundDetail = (item) => {
-      this.attr.navigation.navigate('SellerRefundDetail', {id: item.id, shopid: item.shopId, ordersn: item.order.mainOrderSn || item.order.orderSn, ctime: item.order.ctime});
+      this.attr.navigation.navigate('SellerRefundDetail', {
+        id: item.id,
+        shopid: item.shopId,
+        ordersn: item.order.mainOrderSn || item.order.orderSn,
+        ctime: item.order.ctime,
+        totalAmount: item.order.totalAmount
+      });
+    }
+    _toExamine = (item) => {
+      this.attr.navigation.navigate('SellerRefundExamine', {
+        id: item.id,
+        shopid: item.shopId,
+        ordersn: item.order.mainOrderSn || item.order.orderSn,
+        type: this.props.type,
+        totalAmount: item.order.totalAmount
+      });
     }
 }
