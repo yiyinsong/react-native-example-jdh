@@ -95,8 +95,6 @@ export default class OrderItem extends Component {
         id: item.id,
         shopid: item.shopId,
         ordersn: item.order.mainOrderSn || item.order.orderSn,
-        ctime: item.order.ctime,
-        totalAmount: item.order.totalAmount
       });
     }
     _toExamine = (item) => {
@@ -105,7 +103,8 @@ export default class OrderItem extends Component {
         shopid: item.shopId,
         ordersn: item.order.mainOrderSn || item.order.orderSn,
         type: this.props.type,
-        totalAmount: item.order.totalAmount
+        refundtype: item.type,
+        fromdetail: false
       });
     }
 }

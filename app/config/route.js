@@ -144,7 +144,6 @@ export default {
   SellerRefundRefuse: {
     screen: SellerRefundRefuseScreen,
     navigationOptions: {
-      title: '拒绝退款',
       headerStyle: styles.common.headerGray
     }
   }

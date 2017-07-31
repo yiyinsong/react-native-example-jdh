@@ -4,11 +4,14 @@ import {
   Text,
   ScrollView,
   Image,
+  TouchableOpacity,
   TouchableHighlight,
-  InteractionManager
+  InteractionManager,
+  Modal
 } from 'react-native';
 
 import styles from '../../../css/styles';
+import Utils from '../../../js/utils';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import Config from '../../../config/config';
@@ -27,13 +30,15 @@ export default class OrderDetailScreen extends Component{
         trace: []
       },
       order: {
-        goods: []
+        goods: [],
+        jxOrder: {}
       },
       id: _query.id,
       shopid: _query.shopid,
       ordersn: _query.ordersn,
       type: _query.type,
-      totalAmount: _query.totalAmount
+      fromdetail: _query.fromdetail || false,
+      modalVisible: true
     };
   }
   componentWillMount() {
@@ -67,7 +72,7 @@ export default class OrderDetailScreen extends Component{
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>退款金额</Text>
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
-                <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.totalAmount}</Text>
+                <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.type == 1 && this.state.order.status == 0 ? this.state.order.jxOrder.totalAmount : this.state.order.totalAmount}</Text>
               </View>
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl, styles.sexamine.borderNone]}>
                 <Text style={styles.srefundDetail.dt}>退款说明</Text>
@@ -97,12 +102,63 @@ export default class OrderDetailScreen extends Component{
             </View>
           </ScrollView>
           <View style={styles.common.flexDirectionRow}>
-            <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._agreeRefund()}}><Text style={styles.footerBtn.text}>同意退款</Text></TouchableHighlight>
-            <TouchableHighlight underlayColor="#f5f5f5" style={[styles.common.flex, styles.footerBtn.b2]} onPress={() => {this._refuseRefund()}}><Text style={styles.footerBtn.text2}>拒绝退款</Text></TouchableHighlight>
+            <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._agreeRefund(_data)}}><Text style={styles.footerBtn.text}>同意退款</Text></TouchableHighlight>
+            <TouchableHighlight underlayColor="#f5f5f5" style={[styles.common.flex, styles.footerBtn.b2]} onPress={() => {this._refuseRefund(_data)}}><Text style={styles.footerBtn.text2}>拒绝退款</Text></TouchableHighlight>
           </View>
         </View>
         : null }
         <Loading visible={this.state.loadingVisible}></Loading>
+        <Modal animationType='fade' onRequestClose={() => this._modalClose()} visible={this.state.modalVisible} transparent={true}>
+          <View style={{flex:1}}>
+            <TouchableOpacity activeOpacity={1} style={styles.modal.container} onPress={this._modalClose}></TouchableOpacity>
+            <View style={[styles.modal.container2, {left: Utils.width * .15, top: Utils.height * .3}]}>
+                <View style={[styles.sexamine.modal, {width: Utils.width * .7}]}>
+                  <View style={styles.sexamine.mtitle}>
+                    <Text style={styles.sexamine.mtitleText}>退款提示</Text>
+                  </View>
+                  <View style={styles.sexamine.mcontent}>
+                    <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} scrollEnabled={false} ref="modalScrollView">
+                      <View horizontal={true} style={{width: Utils.width * .7}}>
+                        <View style={styles.sexamine.mbody}>
+                          <Text style={styles.sexamine.tipsText}>同意退款后，交易取消，平台将为买家退款，退款状态变成退款成功。</Text>
+                        </View>
+                        <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => {this._agree()}} style={styles.modal.confirm.confirm}>
+                              <Text style={styles.modal.confirm.confirmText}>同意退款</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity activeOpacity={.8} onPress={this._modalClose} style={styles.modal.confirm.cancel}>
+                              <Text style={styles.modal.confirm.cancelText}>取消</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <View horizontal={true} style={{width: Utils.width * .7}}>
+                        <View style={styles.sexamine.mbody}>
+                          <Text style={styles.sexamine.tipsText}>确认退款后，交易取消，须为用户退款，订单状态转变为已退款。</Text>
+                        </View>
+                        {this.state.order.payType == 0 ?
+                        <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => {this._pay(1)}} style={styles.modal.confirm.confirm}>
+                              <Text style={styles.modal.confirm.confirmText}>线上退款</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => {this._pay(0)}} style={[styles.modal.confirm.cancel, styles.sexamine.btn2]}>
+                              <Text style={[styles.modal.confirm.cancelText, styles.sexamine.btn2Text]}>线下退款</Text>
+                          </TouchableOpacity>
+                        </View>
+                        : <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => {this._pay(0)}} style={styles.modal.confirm.confirm}>
+                              <Text style={styles.modal.confirm.confirmText}>线下退款</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity activeOpacity={.8} onPress={this._modalClose} style={styles.modal.confirm.cancel}>
+                              <Text style={styles.modal.confirm.cancelText}>取消</Text>
+                          </TouchableOpacity>
+                        </View>}
+                      </View>
+                    </ScrollView>
+                  </View>
+                </View>
+              </View>
+            </View>
+        </Modal>
       </View>
     );
   }
@@ -146,7 +202,7 @@ export default class OrderDetailScreen extends Component{
             break;
         }
       }
-      this.setState({loadingVisible: false, data: data, bodyShow: true});
+      this.setState({loadingVisible: false, data: data});
     });
     fetch(Config.JAVAAPI + `shop/wap/client/order/detail?orderSn=${this.state.ordersn}&token=${token}`, {
         method: 'POST'
@@ -154,7 +210,7 @@ export default class OrderDetailScreen extends Component{
     .then(response => response.json())
     .then((data) => {
         if (data.code == 1) {
-            this.setState({order: data.obj});
+            this.setState({order: data.obj, bodyShow: true});
         } else {
           UIToast(data.message || '加载数据失败');
         }
@@ -166,11 +222,41 @@ export default class OrderDetailScreen extends Component{
       type: this.state.data.refund.orderType == 40 ? 0 : 1
     });
   }
-  _agreeRefund = () => {}
-  _refuseRefund = () => {
+  _agreeRefund = (data) => {
+    this.setState({modalVisible: true});
+    let state = this.state;
+    //如果是即采订单并且卖家已经采购
+    if(state.type == 1 && data.refund.relationRefundId) {
+
+    }
+    //否则如果是自建订单或者即采订单并且卖家还没采购
+    else {
+
+    }
+  }
+  _refuseRefund = (data) => {
     this.props.navigation.navigate('SellerRefundRefuse', {
       ordersn: this.state.ordersn,
-      type: this.state.type
+      type: this.state.type,
+      id: this.state.id,
+      shopid: this.state.shopid,
+      refundtype: data.refund.type,
+      fromdetail: this.state.fromdetail,
     });
+  }
+  _agree = () => {
+    this.refs.modalScrollView.scrollTo({x: Utils.width * .7, y: 0, animated: true});
+  }
+  _modalClose = () => {
+    this.setState({ modalVisible: false });
+    this.refs.modalScrollView.scrollTo({x: 0, y: 0, animated: false});
+  }
+  _pay = (pt) => {
+    //pt == 0 代表线下退款
+    if(pt == 0) {
+
+    } else {
+
+    }
   }
 }

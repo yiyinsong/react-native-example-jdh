@@ -86,6 +86,10 @@ export default {
       justifyContent:'center',
       alignItems:'center'
     },
+    container2: {
+      position: 'absolute',
+      zIndex: 2
+    },
     confirm: {
       content: {
         backgroundColor: '#fff',
@@ -1362,15 +1366,58 @@ export default {
     },
     borderNone: {
       borderBottomWidth: 0
+    },
+    modal: {
+      backgroundColor: '#fff',
+      borderRadius: 4,
+    },
+    mtitle: {
+      backgroundColor: '#f5f5f5',
+      paddingTop: 8,
+      paddingBottom: 8,
+      borderTopLeftRadius: 4,
+      borderTopRightRadius: 4
+    },
+    mtitleText: {
+      textAlign: 'center',
+      color: '#333',
+      fontSize: 12,
+    },
+    mbody: {
+      paddingLeft: 10,
+      paddingRight: 10,
+      height: 100,
+      justifyContent: 'center'
+    },
+    tipsText: {
+      textAlign: 'center',
+      color: '#333',
+      fontSize: 12,
+    },
+    mfooter: {
+      paddingBottom: 15,
+      paddingLeft: 15,
+      paddingRight: 15,
+    },
+    btn2: {
+      borderColor: '#0eaaff',
+      backgroundColor: '#0eaaff',
+    },
+    btn2Text: {
+      color: '#fff'
     }
   },
   refuse: {
     container: {
       paddingTop: 40,
     },
+    label: {
+      textAlign: 'right',
+      paddingRight:  6
+    },
     redText:{
       fontSize: 12,
-      color: '#ff0000'
+      color: '#ff0000',
     }
   }
 }

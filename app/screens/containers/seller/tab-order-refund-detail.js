@@ -32,8 +32,7 @@ export default class OrderDetailScreen extends Component{
       id: _query.id,
       shopid: _query.shopid,
       ordersn: _query.ordersn,
-      ctime: _query.ctime,
-      totalAmount: _query.totalAmount
+      order: {}
     };
   }
   componentWillMount() {
@@ -83,7 +82,7 @@ export default class OrderDetailScreen extends Component{
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>退款金额</Text>
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
-                <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.totalAmount}</Text>
+                <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.data.refund.type !== 40  && this.state.order.status == 0 ? this.state.order.jxOrder.totalAmount : this.state.order.totalAmount}</Text>
               </View>
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>退款说明</Text>
@@ -92,8 +91,8 @@ export default class OrderDetailScreen extends Component{
             </View>
             <View style={[styles.common.flexDirectionRow, styles.srefundDetail.order]}>
               <View style={styles.common.flexv}>
-                <Text style={styles.srefundDetail.orderSn}>订单号：{this.state.ordersn}</Text>
-                <Text style={styles.srefundDetail.orderTime}>订单时间：{this.state.ctime}</Text>
+                <Text style={styles.srefundDetail.orderSn}>订单号：{this.state.order.orderSn}</Text>
+                <Text style={styles.srefundDetail.orderTime}>订单时间：{this.state.order.ctime}</Text>
               </View>
               <TouchableHighlight underlayColor='#f5f5f5' style={styles.srefundDetail.or} onPress={() => {this._toOrderDetail()}}><Text style={styles.srefundDetail.ortxt}>查看详情</Text></TouchableHighlight>
             </View>
@@ -199,6 +198,17 @@ export default class OrderDetailScreen extends Component{
       this.setState({loadingVisible: false, data: data, bodyShow: true});
       this.props.navigation.setParams({title: data.refund.statusName});
     });
+    fetch(Config.JAVAAPI + `shop/wap/client/order/detail?orderSn=${this.state.ordersn}&token=${token}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then((data) => {
+        if (data.code == 1) {
+            this.setState({order: data.obj});
+        } else {
+          UIToast(data.message || '加载数据失败');
+        }
+    });
   }
   _toOrderDetail = () => {
     this.props.navigation.navigate('SellerOrderDetail', {
@@ -212,7 +222,7 @@ export default class OrderDetailScreen extends Component{
       shopid: this.state.shopid,
       ordersn: this.state.ordersn,
       type: this.state.data.refund.orderType == 40 ? 0 : 1,
-      totalAmount: this.state.totalAmount
+      fromdetail: true
     });
   }
   _pay = (t) => {

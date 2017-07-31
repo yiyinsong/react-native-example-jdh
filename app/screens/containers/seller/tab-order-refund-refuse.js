@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
+  TextInput,
   ScrollView,
   Image,
   Picker,
   TouchableHighlight,
   InteractionManager,
+  DeviceEventEmitter
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -21,6 +23,10 @@ export default class OrderDetailScreen extends Component{
   	this.state = {
       ordersn: _query.ordersn,
       type: _query.type,
+      id: _query.id,
+      refundtype: _query.refundtype || 1,
+      fromdetail: _query.fromdetail || false,
+      shopid: _query.shopid,
       selectReason: {
         id: '',
         name: '请选择'
@@ -35,11 +41,12 @@ export default class OrderDetailScreen extends Component{
         {id: 7, name: '货物已在物流中'},
         {id: 8, name: '商品已备好货'},
         {id: 99, name: '其他'}
-      ]
+      ],
+      desc: ''
     };
   }
   componentWillMount() {
-    this.setState({loadingVisible: true});
+    this.props.navigation.setParams({title: this.state.refundtype == 1 ? '拒绝退款' : '拒绝退货退款'});
     InteractionManager.runAfterInteractions(() => {
       ScreenInit.checkLogin(this);
     })
@@ -69,6 +76,17 @@ export default class OrderDetailScreen extends Component{
                 </Picker>
               </View>
             </View>
+            <View style={[styles.common.flexDirectionRow, styles.deliver.item]}>
+              <Text style={[styles.deliver.label, styles.refuse.label]}><Text style={styles.refuse.redText}> </Text>拒绝说明</Text>
+              <View style={[styles.common.flex, styles.deliver.itemBlock, styles.deliver.multi]}>
+                <TextInput onChangeText={text=>{this.setState({desc: text})}}
+                placeholder="请填写详细地址" style={[styles.common.flex, styles.deliver.textarea]}
+                value={this.state.desc}
+                underlineColorAndroid="transparent"
+                multiline={true}
+                numberOfLines={4}/>
+              </View>
+            </View>
           </View>
         </ScrollView>
         <View style={styles.common.flexDirectionRow}>
@@ -93,15 +111,44 @@ export default class OrderDetailScreen extends Component{
     }
   }
   _confirm = () => {
-    this.props.navigation.dispatch({
-      key: 'SellerOrderDetail',
-      type: 'ReplaceMultiRoute',
-      replaceNumber: 2,
-      routeName: 'SellerOrderDetail',
-      params: {
-        ordersn: this.state.ordersn,
-        type: this.state.type
-      },
+    let _state = this.state;
+    let _reg = /[^\a-\z\A-\Z0-9\u4E00-\u9FA5\@\.]/g;
+    if(_state.selectReason.id == '') {
+      UIToast('请选择拒绝原因');
+      return;
+    }
+  if(_state.desc !== '' && _reg.test(_state.desc)) {
+      UIToast('拒绝原因只能由英文数字中文组成');
+      return;
+    }
+    let _refundUrl = '';
+    if(this.state.refundtype == 1) {
+        _refundUrl = Config.JAVAAPI + 'shop/mobile/refund/decideRefund';
+    } else {
+        _refundUrl = Config.JAVAAPI + 'shop/mobile/refund/decideReturnGoods';
+    }
+    fetch(_refundUrl + `?id=${this.state.id}&agree=-1&refuseReason=${this.state.selectReason.id}&refundDetails=${this.state.desc}&img1=&img2=&img3=&img4=&img5=&token=${token}`, {
+      method: 'GET'
+    })
+    .then( response => response.json() )
+    .then( (data) => {
+      if(data.code == 1) {
+        DeviceEventEmitter.emit('sellerOrderUpdate');
+        this.props.navigation.dispatch({
+          key: 'SellerRefundDetail',
+          type: 'ReplaceMultiRoute',
+          replaceNumber: _state.fromdetail ? 3 : 2,
+          routeName: 'SellerRefundDetail',
+          params: {
+            id: this.state.id,
+            shopid: this.state.shopid,
+            ordersn: this.state.ordersn,
+            type: this.state.type,
+          },
+        });
+      } else {
+        UIToast('提交失败');
+      }
     });
   }
   _cancel = () => {
