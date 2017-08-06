@@ -14,7 +14,7 @@ import styles from '../../../css/styles';
 
 
 export default TabNavigator({
-    '概览': {
+    'SellerHome': {
       screen: SHomeScreen,
       navigationOptions: {
         header: null,
@@ -26,7 +26,7 @@ export default TabNavigator({
         ),
       }
     },
-    '商品管理': {
+    'SellerGoods': {
       screen: SGoodsScreen,
       navigationOptions: {
         headerTitle: '商品管理',
@@ -38,7 +38,7 @@ export default TabNavigator({
         ),
       }
     },
-    '订单管理': {
+    'SellerOrder': {
       screen: SOrderScreen,
       navigationOptions: {
         headerTitle: '订单管理',
@@ -56,6 +56,7 @@ export default TabNavigator({
   swipeEnabled: false,
   lazy: true,
   scrollEnabled: false,
+  backBehavior: 'none',
   tabBarOptions: {
     activeTintColor: '#0589ce',
     inactiveTintColor: '#666666',

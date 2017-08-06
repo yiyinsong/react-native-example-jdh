@@ -57,12 +57,12 @@ export default {
     screen: SellerScreen,
     navigationOptions: ({navigation}) => ({
       headerStyle: {
-        backgroundColor: '#0eaaff',
+        backgroundColor: '#0386fc',
         color: '#fff',
         height: 65,
         elevation: 0,
         shadowOpacity: 0,
-        borderBottomColor: '#0eaaff',
+        borderBottomColor: '#0386fc',
         borderBottomWidth: 1,
         paddingTop: 20,
       },

@@ -6,9 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
   InteractionManager,
-  Modal
+  Modal,
+  DeviceEventEmitter
 } from 'react-native';
-
 
 import styles from '../../../css/styles';
 
@@ -270,13 +270,15 @@ export default class SellerHomeScreen extends Component {
                     <Text style={ styles.shome.dtName }>自建商品订单</Text>
                   </View>
                   <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
-                    <Text style={ styles.shome.dtMore }>查看更多</Text>
+                    <TouchableOpacity activeOpacity={.8} onPress={() => {this._toOrder(0, 0)}}>
+                      <Text style={ styles.shome.dtMore }>查看更多</Text>
+                    </TouchableOpacity>
                     <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
                   </View>
                 </View>
                 <View style={ [styles.common.flex, styles.shome.dd] }>
-                  <View style={ styles.shome.order }>
-                    <View style={ styles.shome.orderContent }>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 1)}>
+                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os1.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待付款</Text>
                       { this.state.orderDataZJ['10'] > 0
@@ -286,8 +288,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 3)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os2.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待发货</Text>
@@ -298,8 +300,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 4)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os3.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待收货</Text>
@@ -310,8 +312,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 8)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os4.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>退货退款</Text>
@@ -322,7 +324,7 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
               <View style={ styles.shome.dl }>
@@ -332,12 +334,14 @@ export default class SellerHomeScreen extends Component {
                     <Text style={ styles.shome.dtName }>即采商品订单</Text>
                   </View>
                   <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
-                    <Text style={ styles.shome.dtMore }>查看更多</Text>
+                    <TouchableOpacity activeOpacity={.8} onPress={() => {this._toOrder(1, 0)}}>
+                      <Text style={ styles.shome.dtMore }>查看更多</Text>
+                    </TouchableOpacity>
                     <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
                   </View>
                 </View>
                 <View style={ [styles.common.flex, styles.shome.dd] }>
-                  <View style={ styles.shome.order }>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(1, 1)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os1.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待付款</Text>
@@ -348,8 +352,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(1, 2)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os5.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待采购</Text>
@@ -360,8 +364,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(1, 3)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os2.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待发货</Text>
@@ -372,8 +376,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(1, 4)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os3.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待收货</Text>
@@ -384,8 +388,8 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
-                  <View style={ styles.shome.order }>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(1, 8)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/icon-overview-os4.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>退货退款</Text>
@@ -396,7 +400,7 @@ export default class SellerHomeScreen extends Component {
                         : null
                       }
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             </ScrollView>
@@ -408,5 +412,9 @@ export default class SellerHomeScreen extends Component {
           </Modal>
           </View>
         );
+    }
+    _toOrder = (type, index) => {
+      DeviceEventEmitter.emit('orderTabModule', {type, index});
+      this.props.navigation.navigate('SellerOrder', {type, index});
     }
 }

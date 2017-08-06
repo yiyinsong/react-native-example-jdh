@@ -205,7 +205,7 @@ export default class ModalAddress extends Component{
               </TouchableOpacity>
               {this.state.tindex > 0 ?
               <TouchableOpacity activeOpacity={.8} style={styles.modal.address.tabItem} onPress={() => {this._tab(1)}}>
-                <Text style={[styles.modal.address.tabItemText, {maxWidth: (Utils.width-50)/5, borderBottomColor: this.state.tindex == 1 ? '#f64848' : '#fff'}]} numberOfLines={1}>{this.state.result[1] && this.state.result[1].city_name || '请选择'}</Text>
+                <Text style={[styles.modal.address.tabItemText, {maxWidth: (Utils.width-50)/5, borderBottomColor: this.state.tindex == 1 ? '#f93b31' : '#fff'}]} numberOfLines={1}>{this.state.result[1] && this.state.result[1].city_name || '请选择'}</Text>
               </TouchableOpacity>
               : null}
               {this.state.tindex > 1 ?

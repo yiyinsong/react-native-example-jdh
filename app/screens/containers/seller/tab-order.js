@@ -64,7 +64,8 @@ export default class OrderListScreen extends Component {
         activeIndex: 0,
 
         posCodeVisible: false,
-        posCodeSrc: ''
+        posCodeSrc: '',
+        bodyShow: false
       };
     }
     componentWillMount() {
@@ -74,9 +75,14 @@ export default class OrderListScreen extends Component {
         let _state = this.props.navigation.state;
         let _initType = _state.params && _state.params.type || 0;
         let _initIndex = _state.params && _state.params.index || 0;
-
-        this._getData(_initIndex);
+        if(_state.params) {
+          this._tabUpdate(_initType, _initIndex);
+        } else {
+          this._getData(_initIndex);
+        }
         this.props.navigation.setParams({type: _initType});
+        this.setState({ bodyShow: true });
+
       })
       this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
         if(this.state.type == 0) {
@@ -88,9 +94,13 @@ export default class OrderListScreen extends Component {
           });
         }
       });
+      this.listener_tab_update = DeviceEventEmitter.addListener('orderTabModule', (result) => {
+        this._tabUpdate(result.type, result.index);
+      });
     }
     componentWillUnmount() {
       this.listener_deliver_success && this.listener_deliver_success.remove();
+      this.listener_tab_update && this.listener_tab_update.remove();
     }
     _init = () => {
         //获取店铺信息
@@ -383,93 +393,97 @@ export default class OrderListScreen extends Component {
         let _orderNumJc = this.state.orderNumJc;
         return (
             <View style={[styles.common.flexv, styles.common.init]}>
-              <View style={styles.sorder.type}>
-                <View style={[styles.sorder.typeWrapper, styles.common.flexDirectionRow]}>
-                  <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 0 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(0)}}><Text style={[styles.sorder.typeText, _type == 0 ? styles.sorder.typeTextActive : null]}>自建商品</Text></TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 1 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(1)}}><Text style={[styles.sorder.typeText, _type == 1 ? styles.sorder.typeTextActive : null]}>即采商品</Text></TouchableOpacity>
-                </View>
-              </View>
-              {this.state.type == 0 ?
+              {this.state.bodyShow ?
               <View style={styles.common.flexv}>
-                <View style={styles.sorder.tab}>
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewZj">
-                    { this._renderTab(0, '全部订单', false, 0)}
-                    { this._renderTab(1, '待买家付款', _orderNumZj['10'], Utils.width/4 * .5 + 28)}
-                    { this._renderTab(2, '待确认收款', _orderNumZj['1010'], Utils.width/4 * .5 + 28)}
-                    { this._renderTab(3, '待发货', _orderNumZj['20'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(4, '已发货', _orderNumZj['30'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(5, '已收货', _orderNumZj['31'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(6, '已完成', _orderNumZj['40'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(7, '已取消', _orderNumZj['-10'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(8, '退货退款', _orderNumZj['-1'], Utils.width/4 * .5 + 20)}
-                  </ScrollView>
+                <View style={styles.sorder.type}>
+                  <View style={[styles.sorder.typeWrapper, styles.common.flexDirectionRow]}>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 0 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(0, 0)}}><Text style={[styles.sorder.typeText, _type == 0 ? styles.sorder.typeTextActive : null]}>自建商品</Text></TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 1 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(1, 0)}}><Text style={[styles.sorder.typeText, _type == 1 ? styles.sorder.typeTextActive : null]}>即采商品</Text></TouchableOpacity>
+                  </View>
                 </View>
-                <FlatList
-                  data={this.state.listZj}
-                  renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem
-                  data={item}
-                  type={_type}
-                  props={this.props}
-                  refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
-                  confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
-                      text: '是否确认已收到货款？',
-                      confirm: (arg) => {
-                        this._confirmReceipt(arg);
-                      }
-                  }, params: id})}
-                  ></OrderItem>
-                }
-                  onRefresh={false}
-                  refreshing={false}
-                  onEndReachedThreshold={2}
-                  onEndReached={() => this._loadingMore(this.state.activeIndex)}
-                  ListFooterComponent={this._flatListFooter}
-                  style={styles.common.init}/>
-              </View>
-              :
-              <View style={styles.common.flexv}>
-                <View style={styles.sorder.tab}>
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewJc">
-                    { this._renderTab(0, '全部订单', false, 0)}
-                    { this._renderTab(1, '待买家付款', _orderNumJc['0'], Utils.width/4 * .5 + 28)}
-                    { this._renderTab(2, '待采购', _orderNumJc['10'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(3, '待发货', _orderNumJc['20'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(4, '已发货', _orderNumJc['30'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(5, '已收货', _orderNumJc['31'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(6, '已完成', _orderNumJc['40'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(7, '已取消', _orderNumJc['-10'], Utils.width/4 * .5 + 15)}
-                    { this._renderTab(8, '退货退款', _orderNumJc['-1'], Utils.width/4 * .5 + 20)}
-                  </ScrollView>
+                {this.state.type == 0 ?
+                <View style={styles.common.flexv}>
+                  <View style={styles.sorder.tab}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewZj">
+                      { this._renderTab(0, '全部订单', false, 0)}
+                      { this._renderTab(1, '待买家付款', _orderNumZj['10'], Utils.width/4 * .5 + 28)}
+                      { this._renderTab(2, '待确认收款', _orderNumZj['1010'], Utils.width/4 * .5 + 28)}
+                      { this._renderTab(3, '待发货', _orderNumZj['20'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(4, '已发货', _orderNumZj['30'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(5, '已收货', _orderNumZj['31'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(6, '已完成', _orderNumZj['40'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(7, '已取消', _orderNumZj['-10'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(8, '退货退款', _orderNumZj['-1'], Utils.width/4 * .5 + 20)}
+                    </ScrollView>
+                  </View>
+                  <FlatList
+                    data={this.state.listZj}
+                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem
+                    data={item}
+                    type={_type}
+                    props={this.props}
+                    refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
+                    confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
+                        text: '是否确认已收到货款？',
+                        confirm: (arg) => {
+                          this._confirmReceipt(arg);
+                        }
+                    }, params: id})}
+                    ></OrderItem>
+                  }
+                    onRefresh={false}
+                    refreshing={false}
+                    onEndReachedThreshold={2}
+                    onEndReached={() => this._loadingMore(this.state.activeIndex)}
+                    ListFooterComponent={this._flatListFooter}
+                    style={styles.common.init}/>
                 </View>
-                <FlatList
-                  data={this.state.listJc}
-                  renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props} posPay={(sn) => this._posPay(sn)}></OrderItem>}
-                  onRefresh={false}
-                  refreshing={false}
-                  onEndReachedThreshold={2}
-                  onEndReached={() => this._loadingMore(this.state.activeIndex)}
-                  ListFooterComponent={this._flatListFooter}
-                  style={styles.common.init}/>
-              </View>}
-              <Loading visible={this.state.loadingVisible}></Loading>
-              <ModalConfirm keys={1}></ModalConfirm>
-              <Modal
-                visible={this.state.posCodeVisible}
-                animationType={'fade'}
-                transparent = {true}
-                onRequestClose={()=> this.setState({posCodeVisible: false})}
-            >
-            <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
-              <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
-            </TouchableOpacity>
-            </Modal>
+                :
+                <View style={styles.common.flexv}>
+                  <View style={styles.sorder.tab}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewJc">
+                      { this._renderTab(0, '全部订单', false, 0)}
+                      { this._renderTab(1, '待买家付款', _orderNumJc['0'], Utils.width/4 * .5 + 28)}
+                      { this._renderTab(2, '待采购', _orderNumJc['10'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(3, '待发货', _orderNumJc['20'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(4, '已发货', _orderNumJc['30'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(5, '已收货', _orderNumJc['31'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(6, '已完成', _orderNumJc['40'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(7, '已取消', _orderNumJc['-10'], Utils.width/4 * .5 + 15)}
+                      { this._renderTab(8, '退货退款', _orderNumJc['-1'], Utils.width/4 * .5 + 20)}
+                    </ScrollView>
+                  </View>
+                  <FlatList
+                    data={this.state.listJc}
+                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props} posPay={(sn) => this._posPay(sn)}></OrderItem>}
+                    onRefresh={false}
+                    refreshing={false}
+                    onEndReachedThreshold={2}
+                    onEndReached={() => this._loadingMore(this.state.activeIndex)}
+                    ListFooterComponent={this._flatListFooter}
+                    style={styles.common.init}/>
+                </View>}
+                <Loading visible={this.state.loadingVisible}></Loading>
+                <ModalConfirm keys={1}></ModalConfirm>
+                <Modal
+                  visible={this.state.posCodeVisible}
+                  animationType={'fade'}
+                  transparent = {true}
+                  onRequestClose={()=> this.setState({posCodeVisible: false})}
+              >
+              <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
+                <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
+              </TouchableOpacity>
+              </Modal>
             </View>
+            : null}
+          </View>
         );
     }
-    _selectType = (t) => {
+    _selectType = (t, index) => {
       if(this.state.type == t) return;
       this._reset();
-      this.setState({activeIndex: 0, type: t});
+      this.setState({activeIndex: index, type: t});
       this.props.navigation.setParams({type: t});
       requestAnimationFrame(()=>{
         if(t == 0) {
@@ -478,6 +492,19 @@ export default class OrderListScreen extends Component {
           this.refs.scrollViewJc.scrollTo(0, 0);
         }
         this._getData(0);
+      });
+    }
+    _tabUpdate = (t, index) => {
+      this._reset();
+      this.setState({activeIndex: index, type: t});
+      this.props.navigation.setParams({type: t});
+      requestAnimationFrame(()=>{
+        if(t == 0) {
+          this.refs.scrollViewZj.scrollTo({x: Utils.width / 4 * (index-1), y: 0, animated: false});
+        } else {
+          this.refs.scrollViewJc.scrollTo({x: Utils.width / 4 * (index-1), y: 0, animated: false});
+        }
+        this._getData(index);
       });
     }
     _flatListFooter = () => {

@@ -108,9 +108,9 @@ export default {
       },
       confirm: {
         borderRadius: 2,
-        backgroundColor: '#fe5e5e',
+        backgroundColor: '#f93b31',
         borderWidth: 1,
-        borderColor: '#fe5e5e',
+        borderColor: '#f93b31',
         paddingTop: 6,
         paddingBottom: 6,
         flex: 1,
@@ -357,7 +357,7 @@ export default {
       fontSize: 8,
       textAlign: 'center',
       lineHeight: 13,
-      color: '#fe0000'
+      color: '#f93b31'
     },
     userHeadIcon: {
       width: 65,
@@ -457,7 +457,7 @@ export default {
     },
     storeDataIe: {
       fontSize: 10,
-      color: '#999',
+      color: '#666',
       textAlign: 'center',
       marginTop: 5
     },
@@ -468,11 +468,11 @@ export default {
     order: {
       flex: 1,
       alignItems: 'center',
-      marginTop: 25,
-      marginBottom: 25
+      paddingTop: 25,
+      paddingBottom: 25
     },
     orderContent: {
-      position: 'relative',
+
       alignItems: 'center'
     },
     orderIcon: {
@@ -490,7 +490,7 @@ export default {
       right: 0,
       width: 14,
       height: 14,
-      backgroundColor: '#ff5252',
+      backgroundColor: '#f93b31',
       borderRadius: 7,
     },
     orderBadgeText: {
@@ -519,7 +519,7 @@ export default {
       borderRadius: 6,
       width: 12,
       height: 12,
-      backgroundColor: '#ff7d15',
+      backgroundColor: '#f93b31',
       right: -3,
       top: -3,
       zIndex: 1
@@ -573,7 +573,7 @@ export default {
       color: '#999'
     },
     colorOrg: {
-      color: '#ff7d15'
+      color: '#f93b31'
     },
     addrArrow: {
       width: 7,
@@ -586,7 +586,7 @@ export default {
       marginLeft: 50,
       marginRight: 50,
       borderWidth: 1,
-      borderColor: '#ff7d15',
+      borderColor: '#f93b31',
       backgroundColor: '#fff',
       paddingTop: 15,
       paddingBottom: 15,
@@ -594,7 +594,7 @@ export default {
     },
     logoutText: {
       textAlign: 'center',
-      color: '#ff7d15'
+      color: '#f93b31'
     }
   },
   //卖家地址管理
@@ -613,7 +613,7 @@ export default {
     },
     listDtTextActive: {
       fontSize: 12,
-      color: '#ff7d15'
+      color: '#f93b31'
     },
     listDd: {
       borderTopWidth: 10,
@@ -626,7 +626,7 @@ export default {
       padding: 10,
     },
     footerBtn: {
-      backgroundColor: '#0eaaff',
+      backgroundColor: '#0386fc',
       color: '#fff',
       fontSize: 14,
       textAlign: 'center',
@@ -743,10 +743,10 @@ export default {
       borderBottomColor: '#fff'
     },
     tabActive: {
-      borderBottomColor: '#388bff'
+      borderBottomColor: '#0386fc'
     },
     tabActiveText: {
-      color: '#388bff'
+      color: '#0386fc'
     },
     tabText: {
       textAlign: 'center',
@@ -755,7 +755,7 @@ export default {
     },
     tabBadge: {
       position: 'absolute',
-      backgroundColor: '#eb0000',
+      backgroundColor: '#f93b31',
       borderRadius: 5,
       top: -2,
       paddingLeft: 4,
@@ -788,7 +788,7 @@ export default {
     },
     typeWrapper: {
       borderWidth: 1,
-      borderColor: '#0eaaff',
+      borderColor: '#0386fc',
       borderRadius: 2
     },
     typeItem: {
@@ -798,11 +798,11 @@ export default {
     },
     typeText: {
       textAlign: 'center',
-      color: '#0eaaff',
+      color: '#0386fc',
       flex: 1
     },
     typeItemActive: {
-      backgroundColor: '#0eaaff',
+      backgroundColor: '#0386fc',
     },
     typeTextActive: {
       color: '#fff'
@@ -835,7 +835,7 @@ export default {
       flex: 1,
       fontSize: 12,
       textAlign: 'right',
-      color: '#f23030'
+      color: '#f93b31'
     },
     itemBody: {
       padding: 10,
@@ -866,7 +866,7 @@ export default {
       flexDirection: 'row'
     },
     infoPrice: {
-      color: '#eb0000',
+      color: '#f93b31',
       flex: 1
     },
     infoNum: {
@@ -916,15 +916,15 @@ export default {
       lineHeight: 18
     },
     refundCountSmall: {
-      color: '#cf0000'
+      color: '#f93b31'
     },
     refundCountBig: {
-      color: '#cf0000',
+      color: '#f93b31',
       fontSize: 16
     },
     totalCount: {
       textAlign: 'right',
-      color: '#cf0000',
+      color: '#f93b31',
       fontSize: 12,
       paddingLeft: 10,
       paddingRight: 10,
@@ -936,7 +936,7 @@ export default {
       marginLeft: 10
     },
     primarySolid: {
-      backgroundColor: '#0eaaff',
+      backgroundColor: '#0386fc',
       paddingTop: 10,
       paddingBottom: 10
     },
@@ -948,8 +948,8 @@ export default {
     primary: {
       borderWidth: 1,
       borderRadius: 3,
-      borderColor: '#1eb0ff',
-      color: '#1eb0ff',
+      borderColor: '#0386fc',
+      color: '#0386fc',
       paddingTop: 3,
       paddingLeft: 15,
       paddingBottom: 3,
@@ -959,8 +959,8 @@ export default {
     danger: {
       borderWidth: 1,
       borderRadius: 3,
-      borderColor: '#f23030',
-      color: '#f23030',
+      borderColor: '#f93b31',
+      color: '#f93b31',
       paddingTop: 3,
       paddingLeft: 15,
       paddingBottom: 3,
@@ -997,7 +997,7 @@ export default {
       marginRight: 30,
       marginTop: 40,
       marginBottom: 20,
-      backgroundColor: '#f64848',
+      backgroundColor: '#f93b31',
       color: '#fff',
       paddingTop: 12,
       paddingBottom: 12,
@@ -1045,7 +1045,7 @@ export default {
       width: 50
     },
     send: {
-      backgroundColor: '#fe5e5e',
+      backgroundColor: '#f93b31',
       color: '#fff',
       fontSize: 12,
       borderRadius: 4,
@@ -1099,7 +1099,7 @@ export default {
       top: 15
     },
     logCircleActive: {
-      backgroundColor: '#0eaaff',
+      backgroundColor: '#0386fc',
       borderColor: 'rgba(4, 170, 255, .3)'
     },
     logRight: {
@@ -1119,7 +1119,7 @@ export default {
       marginBottom: 5
     },
     logTextActive: {
-      color: '#0eaaff',
+      color: '#0386fc',
     },
     block: {
       backgroundColor: '#fff',
@@ -1176,7 +1176,7 @@ export default {
       fontSize: 12
     },
     ddr: {
-      color: '#ff0000',
+      color: '#f93b31',
       fontSize: 12,
       textAlign: 'right'
     },
@@ -1211,15 +1211,27 @@ export default {
       fontSize: 12,
       color: '#333',
     },
+    img: {
+      width: 60,
+      height: 60,
+      marginRight: 5,
+      marginBottom: 5,
+      borderWidth: 1,
+      borderColor: '#ddd'
+    },
+    imgContent: {
+      flex: 1,
+      flexWrap: 'wrap',
+    }
   },
   footerBtn: {
     b1: {
-      backgroundColor: '#fe5e5e',
+      backgroundColor: '#f93b31',
       justifyContent: 'center',
       alignItems: 'center',
       height: 39,
       borderTopWidth: 1,
-      borderTopColor: '#fe5e5e'
+      borderTopColor: '#f93b31'
     },
     b2: {
       backgroundColor: '#fff',
@@ -1234,7 +1246,7 @@ export default {
       fontSize: 12
     },
     text2: {
-      color: '#fe5e5e',
+      color: '#f93b31',
       fontSize: 12
     }
   },
@@ -1394,14 +1406,17 @@ export default {
       color: '#333',
       fontSize: 12,
     },
+    checkbox: {
+      marginBottom: 5
+    },
     mfooter: {
       paddingBottom: 15,
       paddingLeft: 15,
       paddingRight: 15,
     },
     btn2: {
-      borderColor: '#0eaaff',
-      backgroundColor: '#0eaaff',
+      borderColor: '#0386fc',
+      backgroundColor: '#0386fc',
     },
     btn2Text: {
       color: '#fff'
@@ -1417,7 +1432,31 @@ export default {
     },
     redText:{
       fontSize: 12,
-      color: '#ff0000',
+      color: '#f93b31',
+    }
+  },
+  form: {
+    checkbox: {
+      borderWidth: 1,
+      borderColor: '#aaa',
+      width: 12,
+      height: 12,
+      marginRight: 5,
+      borderRadius: 2,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    checked: {
+      borderColor: '#0386fc'
+    },
+    checkboxActive: {
+      width: 5,
+      height: 5,
+      backgroundColor: '#0386fc'
+    },
+    checkboxText: {
+      fontSize: 12,
+      color: '#333'
     }
   }
 }
