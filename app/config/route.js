@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   TouchableOpacity,
-  Image
+  Image,
+  View
 } from 'react-native';
 
 import HomeScreen from '../screens/index';
@@ -72,8 +73,8 @@ export default {
           alignSelf: 'center',
           fontWeight: '100'
       },
-      headerLeft: null,
-      headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }}>
+      headerLeft: (navigation.state.index == 2 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
+      headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
             <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
         </TouchableOpacity> : null)
     })

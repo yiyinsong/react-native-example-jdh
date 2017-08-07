@@ -1,11 +1,31 @@
+const BACKGROUNDCOLOR_GRAY = '#f5f5f5';
+const BACKGROUNDCOLOR_WHITE = '#fff';
+
+const COLOR_RED = '#f93b31';
+const COLOR_BLUE = '#0386fc';
+const COLOR_BLACK = '#000';
+const COLOR_A = '#aaa';
+const COLOR_D = '#ddd';
+const COLOR_3 = '#333';
+const COLOR_6 = '#666';
+const COLOR_9 = '#999';
+const COLOR_E = '#eee';
+
+const FONT_8 = 8;
+const FONT_10 = 10;
+const FONT_12 = 12;
+const FONT_14 = 14;
+const FONT_16 = 16;
+const FONT_18 = 18;
+
 export default {
   //公用样式
   common: {
     init: {
-      backgroundColor: '#f5f5f5'
+      backgroundColor: BACKGROUNDCOLOR_GRAY
     },
     initWhite: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
     },
     flex: {
       flex: 1,
@@ -58,17 +78,17 @@ export default {
       height: 20
     },
     headerGray: {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
       height: 65,
       elevation: 0,
       shadowOpacity: 0,
-      borderBottomColor: '#ddd',
+      borderBottomColor: COLOR_D,
       borderBottomWidth: 1,
       paddingTop: 20,
     },
     loadingTips: {
-      color: '#999',
-      fontSize: 12,
+      color: COLOR_9,
+      fontSize: FONT_12,
       paddingTop: 5,
       paddingBottom: 10,
       textAlign: 'center'
@@ -92,7 +112,7 @@ export default {
     },
     confirm: {
       content: {
-        backgroundColor: '#fff',
+        backgroundColor: BACKGROUNDCOLOR_WHITE,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
@@ -103,29 +123,29 @@ export default {
       },
       text: {
         textAlign: 'center',
-        fontSize: 14,
+        fontSize: FONT_14,
         marginBottom: 20
       },
       confirm: {
         borderRadius: 2,
-        backgroundColor: '#f93b31',
+        backgroundColor: COLOR_RED,
         borderWidth: 1,
-        borderColor: '#f93b31',
+        borderColor: COLOR_RED,
         paddingTop: 6,
         paddingBottom: 6,
         flex: 1,
         marginRight: 8
       },
       confirmText: {
-        color: '#fff',
-        fontSize: 12,
+        color: BACKGROUNDCOLOR_WHITE,
+        fontSize: FONT_12,
         textAlign: 'center'
       },
       cancel: {
         borderRadius: 2,
-        backgroundColor: '#fff',
+        backgroundColor: BACKGROUNDCOLOR_WHITE,
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: COLOR_D,
         paddingTop: 6,
         paddingBottom: 6,
         textAlign: 'center',
@@ -133,14 +153,14 @@ export default {
         marginLeft: 8
       },
       cancelText: {
-        color: '#333',
-        fontSize: 12,
+        color: COLOR_3,
+        fontSize: FONT_12,
         textAlign: 'center'
       },
     },
     prompt: {
       content: {
-        backgroundColor: '#fff',
+        backgroundColor: BACKGROUNDCOLOR_WHITE,
         padding: 20,
         borderRadius: 4
       },
@@ -157,27 +177,27 @@ export default {
         bottom: 45,
       },
       errorText: {
-        color: '#fff',
-        fontSize: 10,
+        color: BACKGROUNDCOLOR_WHITE,
+        fontSize: FONT_10,
         textAlign: 'center',
-        backgroundColor: '#000',
+        backgroundColor: COLOR_BLACK,
         borderRadius: 3,
         paddingTop: 3,
         paddingBottom: 3,
       },
       text: {
-        fontSize: 12,
-        color: '#333',
+        fontSize: FONT_12,
+        color: COLOR_3,
         textAlign: 'center'
       },
       input: {
         marginTop: 10,
         borderWidth: 1,
-        borderColor: '#eee',
+        borderColor: COLOR_E,
         height: 30,
         textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: 12
+        fontSize: FONT_12
       },
       triangle: {
         width: 0,
@@ -187,13 +207,13 @@ export default {
         borderRightWidth: 3,
         borderRightColor: 'transparent',
         borderTopWidth: 5,
-        borderTopColor: '#000',
+        borderTopColor: COLOR_BLACK,
         alignSelf: 'center'
       }
     },
     address: {
       content: {
-        backgroundColor: '#fff'
+        backgroundColor: BACKGROUNDCOLOR_WHITE
       },
       title: {
         padding: 10,
@@ -201,7 +221,7 @@ export default {
       },
       titleText: {
         textAlign: 'center',
-        fontSize: 14,
+        fontSize: FONT_14,
         paddingLeft: 20,
         paddingRight: 20
       },
@@ -215,8 +235,8 @@ export default {
         height: 24
       },
       itemText: {
-        fontSize: 12,
-        color: '#666'
+        fontSize: FONT_12,
+        color: COLOR_6
       },
       itemImg: {
         width: 12,
@@ -233,20 +253,20 @@ export default {
       },
       tab: {
         borderBottomWidth: 1,
-        borderBottomColor: '#eee'
+        borderBottomColor: COLOR_E
       },
       tabItem: {
-        fontSize: 12,
-        color: '#666',
+        fontSize: FONT_12,
+        color: COLOR_6,
         paddingLeft: 10,
 
       },
       tabItemText: {
-        fontSize: 12,
-        color: '#666',
+        fontSize: FONT_12,
+        color: COLOR_6,
         paddingBottom: 5,
         borderBottomWidth: 2,
-        borderBottomColor: '#fff'
+        borderBottomColor: BACKGROUNDCOLOR_WHITE
       },
       svc: {
         paddingTop: 5,
@@ -268,29 +288,29 @@ export default {
   //买家买家入口
   entrance: {
     wrapper: {
-      backgroundColor: '#fff'
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     h1: {
-      fontSize: 18,
+      fontSize: FONT_18,
       textAlign: 'center',
       marginTop: 50,
-      color: '#000',
+      color: COLOR_3,
     },
     h5: {
-      fontSize: 11,
+      fontSize: FONT_12,
       textAlign: 'center',
       marginTop: 10,
-      color: '#999',
+      color: COLOR_9,
     },
     icon: {
       resizeMode: 'contain',
       alignSelf: 'center'
     },
     iconText: {
-      color: '#666',
+      color: COLOR_6,
       textAlign: 'center',
       marginTop: 5,
-      fontSize: 12
+      fontSize: FONT_12
     },
     entr: {
       marginTop: 100,
@@ -304,7 +324,7 @@ export default {
     head: {
       position: 'relative',
       paddingTop: 20,
-      backgroundColor: '#0ea7fa',
+      backgroundColor: COLOR_BLUE,
     },
     headContent: {
       position: 'absolute',
@@ -315,10 +335,7 @@ export default {
     },
     userBlock: {
       flex: 1,
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingLeft: 15,
-      paddingRight: 15,
+      padding: 10,
       flexDirection: 'row',
     },
     userBlockLeft: {
@@ -332,8 +349,8 @@ export default {
       resizeMode: 'contain'
     },
     userNavText: {
-      color: '#fff',
-      fontSize: 12
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_12
     },
     userNavToMess: {
       width: 20,
@@ -348,16 +365,16 @@ export default {
       width: 14,
       height: 14,
       borderRadius: 7,
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       position: 'absolute',
       top: -4,
       right: -4
     },
     badgeText: {
-      fontSize: 8,
+      fontSize: FONT_8,
       textAlign: 'center',
       lineHeight: 13,
-      color: '#f93b31'
+      color: COLOR_RED
     },
     userHeadIcon: {
       width: 65,
@@ -368,8 +385,8 @@ export default {
       paddingLeft: 10
     },
     userName: {
-      fontSize: 14,
-      color: '#fff'
+      fontSize: FONT_14,
+      color: BACKGROUNDCOLOR_WHITE
     },
     idTab: {
       position: 'relative',
@@ -382,7 +399,7 @@ export default {
       textAlignVertical: 'center',
       width: 81,
       height: 25,
-      fontSize: 12
+      fontSize: FONT_12
     },
     idTabImg: {
       width: 81,
@@ -406,12 +423,12 @@ export default {
       alignItems: 'flex-end'
     },
     dl: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       marginBottom: 10
     },
     dt: {
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       padding: 10
     },
     dtlIcon: {
@@ -420,12 +437,12 @@ export default {
       marginRight: 5
     },
     dtName: {
-      fontSize: 12,
-      color: '#000'
+      fontSize: FONT_12,
+      color: COLOR_3
     },
     dtMore: {
-      fontSize: 12,
-      color: '#999',
+      fontSize: FONT_12,
+      color: COLOR_9,
       marginRight: 3
     },
     arrowRightBlack: {
@@ -438,11 +455,11 @@ export default {
       marginLeft: 5,
       marginRight: 5,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee'
+      borderBottomColor: COLOR_E
     },
     storeDataItem: {
       borderRightWidth: 1,
-      borderRightColor: '#eee',
+      borderRightColor: COLOR_E,
       flex: 1,
       marginTop: 10,
       marginBottom: 10,
@@ -450,14 +467,14 @@ export default {
       paddingBottom: 5
     },
     storeDataIs: {
-      fontSize: 12,
-      color: '#000',
+      fontSize: FONT_12,
+      color: COLOR_3,
       fontWeight: '500',
       textAlign: 'center'
     },
     storeDataIe: {
-      fontSize: 10,
-      color: '#666',
+      fontSize: FONT_10,
+      color: COLOR_6,
       textAlign: 'center',
       marginTop: 5
     },
@@ -480,8 +497,8 @@ export default {
       height: 20
     },
     orderText: {
-      fontSize: 12,
-      color: '#091c2f',
+      fontSize: FONT_12,
+      color: COLOR_3,
       marginTop: 5
     },
     orderBadge: {
@@ -490,12 +507,12 @@ export default {
       right: 0,
       width: 14,
       height: 14,
-      backgroundColor: '#f93b31',
+      backgroundColor: COLOR_RED,
       borderRadius: 7,
     },
     orderBadgeText: {
-      color: '#fff',
-      fontSize: 8,
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_8,
       textAlign: 'center',
       width: 14,
       height: 14,
@@ -519,43 +536,43 @@ export default {
       borderRadius: 6,
       width: 12,
       height: 12,
-      backgroundColor: '#f93b31',
+      backgroundColor: COLOR_RED,
       right: -3,
       top: -3,
       zIndex: 1
     },
     messBadgeText: {
       textAlign: 'center',
-      color: '#fff',
-      fontSize: 8
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_8
     },
     messIcon: {
       width: 20,
       height: 20
     },
     storeInfoWrapper: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       margin: 10,
       paddingLeft: 10,
       paddingRight: 10
     },
     storeInfoItemLeft: {
       textAlign: 'left',
-      color: '#000',
-      fontSize: 16
+      color: COLOR_3,
+      fontSize: FONT_16
     },
     storeInfoItemRight: {
       textAlign: 'right',
-      color: '#999'
+      color: COLOR_9
     },
     storeInfoItem: {
       paddingTop: 15,
       paddingBottom: 15,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee'
+      borderBottomColor: COLOR_E
     },
     address: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       marginTop: 10,
       marginBottom: 10,
       padding: 10
@@ -566,14 +583,14 @@ export default {
       marginRight: 5
     },
     addrTitle: {
-      color: '#000',
-      fontSize: 16
+      color: COLOR_3,
+      fontSize: FONT_16
     },
     addrText: {
-      color: '#999'
+      color: COLOR_9
     },
     colorOrg: {
-      color: '#f93b31'
+      color: COLOR_RED
     },
     addrArrow: {
       width: 7,
@@ -586,49 +603,49 @@ export default {
       marginLeft: 50,
       marginRight: 50,
       borderWidth: 1,
-      borderColor: '#f93b31',
-      backgroundColor: '#fff',
+      borderColor: COLOR_RED,
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       paddingTop: 15,
       paddingBottom: 15,
       borderRadius: 4
     },
     logoutText: {
       textAlign: 'center',
-      color: '#f93b31'
+      color: COLOR_RED
     }
   },
   //卖家地址管理
   saddr: {
     listDl: {
-      backgroundColor: '#fff'
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     listDt: {
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       padding: 10
     },
     listDtText: {
-      fontSize: 12,
-      color: '#999'
+      fontSize: FONT_12,
+      color: COLOR_9
     },
     listDtTextActive: {
-      fontSize: 12,
-      color: '#f93b31'
+      fontSize: FONT_12,
+      color: COLOR_RED
     },
     listDd: {
       borderTopWidth: 10,
-      borderTopColor: '#f5f5f5',
+      borderTopColor: BACKGROUNDCOLOR_GRAY,
     },
     footer: {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       padding: 10,
     },
     footerBtn: {
-      backgroundColor: '#0386fc',
-      color: '#fff',
-      fontSize: 14,
+      backgroundColor: COLOR_BLUE,
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_14,
       textAlign: 'center',
       paddingTop: 10,
       paddingBottom: 10,
@@ -636,32 +653,32 @@ export default {
     },
     item: {
       borderBottomWidth: 10,
-      borderBottomColor: '#f5f5f5'
+      borderBottomColor: BACKGROUNDCOLOR_GRAY
     },
     itemTop: {
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       paddingLeft: 10,
       paddingTop: 10,
       paddingRight: 10,
       paddingBottom: 5
     },
     itemUser: {
-      fontSize: 14,
-      color: '#333'
+      fontSize: FONT_14,
+      color: COLOR_3
     },
     itemAddr: {
-      fontSize: 12,
-      color: '#999',
+      fontSize: FONT_12,
+      color: COLOR_9,
       paddingLeft: 10,
       paddingBottom: 10,
       paddingRight: 10
     },
     itemBottom: {
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       padding: 10,
     },
     itemIcon: {
@@ -673,21 +690,21 @@ export default {
       marginLeft: 20
     },
     itemBtnText: {
-      fontSize: 12,
-      color: '#999'
+      fontSize: FONT_12,
+      color: COLOR_9
     },
     add: {
-      backgroundColor: '#fff'
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     group: {
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       paddingLeft: 10,
       paddingRight: 10
     },
     addLabel: {
-      fontSize: 12,
-      color: '#999',
+      fontSize: FONT_12,
+      color: COLOR_9,
     },
     addAbsolute: {
       padding: 0,
@@ -698,11 +715,11 @@ export default {
     },
     addFooter: {
       borderTopWidth: 0,
-      backgroundColor: '#fff'
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     input: {
-      fontSize: 12,
-      color: '#333',
+      fontSize: FONT_12,
+      color: COLOR_3,
       margin: 0,
       padding: 0
     }
@@ -715,47 +732,47 @@ export default {
       marginLeft: 10,
       marginRight: 10,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       paddingTop: 10,
       paddingBottom: 10
     },
     moreName: {
-      color: '#999',
-      fontSize: 12
+      color: COLOR_9,
+      fontSize: FONT_12
     },
     moreNum: {
-      fontSize: 14,
+      fontSize: FONT_14,
       fontWeight: '700',
-      color: '#333'
+      color: COLOR_3
     }
   },
   sorder: {
     tab: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       height: 50,
       borderBottomWidth: 1,
-      borderBottomColor: '#f1f1f1'
+      borderBottomColor: COLOR_E
     },
     tabItem: {
       position: 'relative',
       justifyContent: 'center',
       borderBottomWidth: 1,
-      borderBottomColor: '#fff'
+      borderBottomColor: BACKGROUNDCOLOR_WHITE
     },
     tabActive: {
-      borderBottomColor: '#0386fc'
+      borderBottomColor: COLOR_BLUE
     },
     tabActiveText: {
-      color: '#0386fc'
+      color: COLOR_BLUE
     },
     tabText: {
       textAlign: 'center',
-      fontSize: 12,
-      color: '#333'
+      fontSize: FONT_12,
+      color: COLOR_3
     },
     tabBadge: {
       position: 'absolute',
-      backgroundColor: '#f93b31',
+      backgroundColor: COLOR_RED,
       borderRadius: 5,
       top: -2,
       paddingLeft: 4,
@@ -764,55 +781,55 @@ export default {
       justifyContent: 'center'
     },
     tabBadgeText: {
-      fontSize: 9,
-      color: '#fff',
+      fontSize: FONT_8,
+      color: BACKGROUNDCOLOR_WHITE,
     },
     tabTitleText: {
-      fontSize: 12
+      fontSize: FONT_12
     },
     tabTitleUnderLine: {
       height: 1,
-      backgroundColor: '#388bff'
+      backgroundColor: COLOR_BLUE
     },
     loadingTips: {
-      color: '#999',
-      fontSize: 12,
+      color: COLOR_9,
+      fontSize: FONT_12,
       padding: 5,
       textAlign: 'center'
     },
     type: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       paddingTop: 15,
       paddingLeft: 10,
       paddingRight: 10
     },
     typeWrapper: {
       borderWidth: 1,
-      borderColor: '#0386fc',
+      borderColor: COLOR_BLUE,
       borderRadius: 2
     },
     typeItem: {
       paddingTop: 8,
       paddingBottom: 8,
-      fontSize: 14,
+      fontSize: FONT_14,
     },
     typeText: {
       textAlign: 'center',
-      color: '#0386fc',
+      color: COLOR_BLUE,
       flex: 1
     },
     typeItemActive: {
-      backgroundColor: '#0386fc',
+      backgroundColor: COLOR_BLUE,
     },
     typeTextActive: {
-      color: '#fff'
+      color: BACKGROUNDCOLOR_WHITE
     },
   },
   sorderItem: {
     item: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       marginBottom: 10,
       paddingBottom: 10
     },
@@ -828,14 +845,14 @@ export default {
     },
     orderSn: {
       flex: 2,
-      fontSize: 12,
-      color: '#333'
+      fontSize: FONT_12,
+      color: COLOR_3
     },
     orderStatus: {
       flex: 1,
-      fontSize: 12,
+      fontSize: FONT_12,
       textAlign: 'right',
-      color: '#f93b31'
+      color: COLOR_RED
     },
     itemBody: {
       padding: 10,
@@ -854,19 +871,19 @@ export default {
       flex: 1
     },
     infoName: {
-      fontSize: 14,
+      fontSize: FONT_14,
       marginBottom: 5
     },
     infoAttr: {
-      fontSize: 14,
-      color: '#999',
+      fontSize: FONT_14,
+      color: COLOR_9,
       marginBottom: 5
     },
     infoData: {
       flexDirection: 'row'
     },
     infoPrice: {
-      color: '#f93b31',
+      color: COLOR_RED,
       flex: 1
     },
     infoNum: {
@@ -879,17 +896,17 @@ export default {
       paddingLeft: 10,
       paddingRight: 10,
       borderTopWidth: 1,
-      borderTopColor: '#ddd',
+      borderTopColor: COLOR_D,
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-end'
     },
     orderInfo: {
-      fontSize: 12,
-      color: '#aaa'
+      fontSize: FONT_12,
+      color: COLOR_A
     },
     goods: {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
       marginBottom: 1
     },
     totalText: {
@@ -897,35 +914,35 @@ export default {
       paddingLeft: 10,
       paddingRight: 10,
       textAlign: 'right',
-      fontSize: 12,
-      color: '#333'
+      fontSize: FONT_12,
+      color: COLOR_3
     },
     totalBig: {
-      fontSize: 16
+      fontSize: FONT_16
     },
     refundCount: {
       paddingBottom: 10
     },
     refundCountText: {
       textAlign: 'right',
-      fontSize: 12,
-      color: "#333",
+      fontSize: FONT_12,
+      color: COLOR_3,
       paddingLeft: 10,
       paddingRight: 10,
       paddingTop: 5,
       lineHeight: 18
     },
     refundCountSmall: {
-      color: '#f93b31'
+      color: COLOR_RED
     },
     refundCountBig: {
-      color: '#f93b31',
-      fontSize: 16
+      color: COLOR_RED,
+      fontSize: FONT_16
     },
     totalCount: {
       textAlign: 'right',
-      color: '#f93b31',
-      fontSize: 12,
+      color: COLOR_RED,
+      fontSize: FONT_12,
       paddingLeft: 10,
       paddingRight: 10,
       paddingTop: 2
@@ -936,41 +953,41 @@ export default {
       marginLeft: 10
     },
     primarySolid: {
-      backgroundColor: '#0386fc',
+      backgroundColor: COLOR_BLUE,
       paddingTop: 10,
       paddingBottom: 10
     },
     text: {
-      color: '#fff',
+      color: BACKGROUNDCOLOR_WHITE,
       textAlign: 'center',
-      fontSize: 14
+      fontSize: FONT_14
     },
     primary: {
       borderWidth: 1,
       borderRadius: 3,
-      borderColor: '#0386fc',
-      color: '#0386fc',
+      borderColor: COLOR_BLUE,
+      color: COLOR_BLUE,
       paddingTop: 3,
       paddingLeft: 15,
       paddingBottom: 3,
       paddingRight: 15,
-      fontSize: 11,
+      fontSize: FONT_12,
     },
     danger: {
       borderWidth: 1,
       borderRadius: 3,
-      borderColor: '#f93b31',
-      color: '#f93b31',
+      borderColor: COLOR_RED,
+      color: COLOR_RED,
       paddingTop: 3,
       paddingLeft: 15,
       paddingBottom: 3,
       paddingRight: 15,
-      fontSize: 11,
+      fontSize: FONT_12,
     }
   },
   login: {
     content: {
-      backgroundColor: '#fff'
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     logoImg: {
       width: 60,
@@ -985,7 +1002,7 @@ export default {
       marginLeft: 30,
       marginRight: 30,
       borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
+      borderBottomColor: COLOR_D,
       marginBottom: 10,
       height: 40
     },
@@ -997,21 +1014,21 @@ export default {
       marginRight: 30,
       marginTop: 40,
       marginBottom: 20,
-      backgroundColor: '#f93b31',
-      color: '#fff',
+      backgroundColor: COLOR_RED,
+      color: BACKGROUNDCOLOR_WHITE,
       paddingTop: 12,
       paddingBottom: 12,
       borderRadius: 4
     },
     btnText: {
-      color: '#fff',
-      fontSize: 12,
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_12,
       textAlign: 'center'
     },
     findpw: {
-      color: '#c5c5c5',
+      color: COLOR_9,
       textAlign: 'center',
-      fontSize: 12
+      fontSize: FONT_12
     },
     passwordType: {
       marginLeft: 10
@@ -1019,7 +1036,7 @@ export default {
   },
   fpw: {
     content: {
-      backgroundColor: '#fff'
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     form: {
       marginTop: 50,
@@ -1031,23 +1048,23 @@ export default {
     },
     formItem: {
       borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
+      borderBottomColor: COLOR_D,
       height: 40
     },
     input: {
       flex: 1,
-      color: '#333',
-      fontSize: 12
+      color: COLOR_3,
+      fontSize: FONT_12
     },
     label: {
-      color: '#333',
-      fontSize: 12,
+      color: COLOR_3,
+      fontSize: FONT_12,
       width: 50
     },
     send: {
-      backgroundColor: '#f93b31',
-      color: '#fff',
-      fontSize: 12,
+      backgroundColor: COLOR_RED,
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_12,
       borderRadius: 4,
       paddingTop: 8,
       paddingLeft: 10,
@@ -1056,18 +1073,18 @@ export default {
       marginLeft: 8
     },
     sendDisabled: {
-      backgroundColor: '#d8d8d8'
+      backgroundColor: COLOR_D
     }
   },
   sorderDetail: {
     log: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       paddingTop: 10,
       paddingBottom: 10,
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       marginBottom: 10
     },
     logItem: {
@@ -1082,7 +1099,7 @@ export default {
     },
     logLine: {
       width: 1,
-      backgroundColor: '#ddd',
+      backgroundColor: COLOR_D,
       marginLeft: 6
     },
     logLineActive: {
@@ -1091,7 +1108,7 @@ export default {
     logCircle: {
       width: 12,
       height: 12,
-      backgroundColor: '#ddd',
+      backgroundColor: COLOR_D,
       borderRadius: 5,
       borderWidth: 3,
       borderColor: 'rgba(255, 255, 255, 0)',
@@ -1099,13 +1116,13 @@ export default {
       top: 15
     },
     logCircleActive: {
-      backgroundColor: '#0386fc',
+      backgroundColor: COLOR_BLUE,
       borderColor: 'rgba(4, 170, 255, .3)'
     },
     logRight: {
       marginLeft: 40,
       marginRight: 10,
-      borderTopColor: '#f5f5f5',
+      borderTopColor: BACKGROUNDCOLOR_GRAY,
       borderTopWidth: 1,
       paddingTop: 10,
       paddingBottom: 5
@@ -1114,19 +1131,19 @@ export default {
       borderTopWidth: 0
     },
     logText: {
-      fontSize: 12,
-      color: '#999',
+      fontSize: FONT_12,
+      color: COLOR_9,
       marginBottom: 5
     },
     logTextActive: {
-      color: '#0386fc',
+      color: COLOR_BLUE,
     },
     block: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       padding: 10,
       marginBottom: 10
     },
@@ -1135,27 +1152,27 @@ export default {
       marginBottom: 2
     },
     userText: {
-      fontSize: 12,
-      color: '#666',
+      fontSize: FONT_12,
+      color: COLOR_6,
     },
     orderInfoText: {
-      fontSize: 12,
-      color: '#999',
+      fontSize: FONT_12,
+      color: COLOR_9,
       marginTop: 2,
       marginBottom: 2
     }
   },
   srefundDetail: {
     title: {
-      fontSize: 14,
+      fontSize: FONT_14,
       padding: 10,
-      color: '#333',
-      backgroundColor: '#fff'
+      color: COLOR_3,
+      backgroundColor: BACKGROUNDCOLOR_WHITE
     },
     info: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       marginTop: 10,
       paddingLeft: 10,
       paddingRight: 10
@@ -1164,43 +1181,43 @@ export default {
       paddingTop: 10,
       paddingBottom: 10,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee'
+      borderBottomColor: COLOR_E
     },
     dt: {
       width: 80,
-      color: '#666',
-      fontSize: 12
+      color: COLOR_6,
+      fontSize: FONT_12
     },
     dd: {
-      color: '#333',
-      fontSize: 12
+      color: COLOR_3,
+      fontSize: FONT_12
     },
     ddr: {
-      color: '#f93b31',
-      fontSize: 12,
+      color: COLOR_RED,
+      fontSize: FONT_12,
       textAlign: 'right'
     },
     order:  {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       borderTopWidth: 1,
-      borderTopColor: '#eee',
+      borderTopColor: COLOR_E,
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       marginTop: 10,
       marginBottom: 10,
       padding: 10
     },
     orderSn: {
       fontSize: 13,
-      color: '#333'
+      color: COLOR_3
     },
     orderTime: {
-      fontSize: 11,
-      color: '#999'
+      fontSize: FONT_12,
+      color: COLOR_9
     },
     or: {
       borderWidth: 1,
-      borderColor: '#eee',
+      borderColor: COLOR_E,
       paddingLeft: 10,
       paddingRight: 10,
       borderRadius: 3,
@@ -1208,8 +1225,8 @@ export default {
       justifyContent : 'center'
     },
     ortxt: {
-      fontSize: 12,
-      color: '#333',
+      fontSize: FONT_12,
+      color: COLOR_3,
     },
     img: {
       width: 60,
@@ -1217,7 +1234,7 @@ export default {
       marginRight: 5,
       marginBottom: 5,
       borderWidth: 1,
-      borderColor: '#ddd'
+      borderColor: COLOR_D
     },
     imgContent: {
       flex: 1,
@@ -1226,43 +1243,43 @@ export default {
   },
   footerBtn: {
     b1: {
-      backgroundColor: '#f93b31',
+      backgroundColor: COLOR_RED,
       justifyContent: 'center',
       alignItems: 'center',
       height: 39,
       borderTopWidth: 1,
-      borderTopColor: '#f93b31'
+      borderTopColor: COLOR_RED
     },
     b2: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       justifyContent: 'center',
       alignItems: 'center',
       height: 39,
       borderTopWidth: 1,
-      borderTopColor: '#eee'
+      borderTopColor: COLOR_E
     },
     text: {
-      color: '#fff',
-      fontSize: 12
+      color: BACKGROUNDCOLOR_WHITE,
+      fontSize: FONT_12
     },
     text2: {
-      color: '#f93b31',
-      fontSize: 12
+      color: COLOR_RED,
+      fontSize: FONT_12
     }
   },
   sorderSearch: {
     inputContainer: {
-      backgroundColor: '#eee',
+      backgroundColor: COLOR_E,
       padding: 10
     },
     input: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       paddingLeft: 5,
       paddingRight: 5,
       paddingTop: 0,
       paddingBottom: 0,
       height: 24,
-      fontSize: 12
+      fontSize: FONT_12
     }
   },
   deliver: {
@@ -1271,18 +1288,18 @@ export default {
       paddingRight: 20
     },
     title: {
-      fontSize: 16,
+      fontSize: FONT_16,
       textAlign: 'center',
-      color: "#000",
+      color: COLOR_3,
       marginTop: 20
     },
     typeText: {
-      color: '#333'
+      color: COLOR_3
     },
     label: {
       width: 70,
-      color: '#333',
-      fontSize: 14
+      color: COLOR_3,
+      fontSize: FONT_14
     },
     item: {
       marginTop: 10,
@@ -1295,7 +1312,7 @@ export default {
     },
     itemBlock: {
       borderWidth: 1,
-      borderColor: '#f5f5f5',
+      borderColor: BACKGROUNDCOLOR_GRAY,
       borderRadius: 2,
       paddingTop: 0,
       paddingBottom: 0,
@@ -1312,13 +1329,13 @@ export default {
       paddingLeft: 0
     },
     input: {
-      color: '#333',
+      color: COLOR_3,
       height: 36,
       padding: 0,
       margin: 0
     },
     textarea: {
-      color: '#333',
+      color: COLOR_3,
       height: 80,
       paddingLeft: 0,
       paddingRight: 0,
@@ -1341,15 +1358,15 @@ export default {
       zIndex: 2
     },
     selectText: {
-      fontSize: 14,
-      color: "#888"
+      fontSize: FONT_14,
+      color: COLOR_9
     },
     activeText: {
-      color: '#333'
+      color: COLOR_3
     },
     tips: {
-      color: '#333',
-      fontSize: 12,
+      color: COLOR_3,
+      fontSize: FONT_12,
       marginTop: 10,
       marginBottom: 10
     }
@@ -1366,25 +1383,25 @@ export default {
     },
     time: {
       borderBottomWidth: 1,
-      borderBottomColor: '#eee',
+      borderBottomColor: COLOR_E,
       paddingTop: 10,
       paddingBottom: 10,
-      color: '#333'
+      color: COLOR_3
     },
     order: {
       marginTop: 10,
       borderTopWidth: 1,
-      borderTopColor: '#eee'
+      borderTopColor: COLOR_E
     },
     borderNone: {
       borderBottomWidth: 0
     },
     modal: {
-      backgroundColor: '#fff',
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
       borderRadius: 4,
     },
     mtitle: {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
       paddingTop: 8,
       paddingBottom: 8,
       borderTopLeftRadius: 4,
@@ -1392,8 +1409,8 @@ export default {
     },
     mtitleText: {
       textAlign: 'center',
-      color: '#333',
-      fontSize: 12,
+      color: COLOR_3,
+      fontSize: FONT_12,
     },
     mbody: {
       paddingLeft: 10,
@@ -1403,8 +1420,8 @@ export default {
     },
     tipsText: {
       textAlign: 'center',
-      color: '#333',
-      fontSize: 12,
+      color: COLOR_3,
+      fontSize: FONT_12,
     },
     checkbox: {
       marginBottom: 5
@@ -1415,11 +1432,11 @@ export default {
       paddingRight: 15,
     },
     btn2: {
-      borderColor: '#0386fc',
-      backgroundColor: '#0386fc',
+      borderColor: COLOR_BLUE,
+      backgroundColor: COLOR_BLUE,
     },
     btn2Text: {
-      color: '#fff'
+      color: BACKGROUNDCOLOR_WHITE
     }
   },
   refuse: {
@@ -1431,14 +1448,14 @@ export default {
       paddingRight:  6
     },
     redText:{
-      fontSize: 12,
-      color: '#f93b31',
+      fontSize: FONT_12,
+      color: COLOR_RED,
     }
   },
   form: {
     checkbox: {
       borderWidth: 1,
-      borderColor: '#aaa',
+      borderColor: COLOR_A,
       width: 12,
       height: 12,
       marginRight: 5,
@@ -1447,16 +1464,100 @@ export default {
       justifyContent: 'center'
     },
     checked: {
-      borderColor: '#0386fc'
+      borderColor: COLOR_BLUE
     },
     checkboxActive: {
       width: 5,
       height: 5,
-      backgroundColor: '#0386fc'
+      backgroundColor: COLOR_BLUE
     },
     checkboxText: {
-      fontSize: 12,
-      color: '#333'
+      fontSize: FONT_12,
+      color: COLOR_3
+    }
+  },
+  sgoods: {
+    tab: {
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
+      padding: 10
+    },
+    tabContainer: {
+      borderWidth: 1,
+      borderColor: COLOR_BLUE,
+      borderRadius: 3
+    },
+    tabItem: {
+      flex: 1,
+    },
+    tabFirst: {
+      borderRightWidth: 1,
+      borderColor: COLOR_BLUE,
+    },
+    tabLast: {
+      borderLeftWidth: 1,
+      borderLeftColor: COLOR_BLUE
+    },
+    tabText: {
+      fontSize: FONT_14,
+      textAlign: 'center',
+      color: COLOR_BLUE,
+      paddingTop: 5,
+      paddingBottom: 5
+    },
+    tabActive: {
+      backgroundColor: COLOR_BLUE,
+      color: BACKGROUNDCOLOR_WHITE
+    },
+    search: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
+      padding: 10,
+      borderTopWidth: 1,
+      borderColor: COLOR_E
+    },
+    searchForm: {
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: 8,
+      paddingRight: 8,
+      height: 24
+    },
+    searchInput: {
+      padding: 0,
+      color: COLOR_3
+    },
+    searchIcon: {
+      width: 14,
+      height: 14,
+      marginLeft: 8
+    },
+    filter: {
+      width: 14,
+      height: 14,
+      marginLeft: 10,
+      marginRight: 3
+    },
+    filterText: {
+      color: COLOR_BLUE
+    },
+    switchTitle: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
+      borderBottomWidth: 1,
+      borderColor: COLOR_E
+    },
+    switchItem: {
+      justifyContent: 'center',
+    },
+    switchText: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      paddingBottom: 5,
+      borderBottomWidth: 2,
+      borderColor: 'transparent',
+    },
+    switchActive: {
+      color: COLOR_BLUE,
+      borderColor: COLOR_BLUE
     }
   }
 }
