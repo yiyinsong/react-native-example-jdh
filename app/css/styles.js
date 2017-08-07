@@ -4,6 +4,8 @@ const BACKGROUNDCOLOR_WHITE = '#fff';
 const COLOR_RED = '#f93b31';
 const COLOR_BLUE = '#0386fc';
 const COLOR_BLACK = '#000';
+const COLOR_GRAY = '#f1f1f1';
+const COLOR_ORANGE = '#ff9504';
 const COLOR_A = '#aaa';
 const COLOR_D = '#ddd';
 const COLOR_3 = '#333';
@@ -962,6 +964,17 @@ export default {
       textAlign: 'center',
       fontSize: FONT_14
     },
+    defaults: {
+      borderWidth: 1,
+      borderRadius: 3,
+      borderColor: COLOR_D,
+      color: COLOR_3,
+      paddingTop: 3,
+      paddingLeft: 15,
+      paddingBottom: 3,
+      paddingRight: 15,
+      fontSize: FONT_12,
+    },
     primary: {
       borderWidth: 1,
       borderRadius: 3,
@@ -983,7 +996,7 @@ export default {
       paddingBottom: 3,
       paddingRight: 15,
       fontSize: FONT_12,
-    }
+    },
   },
   login: {
     content: {
@@ -1510,7 +1523,10 @@ export default {
     },
     search: {
       backgroundColor: BACKGROUNDCOLOR_GRAY,
-      padding: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 8,
+      paddingBottom: 8,
       borderTopWidth: 1,
       borderColor: COLOR_E
     },
@@ -1558,6 +1574,69 @@ export default {
     switchActive: {
       color: COLOR_BLUE,
       borderColor: COLOR_BLUE
+    },
+    item: {
+      marginLeft: 5,
+      marginRight: 5,
+      paddingTop: 5,
+      paddingBottom: 5,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      height: 91
+    },
+    iteml: {
+      paddingLeft: 3,
+      paddingRight: 8,
+    },
+    img: {
+      width: 70,
+      height: 70,
+      marginRight: 8
+    },
+    text: {
+      color: COLOR_3,
+      fontSize: FONT_12,
+      height: 30
+    },
+    textGray: {
+      color: COLOR_9,
+      fontSize: FONT_12,
+      marginTop: 3
+    },
+    price: {
+      color: COLOR_RED
+    },
+    stock: {
+      color: COLOR_ORANGE
+    },
+    footer: {
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_GRAY,
+      padding: 8
+    },
+    all: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    allText: {
+      marginLeft: 5,
+      color: COLOR_3,
+      fontSize: FONT_12
+    }
+  },
+  control: {
+    checkbox: {
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      width: 18,
+      height: 18,
+      borderRadius: 9
+    },
+    checked: {
+      width: 18,
+      height: 18
     }
   }
 }
