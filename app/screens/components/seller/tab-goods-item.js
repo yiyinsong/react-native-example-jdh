@@ -21,6 +21,7 @@ export default class SellerGoodsItemComponent extends Component {
   }
   componentWillMount() {
     this.listener_check = DeviceEventEmitter.addListener('sellerGoodsCheck', (r) => {
+      if(this.state.index !== r.index) return;
       this.setState({checked: r.checked});
     });
   }
