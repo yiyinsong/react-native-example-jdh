@@ -33,7 +33,8 @@ export default class SellerGoodsScreen extends Component {
         cateId: '',
         brandId: '',
         loadingVisible: false,
-        checkAll: false
+        checkAll: false,
+        havenCheck: []
       };
     }
     componentDidMount() {
@@ -42,16 +43,16 @@ export default class SellerGoodsScreen extends Component {
         ScreenInit.checkLogin(this);
         this._getData();
       });
-      this.listener_item_check = DeviceEventEmitter.addListener('sellerGoodsItemCheck', (r) => {
-        if(!r.checked) {
-          this.setState({checkAll: r.checked});
-        } else {
-
-        }
-      });
+      // this.listener_item_check = DeviceEventEmitter.addListener('sellerGoodsItemCheck', (r) => {
+      //   if(!r.checked) {
+      //     this.setState({checkAll: r.checked});
+      //   } else {
+      //
+      //   }
+      // });
     }
     componentWillUnmount() {
-      this.listener_item_check && this.listener_item_check.remove();
+      // this.listener_item_check && this.listener_item_check.remove();
     }
 
     render() {
@@ -95,7 +96,7 @@ export default class SellerGoodsScreen extends Component {
             <ScrollView style={styles.common.initWhite} horizontal={true} pagingEnabled={true} onMomentumScrollEnd={(e) => this._onScrollOver(e)} ref="containerScrollView" showsHorizontalScrollIndicator={false}>
               <FlatList
               data={this.state.listOnline}
-              renderItem={({item}) => <GoodsItem data={item} index={state.switchIndex}></GoodsItem>}
+              renderItem={({item, index}) => <GoodsItem data={item} index={state.switchIndex} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}}></GoodsItem>}
               getItemLayout={(data, index) => (
                 {length: 91, offset: 91 * index, index}
               )}
@@ -164,5 +165,9 @@ export default class SellerGoodsScreen extends Component {
         checkAll: _ori
       });
       DeviceEventEmitter.emit('sellerGoodsCheck', {checked: _ori});
+    }
+    _itemCheck = (ischeck, index) => {
+      this.state.havenCheck[index] = ischeck;
+      alert(JSON.stringify(this.state.havenCheck));
     }
 }

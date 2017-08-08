@@ -54,7 +54,8 @@ export default class SellerGoodsItemComponent extends Component {
     this.setState({
       checked: _ori
     });
-    DeviceEventEmitter.emit('sellerGoodsItemCheck', {checked: _ori});
+    //DeviceEventEmitter.emit('sellerGoodsItemCheck', {checked: _ori});
+    this.props.checkFunc && this.props.checkFunc(_ori);
   }
   _toDetail = () => {
 
