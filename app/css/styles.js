@@ -1578,15 +1578,13 @@ export default {
     item: {
       marginLeft: 5,
       marginRight: 5,
-      paddingTop: 5,
-      paddingBottom: 5,
+      padding: 5,
       borderBottomWidth: 1,
       borderBottomColor: COLOR_GRAY,
       height: 91
     },
     iteml: {
-      paddingLeft: 3,
-      paddingRight: 8,
+      paddingRight: 10,
     },
     img: {
       width: 70,
@@ -1624,6 +1622,24 @@ export default {
       marginLeft: 5,
       color: COLOR_3,
       fontSize: FONT_12
+    },
+    itemTips: {
+      color: COLOR_RED,
+      fontSize: FONT_12
+    },
+    itemEdit: {
+      width: 14,
+      height: 14,
+      resizeMode: 'contain',
+      marginRight: 3
+    },
+    itemEditText: {
+      fontSize: 12,
+      color: COLOR_3
+    },
+    copyBtn: {
+      paddingLeft: 8,
+      paddingRight: 8
     }
   },
   control: {
@@ -1637,6 +1653,6 @@ export default {
     checked: {
       width: 18,
       height: 18
-    }
+    },
   }
 }
