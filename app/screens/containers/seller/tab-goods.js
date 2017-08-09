@@ -9,7 +9,8 @@ import {
   Image,
   FlatList,
   InteractionManager,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Modal
 } from 'react-native';
 
 import Utils from '../../../js/utils';
@@ -19,6 +20,8 @@ import styles from '../../../css/styles';
 import ScreenInit from '../../../config/screenInit';
 import GoodsItem from '../../components/seller/tab-goods-item';
 import Loading from '../../common/ui-loading';
+import UIToast from '../../common/ui-toast';
+import ModalConfirm from '../../common/modal-confirm';
 
 export default class SellerGoodsScreen extends Component {
     constructor(props) {
@@ -48,16 +51,9 @@ export default class SellerGoodsScreen extends Component {
         ScreenInit.checkLogin(this);
         this._getData();
       });
-      // this.listener_item_check = DeviceEventEmitter.addListener('sellerGoodsItemCheck', (r) => {
-      //   if(!r.checked) {
-      //     this.setState({checkAll: r.checked});
-      //   } else {
-      //
-      //   }
-      // });
     }
     componentWillUnmount() {
-      // this.listener_item_check && this.listener_item_check.remove();
+      this.timer && clearTimeout(this.timer);
     }
 
     render() {
@@ -138,7 +134,7 @@ export default class SellerGoodsScreen extends Component {
                 getItemLayout={(data, index) => (
                   {length: 91, offset: 91 * index, index}
                 )}
-                ListFooterComponent={this._renderFlatListFooter1()}
+                ListFooterComponent={this._renderFlatListFooter2()}
                 onEndReached={this._getData}
                 onEndReachedThreshold={.1}
                 />
@@ -162,13 +158,14 @@ export default class SellerGoodsScreen extends Component {
                 getItemLayout={(data, index) => (
                   {length: 91, offset: 91 * index, index}
                 )}
-                ListFooterComponent={this._renderFlatListFooter1()}
+                ListFooterComponent={this._renderFlatListFooter3()}
                 onEndReached={this._getData}
                 onEndReachedThreshold={.1}
                 />
               </View>
             </ScrollView>
             <Loading visible={this.state.loadingVisible}></Loading>
+            <ModalConfirm keys={4}></ModalConfirm>
           </View>
         );
     }
@@ -216,9 +213,26 @@ export default class SellerGoodsScreen extends Component {
       });
     }
     _onScrollOver = (e) => {
-      var page = Math.floor(e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width);
-      if(page == this.state.type) return;
+      let page = Math.floor(e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width);
+      let state = this.state;
+      if(page == state.type) return;
       this.setState({type: page});
+      if(page == 0) {
+        if(state.list1.length === 0 && !state.over[page]) {
+          this._reset(0);
+          this._delayLoading();
+        }
+      } else if(page == 1) {
+        if(state.list2.length === 0 && !state.over[page]) {
+          this._reset(1);
+          this._delayLoading();
+        }
+      } else {
+        if(state.list3.length === 0 && !state.over[page]) {
+          this._reset(2);
+          this._delayLoading();
+        }
+      }
     }
     _getData = () => {
       let state = this.state;
@@ -229,7 +243,7 @@ export default class SellerGoodsScreen extends Component {
       if(state.type == 0) {
         _url = Config.PHPAPI + `api/mapp/goods-seller/list?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&show=${state.switchIndex}&token=${token}`
       } else if (state.type == 1) {
-        _url = Config.PHPAPI + `api/mapp/goods-seller/jicai?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&token=${token}&dType=${state.switchIndex2}`
+        _url = Config.PHPAPI + `api/mapp/goods-seller/jicai?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&token=${token}&dType=${state.switchIndex2 + 1}`
       } else {
         _url = Config.PHPAPI + `api/mapp/goods-seller/library?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&token=${token}`
       }
@@ -296,12 +310,34 @@ export default class SellerGoodsScreen extends Component {
       this.setState({
         checkAll: _temp
       });
+      this.state.havenCheck[_type] = [];
       if (_type == 0) {
-        _ori ? (this.state.checkTotal[0] = this.state.list1.length) : (this.state.checkTotal[0] = 0);
+        if(_ori) {
+          this.state.checkTotal[0] = this.state.list1.length;
+          for(var i=0, l=this.state.list1.length; i<l; i++) {
+            this.state.havenCheck[0].push(true);
+          }
+        } else {
+          this.state.checkTotal[0] = 0;
+        }
       } else if (_type == 1) {
-        _ori ? (this.state.checkTotal[1] = this.state.list1.length) : (this.state.checkTotal[1] = 0);
+        if(_ori) {
+          this.state.checkTotal[1] = this.state.list2.length;
+          for(var i=0, l=this.state.list2.length; i<l; i++) {
+            this.state.havenCheck[1].push(true);
+          }
+        } else {
+          this.state.checkTotal[1] = 0;
+        }
       } else {
-        _ori ? (this.state.checkTotal[2] = this.state.list1.length) : (this.state.checkTotal[2] = 0);
+        if(_ori) {
+          this.state.checkTotal[2] = this.state.list3.length;
+          for(var i=0, l=this.state.list3.length; i<l; i++) {
+            this.state.havenCheck[2].push(true);
+          }
+        } else {
+          this.state.checkTotal[2] = 0;
+        }
       }
 
       DeviceEventEmitter.emit('sellerGoodsCheck', {checked: _ori, index: _type});
@@ -334,17 +370,27 @@ export default class SellerGoodsScreen extends Component {
     }
     _renderFlatListFooter1 = () => {
       return (
-        <Text style={styles.common.loadingTips}>{this.state.tips[this.state.type]}</Text>
+        <Text style={styles.common.loadingTips}>{this.state.tips[0]}</Text>
+      );
+    }
+    _renderFlatListFooter2 = () => {
+      return (
+        <Text style={styles.common.loadingTips}>{this.state.tips[1]}</Text>
+      );
+    }
+    _renderFlatListFooter3 = () => {
+      return (
+        <Text style={styles.common.loadingTips}>{this.state.tips[2]}</Text>
       );
     }
     _renderList1Btn = () => {
       if(this.state.switchIndex === 0) {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa'>
+            <TouchableHighlight underlayColor='#fafafa' onPress={() => {this._saleFunc(0)}}>
               <Text style={styles.btn.defaults}>下架</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => {this._delete(1)}}>
               <Text style={styles.btn.danger}>删除</Text>
             </TouchableHighlight>
           </View>
@@ -352,10 +398,10 @@ export default class SellerGoodsScreen extends Component {
       } else if(this.state.switchIndex === 1) {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa'>
+            <TouchableHighlight underlayColor='#fafafa' onPress={() => {this._saleFunc(1)}}>
               <Text style={styles.btn.defaults}>上架</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => {this._delete(1)}}>
               <Text style={styles.btn.danger}>删除</Text>
             </TouchableHighlight>
           </View>
@@ -363,7 +409,10 @@ export default class SellerGoodsScreen extends Component {
       } else {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+            <TouchableHighlight underlayColor='#fafafa' onPress={() => {this._delete(0)}}>
+              <Text style={styles.btn.defaults}>还原</Text>
+            </TouchableHighlight>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => {this._delete(2)}}>
               <Text style={styles.btn.danger}>彻底删除</Text>
             </TouchableHighlight>
           </View>
@@ -374,7 +423,7 @@ export default class SellerGoodsScreen extends Component {
       if(this.state.switchIndex2 === 0) {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa'>
+            <TouchableHighlight underlayColor='#fafafa' onPress={() => {this._unBunging()}}>
               <Text style={styles.btn.defaults}>解除绑定</Text>
             </TouchableHighlight>
           </View>
@@ -382,7 +431,7 @@ export default class SellerGoodsScreen extends Component {
       } else if(this.state.switchIndex2 === 1) {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa'>
+            <TouchableHighlight underlayColor='#fafafa' onPress={() => {this._binging()}}>
               <Text style={styles.btn.defaults}>一键即采</Text>
             </TouchableHighlight>
           </View>
@@ -423,5 +472,190 @@ export default class SellerGoodsScreen extends Component {
     _search = () => {
       this._reset(this.state.type);
       this._delayLoading();
+    }
+    _saleFunc = (t) => {
+      let state = this.state;
+      if(state.checkTotal[0] == 0) {
+        UIToast(t == 0 ? '请选择需要下架的商品' : '请选择需要上架的商品');
+        return;
+      }
+      DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+          text: t == 0 ? '是否确认下架？' : '是否确认上架？',
+          confirm: () => {
+            let ids = [];
+            state.havenCheck[0].map((v, k) => {
+              if(v) ids.push(state.list1[k].goods_id);
+            })
+            let idsString = ids.join(',');
+            fetch(Config.PHPAPI + 'api/mapp/goods-seller/onsale', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body:`id=${idsString}&status=${t}&token=${token}`
+            })
+            .then(response => response.json())
+            .then((data) => {
+              if(data.error_code == 0) {
+                UIToast('操作成功');
+                this._reset(0);
+                this._delayLoading();
+              } else {
+                UIToast('操作失败');
+              }
+            });
+          }
+      }});
+    }
+    _delete = (t) => {
+      let state = this.state;
+      if(state.checkTotal[0] == 0) {
+        UIToast(t == 0 ? '请选择要还原的商品' : (t == 1 ? '请选择要删除的商品' : '请选择要彻底删除的商品'));
+        return;
+      }
+      DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+          text: t == 0 ? '是否还原所选商品' : (t == 1 ? '是否删除所选商品' : '是否彻底删除所选商品'),
+          confirm: () => {
+            let ids = [];
+            state.havenCheck[0].map((v, k) => {
+              if(v) ids.push(state.list1[k].goods_id);
+            })
+            let idsString = ids.join(',');
+            fetch(Config.PHPAPI + 'api/mapp/goods-seller/delete', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body:`id=${idsString}&status=${t}&token=${token}`
+            })
+            .then(response => response.json())
+            .then((data) => {
+              if(data.error_code == 0) {
+                UIToast('操作成功');
+                this._reset(0);
+                this._delayLoading();
+              } else {
+                UIToast('操作失败');
+              }
+            });
+          }
+      }});
+    }
+    _unBunging = (t) => {
+      let state = this.state;
+      if(state.checkTotal[1] == 0) {
+        UIToast('请选择解绑商品');
+        return;
+      }
+      DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+          text: '是否解绑所选商品',
+          confirm: () => {
+            let ids = [];
+            state.havenCheck[1].map((v, k) => {
+              if(v) ids.push(state.list2[k].goods_id);
+            })
+            let idsString = ids.join(',');
+            fetch(Config.PHPAPI + 'api/mapp/goods-seller/unjc', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body:`id=${idsString}&dType=1&token=${token}`
+            })
+            .then(response => response.json())
+            .then((data) => {
+                if(data.error_code == 0) {
+                  UIToast('操作成功');
+                  this._reset(1);
+                  this._delayLoading();
+                } else {
+                  UIToast('操作失败');
+                }
+            });
+          }
+      }});
+    }
+    _binging = () => {
+      let state = this.state;
+      if(state.checkTotal[1] == 0) {
+        UIToast('请选择即采商品');
+        return;
+      }
+      let ids = [];
+      state.havenCheck[1].map((v, k) => {
+        if(v) ids.push(state.list2[k].goods_id);
+      })
+      let idsString = ids.join(',');
+      DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+          text: '是否即采所选商品',
+          confirm: () => {
+            /****先判断是否有重名的商品****/
+            fetch(Config.PHPAPI + 'api/goods/product/validate-name', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body:`id=${idsString}&token=${token}`
+            })
+            .then(response => response.json())
+            .then((data) => {
+              if(data.error_code == 500) {
+                this.timer = setTimeout(() => {
+                  DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+                      text: '已存在相同商品名称，您是否继续即采?',
+                      confirm: () => {
+                        fetch(Config.PHPAPI + 'api/mapp/goods-seller/unjc', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                          },
+                          body:`id=${idsString}&dType=2&token=${token}`
+                        })
+                        .then(response => response.json())
+                        .then((r) => {
+                            if(r.flag == 1) {
+                              UIToast('操作成功');
+                              this._reset(1);
+                              this._delayLoading();
+                            } else {
+                              UIToast('操作失败');
+                            }
+                        });
+                      }
+                    }
+                  });
+                }, 300);
+              } else if(data.error_code == 0) {
+                  this.timer = setTimeout(() => {
+                    DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+                        text: '是否确认一键即采所选'+ids.length+'件商品?',
+                        confirm: () => {
+                          fetch(Config.PHPAPI + 'api/mapp/goods-seller/unjc', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body:`id=${idsString}&dType=2&token=${token}`
+                          })
+                          .then(response => response.json())
+                          .then((r) => {
+                              if(r.flag == 1) {
+                                UIToast('操作成功');
+                                this._reset(1);
+                                this._delayLoading();
+                              } else {
+                                UIToast('操作失败');
+                              }
+                          });
+                        }
+                      }
+                    });
+                  }, 300);
+                } else {
+                  UIToast('操作失败');
+                }
+              });
+          }
+      }});
     }
 }

@@ -29,6 +29,9 @@ export default class SellerGoodsItemComponent extends Component {
   componentWillUnmount() {
     this.listener_check && this.listener_check.remove();
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.checked !== nextState.checked;
+  }
   render() {
     let _data = this.props.data;
     return (
@@ -57,7 +60,7 @@ export default class SellerGoodsItemComponent extends Component {
                     this.state.index == 1 && _data.is_freeze == 1 ? <Text style={styles.sgoods.itemTips}>商品已冻结</Text> : null
                   }
                   {
-                    (this.state.index === 0 && this.state.sub !== 2) || (this.state.index === 1 && this.state.sub === 0) ?
+                    (this.state.index === 0 && this.state.sub !== 2 && _data.is_freeze != 1) || (this.state.index === 1 && this.state.sub === 0 && _data.is_freeze != 1) ?
                       <TouchableOpacity activeOpacity={.8} onPress={this._toEdit} style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
                         <Image source={require('../../../images/icon-edit.png')} style={styles.sgoods.itemEdit} />
                         <Text style={styles.sgoods.itemEditText}>编辑</Text>
@@ -83,7 +86,6 @@ export default class SellerGoodsItemComponent extends Component {
     this.setState({
       checked: _ori
     });
-    //DeviceEventEmitter.emit('sellerGoodsItemCheck', {checked: _ori});
     this.props.checkFunc && this.props.checkFunc(_ori);
   }
   _toDetail = () => {
