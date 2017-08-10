@@ -6,6 +6,7 @@ const COLOR_BLUE = '#0386fc';
 const COLOR_BLACK = '#000';
 const COLOR_GRAY = '#f1f1f1';
 const COLOR_ORANGE = '#ff9504';
+const COLOR_WHITE = '#fff';
 const COLOR_A = '#aaa';
 const COLOR_D = '#ddd';
 const COLOR_3 = '#333';
@@ -1634,12 +1635,43 @@ export default {
       marginRight: 3
     },
     itemEditText: {
-      fontSize: 12,
+      fontSize: FONT_12,
       color: COLOR_3
     },
     copyBtn: {
       paddingLeft: 8,
       paddingRight: 8
+    },
+    filterBox: {
+      backgroundColor: BACKGROUNDCOLOR_WHITE,
+    },
+    filterBtnCancel: {
+      textAlign: 'center',
+      color: COLOR_3,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D,
+      fontSize: FONT_12,
+      flex: 1,
+      paddingTop: 12,
+      paddingBottom: 12
+    },
+    filterBtnConfirm: {
+      textAlign: 'center',
+      borderTopWidth: 1,
+      borderTopColor: COLOR_BLUE,
+      color: COLOR_WHITE,
+      backgroundColor: COLOR_BLUE,
+      fontSize: FONT_12,
+      flex: 1,
+      paddingTop: 12,
+      paddingBottom: 12
+    },
+    filterTitle: {
+      fontSize: FONT_14,
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+      color: COLOR_3
     }
   },
   control: {

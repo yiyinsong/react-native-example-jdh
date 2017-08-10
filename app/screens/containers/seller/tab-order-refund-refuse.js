@@ -22,6 +22,7 @@ export default class OrderDetailScreen extends Component{
     let _query = this.props.navigation.state.params;
   	this.state = {
       ordersn: _query.ordersn,
+      orderid: _query.orderid,
       type: _query.type,
       id: _query.id,
       refundtype: _query.refundtype || 1,
@@ -143,6 +144,7 @@ export default class OrderDetailScreen extends Component{
             id: this.state.id,
             shopid: this.state.shopid,
             ordersn: this.state.ordersn,
+            orderid: this.state.orderid,
             type: this.state.type,
           },
         });

@@ -36,6 +36,7 @@ export default class OrderDetailScreen extends Component{
       id: _query.id,
       shopid: _query.shopid,
       ordersn: _query.ordersn,
+      orderid: _query.orderid,
       order: {},
       modalVisible: false,
       urlType: ''
@@ -125,7 +126,7 @@ export default class OrderDetailScreen extends Component{
             </View>
             <View style={[styles.common.flexDirectionRow, styles.srefundDetail.order]}>
               <View style={styles.common.flexv}>
-                <Text style={styles.srefundDetail.orderSn}>订单号：{this.state.order.orderSn}</Text>
+                <Text style={styles.srefundDetail.orderSn}>订单号：{this.state.data.refund.orderType != 40 ? this.state.order.relationOrderSn : this.state.order.orderSn}</Text>
                 <Text style={styles.srefundDetail.orderTime}>订单时间：{this.state.order.ctime}</Text>
               </View>
               <TouchableHighlight underlayColor='#f5f5f5' style={styles.srefundDetail.or} onPress={() => {this._toOrderDetail()}}><Text style={styles.srefundDetail.ortxt}>查看详情</Text></TouchableHighlight>
@@ -276,7 +277,7 @@ export default class OrderDetailScreen extends Component{
       this.setState({loadingVisible: false, data: data, bodyShow: true});
       this.props.navigation.setParams({title: data.refund.statusName});
     });
-    fetch(Config.JAVAAPI + `shop/wap/client/order/detail?orderSn=${this.state.ordersn}&token=${token}`, {
+    fetch(Config.JAVAAPI + `shop/wap/client/order/detail?id=${this.state.orderid}&token=${token}`, {
         method: 'POST'
     })
     .then(response => response.json())
@@ -290,7 +291,7 @@ export default class OrderDetailScreen extends Component{
   }
   _toOrderDetail = () => {
     this.props.navigation.navigate('SellerOrderDetail', {
-      ordersn: this.state.ordersn,
+      ordersn: this.state.data.refund.orderType != 40 ? this.state.order.relationOrderSn : this.state.order.orderSn,
       type: this.state.data.refund.orderType == 40 ? 0 : 1
     });
   }
@@ -300,7 +301,8 @@ export default class OrderDetailScreen extends Component{
       shopid: this.state.shopid,
       ordersn: this.state.ordersn,
       type: this.state.data.refund.orderType == 40 ? 0 : 1,
-      fromdetail: true
+      fromdetail: true,
+      orderid: this.state.orderId
     });
   }
   _modalClose = () => {

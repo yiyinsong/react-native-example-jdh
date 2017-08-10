@@ -25,7 +25,7 @@ export default class OrderItem extends Component {
                   <Text style={styles.sorderItem.orderStatus}>{_data.statusName}</Text>
                 </View>
                 <View style={styles.sorderItem.row}>
-                  <Text style={[styles.sorderItem.orderInfo, styles.common.flex]}>订单号：{_data.order && _data.order.orderSn}</Text>
+                  <Text style={[styles.sorderItem.orderInfo, styles.common.flex]}>订单号：{_type == 1 ? (_data.order &&  (_data.order.relationOrderSn || _data.order.orderSn)) : (_data.order && _data.order.orderSn)}</Text>
                   <Text style={styles.sorderItem.orderInfo}>收货人：{_data.order && _data.order.receiver}</Text>
                 </View>
                 <View style={styles.sorderItem.row}>
@@ -94,17 +94,19 @@ export default class OrderItem extends Component {
       this.attr.navigation.navigate('SellerRefundDetail', {
         id: item.id,
         shopid: item.shopId,
-        ordersn: item.order.mainOrderSn || item.order.orderSn,
+        ordersn: this.props.type == 1 ? (item.order.relationOrderSn || item.order.orderSn) : (item.order.mainOrderSn || item.order.orderSn),
+        orderid: item.orderId
       });
     }
     _toExamine = (item) => {
       this.attr.navigation.navigate('SellerRefundExamine', {
         id: item.id,
         shopid: item.shopId,
-        ordersn: item.order.mainOrderSn || item.order.orderSn,
+        ordersn: this.props.type == 1 ? (item.order.relationOrderSn || item.order.orderSn) : (item.order.mainOrderSn || item.order.orderSn),
         type: this.props.type,
         refundtype: item.type,
-        fromdetail: false
+        fromdetail: false,
+        orderid: item.orderId
       });
     }
 }

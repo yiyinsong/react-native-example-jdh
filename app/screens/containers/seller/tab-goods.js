@@ -42,7 +42,8 @@ export default class SellerGoodsScreen extends Component {
         havenCheck: [[], [], []],
         checkTotal: [0, 0, 0],
         over: [false, false, false],
-        tips: ['', '', '']
+        tips: ['', '', ''],
+        visible: true
       };
     }
     componentDidMount() {
@@ -166,6 +167,25 @@ export default class SellerGoodsScreen extends Component {
             </ScrollView>
             <Loading visible={this.state.loadingVisible}></Loading>
             <ModalConfirm keys={4}></ModalConfirm>
+            <Modal
+                animationType='fade'
+                onRequestClose={() => this._close()}
+                visible={this.state.visible}
+                transparent={true}
+                 >
+                <TouchableOpacity style={styles.modal.container} activeOpacity={1} onPress={this._close}></TouchableOpacity>
+                <View style={[styles.modal.container2, styles.sgoods.filterBox, {width: Utils.width, height: Utils.height * .8}]}>
+                  <Text style={styles.sgoods.filterTitle}>请选择类目</Text>
+                  <View></View>
+                  <ScrollView>
+
+                  </ScrollView>
+                  <View style={styles.common.flexDirectionRow}>
+                    <TouchableOpacity activeOpacity={.8} style={styles.common.flex}><Text style={styles.sgoods.filterBtnCancel}>重置</Text></TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={styles.common.flex}><Text style={styles.sgoods.filterBtnConfirm}>确定</Text></TouchableOpacity>
+                  </View>
+                </View>
+            </Modal>
           </View>
         );
     }
@@ -657,5 +677,8 @@ export default class SellerGoodsScreen extends Component {
               });
           }
       }});
+    }
+    _close=()=>{
+      this.setState({ visible: false });
     }
 }
