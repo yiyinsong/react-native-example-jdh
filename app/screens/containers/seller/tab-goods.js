@@ -43,7 +43,11 @@ export default class SellerGoodsScreen extends Component {
         checkTotal: [0, 0, 0],
         over: [false, false, false],
         tips: ['', '', ''],
-        visible: true
+        visible: false,
+        cateLv1: [],
+        cateLv2: [],
+        cateLv3: [],
+        brand: []
       };
     }
     componentDidMount() {
@@ -51,6 +55,7 @@ export default class SellerGoodsScreen extends Component {
       InteractionManager.runAfterInteractions(() => {
         ScreenInit.checkLogin(this);
         this._getData();
+        this._getCate();
       });
     }
     componentWillUnmount() {
@@ -79,7 +84,7 @@ export default class SellerGoodsScreen extends Component {
                 <TextInput onChangeText={(text) => this.setState({keyword: text})} value={this.state.keyword} style={[styles.sgoods.searchInput, styles.common.flex]} underlineColorAndroid="transparent" onSubmitEditing={this._search}/>
                 <Image source={require('../../../images/icon-search@30x30.png')} style={styles.sgoods.searchIcon}/>
               </View>
-              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv]} onPress={this._openFilter}>
                 <Image source={require('../../../images/icon-filter.png')} style={styles.sgoods.filter}/>
                 <Text style={styles.sgoods.filterText}>筛选</Text>
               </TouchableOpacity>
@@ -168,7 +173,7 @@ export default class SellerGoodsScreen extends Component {
             <Loading visible={this.state.loadingVisible}></Loading>
             <ModalConfirm keys={4}></ModalConfirm>
             <Modal
-                animationType='fade'
+                animationType='slide'
                 onRequestClose={() => this._close()}
                 visible={this.state.visible}
                 transparent={true}
@@ -176,9 +181,30 @@ export default class SellerGoodsScreen extends Component {
                 <TouchableOpacity style={styles.modal.container} activeOpacity={1} onPress={this._close}></TouchableOpacity>
                 <View style={[styles.modal.container2, styles.sgoods.filterBox, {width: Utils.width, height: Utils.height * .8}]}>
                   <Text style={styles.sgoods.filterTitle}>请选择类目</Text>
-                  <View></View>
-                  <ScrollView>
-
+                  <View style={[styles.common.flexDirectionRow, styles.sgoods.filterTab]}>
+                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
+                      <Text style={styles.sgoods.filterTabText}>一级分类</Text><View style={styles.select.down}></View>
+                    </View>
+                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
+                      <Text style={styles.sgoods.filterTabText}>二级分类</Text><View style={styles.select.down}></View>
+                    </View>
+                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
+                      <Text style={styles.sgoods.filterTabText}>三级分类</Text><View style={styles.select.down}></View>
+                    </View>
+                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
+                      <Text style={styles.sgoods.filterTabText}>品牌</Text><View style={styles.select.down}></View>
+                    </View>
+                  </View>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} scrollEnabled={false} ref="cateScrollView">
+                    <ScrollView style={{width: Utils.width}}>
+                      {this.state.cateLv1.map((v, k) => {
+                        return (
+                          <TouchableHighlight underlayColor='#fafafa' onPress={() => this._selectCate(1, v)}>
+                            <Text style={styles.sgoods.filterItem}>{v.name}</Text>
+                          </TouchableHighlight>
+                        );
+                      })}
+                    </ScrollView>
                   </ScrollView>
                   <View style={styles.common.flexDirectionRow}>
                     <TouchableOpacity activeOpacity={.8} style={styles.common.flex}><Text style={styles.sgoods.filterBtnCancel}>重置</Text></TouchableOpacity>
@@ -319,6 +345,21 @@ export default class SellerGoodsScreen extends Component {
             let _temp = [...state.list3, ...data.data.list];
             this.setState({list3: _temp, over: _over, tips: _tips, checkAll: _tempCheckAll});
           }
+        }
+      });
+    }
+    _getCate = () => {
+      fetch(Config.PHPAPI + 'api/mapp/shop/cate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `token=${token}`
+      })
+      .then(response => response.json())
+      .then((r) => {
+        if(r.error_code == 0) {
+          this.state.cateLv1 = r.data;
         }
       });
     }
@@ -678,7 +719,13 @@ export default class SellerGoodsScreen extends Component {
           }
       }});
     }
-    _close=()=>{
+    _close = () => {
       this.setState({ visible: false });
+    }
+    _openFilter = () => {
+      this.setState({ visible: true });
+    }
+    _selectCate = (level, item) => {
+
     }
 }

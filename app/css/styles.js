@@ -288,6 +288,18 @@ export default {
       padding: 4
     }
   },
+  select: {
+    down: {
+      width: 0,
+      height: 0,
+      borderLeftWidth: 4,
+      borderLeftColor: 'transparent',
+      borderRightWidth: 4,
+      borderRightColor: 'transparent',
+      borderTopWidth: 4,
+      borderTopColor: COLOR_3
+    }
+  },
   //买家买家入口
   entrance: {
     wrapper: {
@@ -1671,6 +1683,29 @@ export default {
       padding: 10,
       borderBottomWidth: 1,
       borderBottomColor: COLOR_E,
+      color: COLOR_3
+    },
+    filterTab: {
+      borderBottomWidth: 5,
+      borderBottomColor: COLOR_GRAY
+    },
+    filterTabItem: {
+      paddingTop: 8,
+      paddingBottom: 8
+    },
+    filterTabText: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      marginRight: 3
+    },
+    filterItem: {
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 8,
+      paddingBottom: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      fontSize: FONT_12,
       color: COLOR_3
     }
   },
