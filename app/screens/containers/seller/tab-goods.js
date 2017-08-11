@@ -35,8 +35,6 @@ export default class SellerGoodsScreen extends Component {
         list3: [],
         keyword: '',
         page: [0, 0, 0],
-        cateId: '',
-        brandId: '',
         loadingVisible: false,
         checkAll: [false, false, false],
         havenCheck: [[], [], []],
@@ -44,10 +42,15 @@ export default class SellerGoodsScreen extends Component {
         over: [false, false, false],
         tips: ['', '', ''],
         visible: false,
+        cateId: '',
         cateLv1: [],
         cateLv2: [],
         cateLv3: [],
-        brand: []
+        cateIndex: [-1, -1, -1],
+        brandId: '',
+        brand: [],
+        brandIndex: [-1, -1],
+        filterTabIndex: 0
       };
     }
     componentDidMount() {
@@ -56,6 +59,7 @@ export default class SellerGoodsScreen extends Component {
         ScreenInit.checkLogin(this);
         this._getData();
         this._getCate();
+        this._getBrand();
       });
     }
     componentWillUnmount() {
@@ -182,33 +186,67 @@ export default class SellerGoodsScreen extends Component {
                 <View style={[styles.modal.container2, styles.sgoods.filterBox, {width: Utils.width, height: Utils.height * .8}]}>
                   <Text style={styles.sgoods.filterTitle}>请选择类目</Text>
                   <View style={[styles.common.flexDirectionRow, styles.sgoods.filterTab]}>
-                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
-                      <Text style={styles.sgoods.filterTabText}>一级分类</Text><View style={styles.select.down}></View>
-                    </View>
-                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
-                      <Text style={styles.sgoods.filterTabText}>二级分类</Text><View style={styles.select.down}></View>
-                    </View>
-                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
-                      <Text style={styles.sgoods.filterTabText}>三级分类</Text><View style={styles.select.down}></View>
-                    </View>
-                    <View style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]}>
-                      <Text style={styles.sgoods.filterTabText}>品牌</Text><View style={styles.select.down}></View>
-                    </View>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]} onPress={() => this._filterTabFunc(0)}>
+                      <Text style={[styles.sgoods.filterTabText, this.state.filterTabIndex == 0 ? styles.sgoods.filterTabTextActive : '']} numberOfLines={1}>{state.cateLv1[state.cateIndex[0]] && state.cateLv1[state.cateIndex[0]].name || '一级分类'}</Text><View style={[styles.select.down, this.state.filterTabIndex == 0 ? styles.select.downActive : '']}></View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]} onPress={() => this._filterTabFunc(1)}>
+                      <Text style={[styles.sgoods.filterTabText, this.state.filterTabIndex == 1 ? styles.sgoods.filterTabTextActive : '']} numberOfLines={1}>{state.cateLv2[state.cateIndex[1]] && state.cateLv2[state.cateIndex[1]].name || '二级分类'}</Text><View style={[styles.select.down, this.state.filterTabIndex == 1 ? styles.select.downActive : '']}></View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]} onPress={() => this._filterTabFunc(2)}>
+                      <Text style={[styles.sgoods.filterTabText, this.state.filterTabIndex == 2 ? styles.sgoods.filterTabTextActive : '']} numberOfLines={1}>{state.cateLv3[state.cateIndex[2]] && state.cateLv3[state.cateIndex[2]].name || '三级分类'}</Text><View style={[styles.select.down, this.state.filterTabIndex == 2 ? styles.select.downActive : '']}></View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.sgoods.filterTabItem]} onPress={() => this._filterTabFunc(3)}>
+                      <Text style={[styles.sgoods.filterTabText, this.state.filterTabIndex == 3 ? styles.sgoods.filterTabTextActive : '']} numberOfLines={1}>品牌</Text><View style={[styles.select.down, this.state.filterTabIndex == 3 ? styles.select.downActive : '']}></View>
+                    </TouchableOpacity>
                   </View>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} scrollEnabled={false} ref="cateScrollView">
                     <ScrollView style={{width: Utils.width}}>
                       {this.state.cateLv1.map((v, k) => {
                         return (
-                          <TouchableHighlight underlayColor='#fafafa' onPress={() => this._selectCate(1, v)}>
-                            <Text style={styles.sgoods.filterItem}>{v.name}</Text>
+                          <TouchableHighlight underlayColor='#fafafa' onPress={() => this._selectCate(0, k, v)}>
+                            <Text style={[styles.sgoods.filterItem, this.state.cateIndex[0] == k? styles.sgoods.filterItemActive : '']}>{v.name}</Text>
                           </TouchableHighlight>
                         );
                       })}
                     </ScrollView>
+                    <ScrollView style={{width: Utils.width}}>
+                      {this.state.cateLv2.map((v, k) => {
+                        return (
+                          <TouchableHighlight underlayColor='#fafafa' onPress={() => this._selectCate(1, k, v)}>
+                            <Text style={[styles.sgoods.filterItem, this.state.cateIndex[1] == k? styles.sgoods.filterItemActive : '']}>{v.name}</Text>
+                          </TouchableHighlight>
+                        );
+                      })}
+                    </ScrollView>
+                    <ScrollView style={{width: Utils.width}}>
+                      {this.state.cateLv3.map((v, k) => {
+                        return (
+                          <TouchableHighlight underlayColor='#fafafa' onPress={() => this._selectCate(2, k, v)}>
+                            <Text style={[styles.sgoods.filterItem, this.state.cateIndex[2] == k? styles.sgoods.filterItemActive : '']}>{v.name}</Text>
+                          </TouchableHighlight>
+                        );
+                      })}
+                    </ScrollView>
+                    <ScrollView style={{width: Utils.width}}>
+                    {this.state.brand.map((v, k) => {
+                      return (
+                        <View>
+                          <Text style={[styles.sgoods.filterItem, styles.sgoods.filterItemActive]}>{v.letter}</Text>
+                          {v.list.map((v1, k1) => {
+                            return (
+                              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._selectBrand(k, k1, v1.brand_id)}>
+                                <Text style={[styles.sgoods.filterItem, (this.state.brandIndex[0] == k && this.state.brandIndex[1] == k1) ? styles.sgoods.filterBrandActive : '']}>{v1.brand_name}</Text>
+                              </TouchableHighlight>
+                            );
+                          })}
+                        </View>
+                      );
+                    })}
+                    </ScrollView>
                   </ScrollView>
                   <View style={styles.common.flexDirectionRow}>
-                    <TouchableOpacity activeOpacity={.8} style={styles.common.flex}><Text style={styles.sgoods.filterBtnCancel}>重置</Text></TouchableOpacity>
-                    <TouchableOpacity activeOpacity={.8} style={styles.common.flex}><Text style={styles.sgoods.filterBtnConfirm}>确定</Text></TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={styles.common.flex} onPress={this._filterReset}><Text style={styles.sgoods.filterBtnCancel}>重置</Text></TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={styles.common.flex} onPress={this._filterConfirm}><Text style={styles.sgoods.filterBtnConfirm}>确定</Text></TouchableOpacity>
                   </View>
                 </View>
             </Modal>
@@ -218,6 +256,8 @@ export default class SellerGoodsScreen extends Component {
     _tab = (type) => {
       let state = this.state;
       if(state.type === type) return;
+      this._filterInit();
+      this.setState({keyword: ''});
       this.refs.containerScrollView.scrollTo({x: type * Utils.width, y: 0});
       requestAnimationFrame(() => {
         this.setState({type});
@@ -262,7 +302,8 @@ export default class SellerGoodsScreen extends Component {
       let page = Math.floor(e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width);
       let state = this.state;
       if(page == state.type) return;
-      this.setState({type: page});
+      this._filterInit();
+      this.setState({type: page, keyword: ''});
       if(page == 0) {
         if(state.list1.length === 0 && !state.over[page]) {
           this._reset(0);
@@ -284,7 +325,6 @@ export default class SellerGoodsScreen extends Component {
       let state = this.state;
       if(state.over[state.type]) return;
       this.state.page[state.type]++;
-
       let _url = '';
       if(state.type == 0) {
         _url = Config.PHPAPI + `api/mapp/goods-seller/list?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&show=${state.switchIndex}&token=${token}`
@@ -293,7 +333,6 @@ export default class SellerGoodsScreen extends Component {
       } else {
         _url = Config.PHPAPI + `api/mapp/goods-seller/library?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&token=${token}`
       }
-
       fetch(_url, {
         method: 'GET'
       })
@@ -360,6 +399,27 @@ export default class SellerGoodsScreen extends Component {
       .then((r) => {
         if(r.error_code == 0) {
           this.state.cateLv1 = r.data;
+        }
+      });
+    }
+    _getBrand = (arr) => {
+      let _cid = '';
+      if(arr) {
+          _cid = arr[0] > 0 ? this.state.cateLv1[arr[0]].id : '';
+          _cid += (arr[1] > 0 ? (',' + this.state.cateLv2[arr[1]].id) : '');
+          _cid += (arr[2] > 0 ? (',' + this.state.cateLv3[arr[2]].id) : '');
+      }
+      fetch(Config.PHPAPI + 'api/mapp/shop/brand', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `cateId=${_cid}&token=${token}`
+      })
+      .then(response => response.json())
+      .then((r) => {
+        if(r.error_code == 0) {
+          this.state.brand = r.data.length ? r.data : [];
         }
       });
     }
@@ -724,8 +784,116 @@ export default class SellerGoodsScreen extends Component {
     }
     _openFilter = () => {
       this.setState({ visible: true });
+      requestAnimationFrame(() => {
+        this.refs.cateScrollView.scrollTo({x: this.state.filterTabIndex * Utils.width, y: 0, animated: false});
+      });
     }
-    _selectCate = (level, item) => {
-
+    _selectCate = (level, k, item) => {
+      //如果已选分类，再次点击取消已选
+      if(this.state.cateIndex[level] == k) {
+          if(level == 0) {
+            this.setState({
+              cateIndex: [-1, -1, -1],
+              cateLv2: [],
+              cateLv3: [],
+              cateId: '',
+              brandId: '',
+              brandIndex: [-1, -1]
+            });
+            this._getBrand();
+          } else if(level == 1) {
+            let _tempCateIndex = this.state.cateIndex;
+            _tempCateIndex[1] = -1;
+            _tempCateIndex[2] = -1;
+            this.setState({
+              cateIndex: _tempCateIndex,
+              cateLv3: [],
+              cateId: this.state.cateLv1[this.state.cateIndex[0]].id,
+              brandId: '',
+              brandIndex: [-1, -1]
+            });
+            this._getBrand(_tempCateIndex);
+          } else {
+            let _tempCateIndex = this.state.cateIndex;
+            _tempCateIndex[2] = -1;
+            this.setState({
+              cateIndex: _tempCateIndex,
+              cateId: (this.state.cateLv1[this.state.cateIndex[0]].id + ',' + this.state.cateLv2[this.state.cateIndex[1]].id),
+              brandId: '',
+              brandIndex: [-1, -1]
+            });
+            this._getBrand(_tempCateIndex);
+          }
+      } else {
+        this.setState({filterTabIndex: level+1});
+        this.refs.cateScrollView.scrollTo({x: (level+1) * Utils.width, y: 0});
+        requestAnimationFrame(() => {
+          if (level == 0) {
+            this.setState({
+              cateIndex: [k, -1, -1],
+              cateId: this.state.cateLv1[k].id,
+              cateLv2: item.list || [],
+              cateLv3: [],
+              brandIndex: [-1, -1]
+             });
+            this._getBrand([k, -1, -1]);
+          } else if (level == 1) {
+            let _temp = this.state.cateIndex;
+            _temp[1] = k;
+            this.setState({
+              cateIndex: _temp,
+              cateId: (this.state.cateLv1[this.state.cateIndex[0]].id + ',' + this.state.cateLv2[k].id),
+              cateLv3: item.list || [],
+              brandIndex: [-1, -1]
+            });
+            this._getBrand(_temp);
+          } else if (level == 2) {
+            let _temp = this.state.cateIndex;
+            _temp[2] = k;
+            this.setState({
+              cateIndex: _temp,
+              cateId: (this.state.cateLv1[this.state.cateIndex[0]].id + ',' + this.state.cateLv2[this.state.cateIndex[1]].id + ',' + this.state.cateLv3[k].id),
+              brandIndex: [-1, -1]
+            });
+            this._getBrand(_temp);
+          }
+        });
+      }
+    }
+    _filterTabFunc = (level) => {
+      this.setState({filterTabIndex: level});
+      this.refs.cateScrollView.scrollTo({x: level * Utils.width, y: 0});
+    }
+    _selectBrand = (k, k1, bid) => {
+      if(this.state.brandIndex[0] == k && this.state.brandIndex[1] == k1) {
+        this.setState({brandIndex: [-1, -1], brandId: ''});
+      } else {
+        this.setState({brandIndex: [k, k1], brandId: bid});
+      }
+    }
+    _filterInit = () => {
+      this.setState({
+        cateId: '',
+        cateLv2: [],
+        cateLv3: [],
+        cateIndex: [-1, -1, -1],
+        brandId: '',
+        brand: [],
+        brandIndex: [-1, -1],
+        filterTabIndex: 0
+      });
+      this._getBrand();
+    }
+    _filterReset = () => {
+      this.refs.cateScrollView.scrollTo({x: 0, y: 0});
+      this._filterInit();
+      this._close();
+      this._reset(this.state.type);
+      this._delayLoading();
+    }
+    _filterConfirm = () => {
+      this._close();
+      this._reset(this.state.type);
+      this._delayLoading();
     }
 }
