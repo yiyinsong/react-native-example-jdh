@@ -44,7 +44,7 @@ export default class SellerGoodsItemComponent extends Component {
             </TouchableOpacity>
             : null
           }
-          <TouchableHighlight style={styles.common.flex} underlayColor='#fafafa' onPress={() => this._toDetail()}>
+          <TouchableHighlight style={styles.common.flex} underlayColor='#fafafa' onPress={() => this._toDetail(_data.goods_id)}>
             <View style={styles.common.flexDirectionRow}>
               <Image source={{uri: _data.goods_img1}} style={styles.sgoods.img}/>
               <View style={styles.common.flexv}>
@@ -61,7 +61,7 @@ export default class SellerGoodsItemComponent extends Component {
                   }
                   {
                     (this.state.index === 0 && this.state.sub !== 2 && _data.is_freeze != 1) || (this.state.index === 1 && this.state.sub === 0 && _data.is_freeze != 1) ?
-                      <TouchableOpacity activeOpacity={.8} onPress={this._toEdit} style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                      <TouchableOpacity activeOpacity={.8} onPress={() => this._toEdit(_data.goods_id)} style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
                         <Image source={require('../../../images/icon-edit.png')} style={styles.sgoods.itemEdit} />
                         <Text style={styles.sgoods.itemEditText}>编辑</Text>
                       </TouchableOpacity>
@@ -88,8 +88,17 @@ export default class SellerGoodsItemComponent extends Component {
     });
     this.props.checkFunc && this.props.checkFunc(_ori);
   }
-  _toDetail = () => {
+  _toDetail = (id) => {
+    if(this.state.index === 2 || this.state.sub == 2) return;
+    this.props.props.navigation.navigate('SellerGoodsDetail', {
+      id,
+      type: this.state.index == 0 ? 2 : 1
+    });
   }
-  _toEdit = () => {
+  _toEdit = (id) => {
+    this.props.props.navigation.navigate('SellerGoodsEdit', {
+      id,
+      type: this.state.index + 1
+    });
   }
 }

@@ -23,6 +23,9 @@ import SellerRefundDetailScreen from '../screens/containers/seller/tab-order-ref
 import SellerRefundExamineScreen from '../screens/containers/seller/tab-order-refund-examine';
 import SellerRefundRefuseScreen from '../screens/containers/seller/tab-order-refund-refuse';
 
+import SellerGoodsDetailScreen from '../screens/containers/seller/tab-goods-detail';
+import SellerGoodsEditScreen from '../screens/containers/seller/tab-goods-edit';
+
 import styles from '../css/styles';
 
 export default {
@@ -146,6 +149,20 @@ export default {
     screen: SellerRefundRefuseScreen,
     navigationOptions: {
       headerStyle: styles.common.headerGray
+    }
+  },
+  //卖家商品管理详情
+  SellerGoodsDetail: {
+    screen: SellerGoodsDetailScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  //卖家商品编辑
+  SellerGoodsEdit: {
+    screen: SellerGoodsEditScreen,
+    navigationOptions: {
+      title: '编辑商品'
     }
   }
 }

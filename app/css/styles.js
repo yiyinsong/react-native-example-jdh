@@ -1014,6 +1014,18 @@ export default {
       fontSize: FONT_12,
     },
   },
+  btn2: {
+    primary: {
+      backgroundColor: COLOR_BLUE,
+      alignItems: 'center',
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    primaryText: {
+      color: COLOR_WHITE,
+      fontSize: FONT_14
+    }
+  },
   login: {
     content: {
       backgroundColor: BACKGROUNDCOLOR_WHITE
@@ -1733,5 +1745,218 @@ export default {
       width: 18,
       height: 18
     },
+  },
+  sgoodsDetail: {
+    header: {
+      height: 65,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_D,
+      paddingTop: 20,
+    },
+    tab: {
+      paddingRight: 60
+    },
+    tabText: {
+      height: 43,
+      textAlignVertical: 'center',
+      color: COLOR_3
+    },
+    tabActive: {
+      color: COLOR_RED,
+      borderBottomWidth: 2,
+      borderBottomColor: COLOR_RED
+    },
+    banner: {
+      height: 200
+    },
+    bannerFooter: {
+      position: 'relative'
+    },
+    indicatorContainer: {
+      position: 'absolute',
+      zIndex: 9,
+      justifyContent: 'center',
+      top: -20,
+    },
+    indicator: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: COLOR_D,
+      margin: 3
+    },
+    indicatorActive: {
+      backgroundColor: COLOR_RED
+    },
+    block: {
+      padding: 10,
+      borderBottomWidth: 8,
+      borderBottomColor: COLOR_GRAY
+    },
+    title: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+      marginBottom: 10,
+      lineHeight: 22
+    },
+    label: {
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      color: COLOR_RED,
+      paddingTop: 2,
+      paddingBottom: 2,
+      paddingLeft: 5,
+      paddingRight: 5,
+      fontSize: FONT_12
+    },
+    price: {
+      paddingTop: 10,
+      fontSize: FONT_12,
+      color: COLOR_RED
+    },
+    priceBig: {
+      fontSize: FONT_16,
+      fontWeight: '500'
+    },
+    attrDt: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+      width: 50
+    },
+    attrDd: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      paddingTop: 2,
+      paddingLeft: 5,
+      paddingBottom: 2,
+      paddingRight: 5,
+      marginLeft: 5
+    },
+    table: {
+      margin: 10,
+      borderLeftWidth: 1,
+      borderLeftColor: COLOR_E,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+      borderRightWidth: 1,
+      borderRightColor: COLOR_E
+    },
+    tableHead: {
+      backgroundColor: COLOR_GRAY,
+      padding: 8,
+      fontSize: FONT_12,
+      color: COLOR_3
+    },
+    tdl: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_E,
+      borderRightWidth: 1,
+      borderRightColor: COLOR_E,
+      padding: 8,
+      fontSize: FONT_12,
+      color: COLOR_6,
+      width: 100
+    },
+    tdr: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_E,
+      padding: 8,
+      fontSize: FONT_12,
+      color: COLOR_6,
+      flex: 1
+    }
+  },
+  sgoodsEdit: {
+    tips: {
+      paddingTop: 20,
+      paddingLeft: 40,
+      paddingBottom: 20,
+      paddingRight: 40,
+      borderBottomWidth: 8,
+      borderBottomColor: COLOR_GRAY
+    },
+    tipsImg: {
+      width: 50,
+      height: 50,
+    },
+    tipsText: {
+      fontSize: FONT_12,
+      color: COLOR_RED,
+      marginTop: 10,
+      lineHeight: 22
+    },
+    info: {
+      borderBottomWidth: 8,
+      borderBottomColor: COLOR_GRAY,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    infoItem: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      paddingTop: 8,
+      paddingBottom: 8
+    },
+    infoDt: {
+      color: COLOR_9,
+      fontSize: FONT_12,
+      width: 80
+    },
+    infoDd: {
+      color: COLOR_3,
+      fontSize: FONT_12
+    },
+    comb:{
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    h5: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+      fontWeight: '500',
+      paddingTop: 8,
+      paddingBottom: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
+    },
+    combItem: {
+      paddingTop: 8,
+      paddingBottom: 8,
+    },
+    combTitle: {
+      color: COLOR_RED,
+      fontSize: FONT_12
+    },
+    delete: {
+      width: 14,
+      height: 14,
+      marginRight: 3
+    },
+    label: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      marginRight: 5
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: COLOR_GRAY,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: 5,
+      paddingRight: 5,
+      margin: 0,
+      height: 24,
+      flex: 1
+    },
+    form: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      paddingBottom: 10
+    },
+    group: {
+      marginRight: 20
+    }
   }
 }

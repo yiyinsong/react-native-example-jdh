@@ -109,7 +109,7 @@ export default class SellerGoodsScreen extends Component {
                 </View>
                 <FlatList
                 data={this.state.list1}
-                renderItem={({item, index}) => <GoodsItem data={item} index={0} sub={this.state.switchIndex} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}}></GoodsItem>}
+                renderItem={({item, index}) => <GoodsItem data={item} index={0} sub={this.state.switchIndex} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}} props={this.props}></GoodsItem>}
                 getItemLayout={(data, index) => (
                   {length: 91, offset: 91 * index, index}
                 )}
@@ -140,7 +140,7 @@ export default class SellerGoodsScreen extends Component {
                 </View>
                 <FlatList
                 data={this.state.list2}
-                renderItem={({item, index}) => <GoodsItem data={item} index={1} sub={this.state.switchIndex2} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}}></GoodsItem>}
+                renderItem={({item, index}) => <GoodsItem data={item} index={1} sub={this.state.switchIndex2} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}} props={this.props}></GoodsItem>}
                 getItemLayout={(data, index) => (
                   {length: 91, offset: 91 * index, index}
                 )}
@@ -164,7 +164,7 @@ export default class SellerGoodsScreen extends Component {
                 <View style={[styles.common.flexDirectionRow, styles.sgoods.switchTitle]}></View>
                 <FlatList
                 data={this.state.list3}
-                renderItem={({item, index}) => <GoodsItem data={item} index={2} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}}></GoodsItem>}
+                renderItem={({item, index}) => <GoodsItem data={item} index={2} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}} props={this.props}></GoodsItem>}
                 getItemLayout={(data, index) => (
                   {length: 91, offset: 91 * index, index}
                 )}
