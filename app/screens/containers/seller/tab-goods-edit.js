@@ -10,7 +10,8 @@ import {
   InteractionManager,
   DeviceEventEmitter,
   Modal,
-  WebView
+  WebView,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import Utils from '../../../js/utils';
@@ -47,7 +48,7 @@ export default class SellerGoodsEditScreen extends Component {
     render() {
         let state = this.state;
         return (
-          <View style={[styles.common.flexv, styles.common.initWhite]}>
+          <KeyboardAvoidingView behavior="position" contentContainerStyle={[styles.common.flexv, styles.common.initWhite]} style={[styles.common.flexv, styles.common.initWhite]}>
             <ScrollView>
               <View style={[styles.sgoodsEdit.tips, styles.common.flexCenterv]}>
                 <Image source={require('../../../images/icon-info.png')} style={styles.sgoodsEdit.tipsImg}/>
@@ -144,7 +145,7 @@ export default class SellerGoodsEditScreen extends Component {
             </View>
             <Loading visible={this.state.loadingVisible}></Loading>
             <ModalConfirm keys={5}></ModalConfirm>
-          </View>
+          </KeyboardAvoidingView>
         );
     }
     _init = () => {

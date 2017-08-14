@@ -1653,7 +1653,10 @@ export default {
       backgroundColor: BACKGROUNDCOLOR_WHITE,
       borderTopWidth: 1,
       borderTopColor: COLOR_GRAY,
-      padding: 8
+      paddingTop: 8,
+      paddingBottom: 8,
+      paddingLeft: 10,
+      paddingRight: 8
     },
     all: {
       flex: 1,
@@ -1966,7 +1969,7 @@ export default {
       paddingLeft: 5,
       paddingRight: 5,
       margin: 0,
-      height: 24,
+      height: 30,
       flex: 1
     },
     input2: {
