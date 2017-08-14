@@ -34,7 +34,7 @@ export default class OrderItem extends Component {
               </View>
               {
                   _data.goods.map((v, k) => {
-                  return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => {this._toDetail(_data.orderSn, v)}}>
+                  return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => {this._toDetail(_data.status == 10 ? (_data.mainOrderSn || _data.orderSn) : _data.orderSn, v)}}>
                     <View style={styles.sorderItem.itemBody}>
                       <View style={styles.sorderItem.imgWrapper}>
                         <Image style={styles.sorderItem.img} source={{uri: v.imgUrlSmall}} />

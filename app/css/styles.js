@@ -16,6 +16,7 @@ const COLOR_E = '#eee';
 
 const FONT_8 = 8;
 const FONT_10 = 10;
+const FONT_11 = 11;
 const FONT_12 = 12;
 const FONT_14 = 14;
 const FONT_16 = 16;
@@ -1015,6 +1016,19 @@ export default {
     },
   },
   btn2: {
+    default: {
+      backgroundColor: COLOR_WHITE,
+      color: COLOR_3,
+      alignItems: 'center',
+      paddingTop: 9,
+      paddingBottom: 10,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D
+    },
+    defaultText: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+    },
     primary: {
       backgroundColor: COLOR_BLUE,
       alignItems: 'center',
@@ -1023,7 +1037,7 @@ export default {
     },
     primaryText: {
       color: COLOR_WHITE,
-      fontSize: FONT_14
+      fontSize: FONT_14,
     }
   },
   login: {
@@ -1939,6 +1953,11 @@ export default {
       color: COLOR_3,
       marginRight: 5
     },
+    label2: {
+      fontSize: FONT_11,
+      color: COLOR_3,
+      marginRight: 5
+    },
     input: {
       borderWidth: 1,
       borderColor: COLOR_GRAY,
@@ -1948,6 +1967,14 @@ export default {
       paddingRight: 5,
       margin: 0,
       height: 24,
+      flex: 1
+    },
+    input2: {
+      borderWidth: 1,
+      borderColor: COLOR_GRAY,
+      padding: 5,
+      margin: 0,
+      height: 34,
       flex: 1
     },
     form: {

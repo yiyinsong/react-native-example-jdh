@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   InteractionManager,
+  DeviceEventEmitter,
   Modal,
   WebView
 } from 'react-native';
@@ -50,6 +51,12 @@ export default class SellerGoodsDetailScreen extends Component {
         ScreenInit.checkLogin(this);
         this._init();
       });
+      this.listener_update = DeviceEventEmitter.addListener('sellerGoodsUpdate', () => {
+        this._init();
+      });
+    }
+    componentWillUnmount() {
+      this.listener_update && this.listener_update.remove();
     }
 
     render() {
@@ -158,7 +165,7 @@ export default class SellerGoodsDetailScreen extends Component {
             : null
           }
           {this.state.bodyShow ?
-            <TouchableOpacity activeOpacity={.8} style={styles.btn2.primary}>
+            <TouchableOpacity activeOpacity={.8} style={styles.btn2.primary} onPress={this._edit}>
               <Text style={styles.btn2.primaryText}>编辑商品</Text>
             </TouchableOpacity>
           : null}
@@ -224,5 +231,11 @@ export default class SellerGoodsDetailScreen extends Component {
             </View>
           </View>
         );
+    }
+    _edit = () => {
+      this.props.navigation.navigate('SellerGoodsEdit', {
+        id: this.state.goodsid,
+        type: this.state.goodstype === 2 ? 1 : 2
+      });
     }
 }

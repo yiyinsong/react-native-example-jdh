@@ -69,7 +69,7 @@ export default class SellerGoodsItemComponent extends Component {
                   }
                   {
                     this.state.index == 2 ?
-                      <TouchableHighlight underlayColor='#fafafa' onPress={this._copy}>
+                      <TouchableHighlight underlayColor='#fafafa' onPress={() => this._copy(_data.goods_id)}>
                       <Text style={[styles.btn.primary, styles.sgoods.copyBtn]}>复制商品</Text>
                       </TouchableHighlight>
                     : null
@@ -90,15 +90,22 @@ export default class SellerGoodsItemComponent extends Component {
   }
   _toDetail = (id) => {
     if(this.state.index === 2 || this.state.sub == 2) return;
-    this.props.props.navigation.navigate('SellerGoodsDetail', {
-      id,
-      type: this.state.index == 0 ? 2 : 1
-    });
+    if(this.state.index == 1) {
+
+    } else {
+      this.props.props.navigation.navigate('SellerGoodsDetail', {
+        id,
+        type: this.state.index == 0 ? 2 : 1
+      });
+    }
   }
   _toEdit = (id) => {
     this.props.props.navigation.navigate('SellerGoodsEdit', {
       id,
       type: this.state.index + 1
     });
+  }
+  _copy = (id) => {
+    this.props.copyGoods && this.props.copyGoods(id);
   }
 }

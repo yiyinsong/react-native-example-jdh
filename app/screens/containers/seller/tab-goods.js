@@ -61,9 +61,23 @@ export default class SellerGoodsScreen extends Component {
         this._getCate();
         this._getBrand();
       });
+      this.listener_update = DeviceEventEmitter.addListener('sellerGoodsUpdate', () => {
+        //如果是复制商品
+        if(this.state.type == 2) {
+          this._filterInit();
+          this.setState({keyword: '', type: 0});
+          this.refs.containerScrollView.scrollTo({x: 0, y: 0});
+          this._reset(0);
+          this._delayLoading();
+        } else {
+          this._reset(this.state.type);
+          this._delayLoading();
+        }
+      });
     }
     componentWillUnmount() {
       this.timer && clearTimeout(this.timer);
+      this.listener_update && this.listener_update.remove();
     }
 
     render() {
@@ -164,7 +178,7 @@ export default class SellerGoodsScreen extends Component {
                 <View style={[styles.common.flexDirectionRow, styles.sgoods.switchTitle]}></View>
                 <FlatList
                 data={this.state.list3}
-                renderItem={({item, index}) => <GoodsItem data={item} index={2} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}} props={this.props}></GoodsItem>}
+                renderItem={({item, index}) => <GoodsItem data={item} index={2} checkFunc={(ischeck) => {this._itemCheck(ischeck, index)}} props={this.props} copyGoods={(id) => this._copyGoods(id)}></GoodsItem>}
                 getItemLayout={(data, index) => (
                   {length: 91, offset: 91 * index, index}
                 )}
@@ -895,5 +909,30 @@ export default class SellerGoodsScreen extends Component {
       this._close();
       this._reset(this.state.type);
       this._delayLoading();
+    }
+    _copyGoods = (id) => {
+      /****先判断是否有重名的商品****/
+      fetch(Config.PHPAPI + 'api/goods/product/validate-name', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body:`id=${id}&token=${token}`
+      })
+      .then(response => response.json())
+      .then((r) => {
+        if(r.error_code === 0 || r.error_code === 500) {
+          DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
+              text: r.error_code === 500 ? r.msg : '是否确认复制该商品?',
+              confirm: () => {
+                this.props.navigation.navigate('SellerGoodsEdit', {
+                  id,
+                  type: this.state.type + 1
+                });
+              }
+            }
+          });
+        }
+      })
     }
 }
