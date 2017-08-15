@@ -535,7 +535,7 @@ export default {
       textAlign: 'center',
       width: 14,
       height: 14,
-      lineHeight: 13
+      lineHeight: 12
     },
     borderNone: {
       borderBottomWidth: 0

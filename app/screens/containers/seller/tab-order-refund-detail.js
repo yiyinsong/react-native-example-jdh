@@ -136,7 +136,7 @@ export default class OrderDetailScreen extends Component{
           { _data.refund.isNow == 1 && _data.refund.status == 10 ?
             <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._examine()}}><Text style={styles.footerBtn.text}>审核</Text></TouchableHighlight>
             : null }
-            { _data.refund.isNow == 1 && _data.refund.status == 40 && _data.refund.payStatus == 5 ?
+            { _data.refund.status == 40 && _data.refund.payStatus == 5 ?
             <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._pay(1)}}><Text style={styles.footerBtn.text}>打款</Text></TouchableHighlight>
             : null }
             { _data.refund.isNow == 1 && _data.refund.type == 2 && _data.refund.status == 30 ?

@@ -7,7 +7,7 @@
  import { AppRegistry, Image, TouchableOpacity } from 'react-native';
  import { StackNavigator } from 'react-navigation';
  //安卓实现左右切换
- // import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+ // import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
 
  //初始化项目
  import Init from './app/config/init';

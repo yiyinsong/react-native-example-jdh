@@ -189,8 +189,9 @@ export default class SellerHomeScreen extends Component {
                     </View>
                   </TouchableOpacity>
                   <View style={ styles.shome.userNavToMess }>
-                    {this.state.messageCount>0 ? <View style={ styles.shome.badge }><Text style={ styles.shome.badgeText }>{this.state.messageCount}</Text></View> : null}
-                    <Image source={require('../../../images/icon-message.png')} style={ styles.shome.userMessIcon }/>
+                    <Image source={require('../../../images/icon-message.png')} style={ styles.shome.userMessIcon }>
+                      {this.state.messageCount>0 ? <View style={ styles.shome.badge }><Text style={ styles.shome.badgeText }>{this.state.messageCount}</Text></View> : null}
+                    </Image>
                   </View>
                 </View>
                 <View style={ [styles.shome.userBlock, styles.shome.userInfo] }>
