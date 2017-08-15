@@ -34,13 +34,12 @@ export default class OrderSearchScreen extends Component {
       canload: false,
       posCodeVisible: false,
       posCodeSrc: '',
-      autoFocus: false
     };
   }
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       ScreenInit.checkLogin(this);
-      this.setState({autoFocus: true});
+      this.refs.searchInput.focus();
       this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
           //如果是全部订单，则更改订单状态
           this._search(this.state.keyword);
@@ -59,7 +58,6 @@ export default class OrderSearchScreen extends Component {
           value={this.state.keyword}
           underlineColorAndroid="transparent"
           style={styles.sorderSearch.input}
-          autoFocus={this.state.autoFocus}
           placeholder="请输入订单号/商品名称"
           ref="searchInput"
           onSubmitEditing={this._submit}/>
