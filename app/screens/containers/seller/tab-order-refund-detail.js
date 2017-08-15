@@ -49,6 +49,7 @@ export default class OrderDetailScreen extends Component{
       this._init();
     })
     this.listener_update = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
+	  DeviceEventEmitter.emit('SellerHomeUpdate');
       this._init();
     });
   }

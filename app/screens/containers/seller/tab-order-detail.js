@@ -45,6 +45,7 @@ export default class OrderDetailScreen extends Component{
     });
     //添加发货成功侦听事件
     this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
+	  DeviceEventEmitter.emit('SellerHomeUpdate');
       this._init();
     });
   }

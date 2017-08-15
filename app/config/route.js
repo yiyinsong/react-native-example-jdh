@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {
   TouchableOpacity,
   Image,
-  View
+  Text,
+  View,
+  DeviceEventEmitter
 } from 'react-native';
 
 import HomeScreen from '../screens/index';
@@ -26,7 +28,28 @@ import SellerRefundRefuseScreen from '../screens/containers/seller/tab-order-ref
 import SellerGoodsDetailScreen from '../screens/containers/seller/tab-goods-detail';
 import SellerGoodsEditScreen from '../screens/containers/seller/tab-goods-edit';
 
+import BuyerScreen from '../screens/containers/buyer/index';
+
 import styles from '../css/styles';
+
+const renderBuyerHeaderRight = (navigation) => {
+  if(navigation.state.index == 4) {
+    return (
+      <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
+            <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
+        </TouchableOpacity>
+    );
+  } else if (navigation.state.index == 3) {
+    let _params = navigation.state.routes[navigation.state.index].params;
+    return (
+      <TouchableOpacity activeOpacity={.8} onPress={() => {DeviceEventEmitter.emit('cartEdit')}} style={styles.cart.headerRight}>
+        <Text style={styles.cart.headerRightText}>{_params && _params.headerRight}</Text>
+      </TouchableOpacity>
+    );
+  } else {
+    return null;
+  }
+}
 
 export default {
   Home: {
@@ -164,5 +187,29 @@ export default {
     navigationOptions: {
       title: '编辑商品'
     }
-  }
+  },
+  //买家
+  Buyer: {
+    screen: BuyerScreen,
+    navigationOptions: ({navigation}) => ({
+      headerStyle: {
+        backgroundColor: '#fff',
+        color: '#333',
+        height: 65,
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomColor: '#eee',
+        borderBottomWidth: 1,
+        paddingTop: 20,
+      },
+      headerTitleStyle : {
+          color: '#333',
+          fontSize: 16,
+          alignSelf: 'center',
+          fontWeight: '100'
+      },
+      headerLeft: (navigation.state.index == 3 || navigation.state.index == 4 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
+      headerRight: renderBuyerHeaderRight(navigation)
+    })
+  },
 }

@@ -89,6 +89,7 @@ export default class OrderListScreen extends Component {
           //如果是全部订单，则更改订单状态
           this._reset();
           this._init();
+          DeviceEventEmitter.emit('SellerHomeUpdate');
           requestAnimationFrame(()=>{
             this._getData(this.state.activeIndex);
           });

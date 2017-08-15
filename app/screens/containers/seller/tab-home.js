@@ -56,6 +56,12 @@ export default class SellerHomeScreen extends Component {
         ScreenInit.checkLogin(this);
         this._init();
       })
+      this.listener_update = DeviceEventEmitter.addListener('SellerHomeUpdate', () => {
+        this._init();
+      });
+    }
+    componentWillUnmount() {
+      this.listener_update && this.listener_update.remove();
     }
     _init = () => {
         //获取店铺信息
@@ -199,10 +205,10 @@ export default class SellerHomeScreen extends Component {
                     <Image source={{uri: this.state.userInfo.shop_logo}} style={ styles.shome.userHeadIcon } onError={this._logoError}/>
                     <View style={ styles.shome.userData }>
                       <Text style={ styles.shome.userName } numberOfLines={1}>{ this.state.userInfo.shop_name }</Text>
-                      <View style={ styles.shome.idTab }>
+                      <TouchableOpacity activeOpacity={.8} style={ styles.shome.idTab } onPress={this._toBuyer}>
                         <Text style={ [styles.shome.userName, styles.shome.idTabText] }>我要采购</Text>
                         <Image source={require('../../../images/icon-user-tab.png')} style={ styles.shome.idTabImg } />
-                      </View>
+                      </TouchableOpacity>
                     </View>
                   </View>
                   <View style={ styles.shome.userToOther }>
@@ -417,5 +423,8 @@ export default class SellerHomeScreen extends Component {
     _toOrder = (type, index) => {
       DeviceEventEmitter.emit('orderTabModule', {type, index});
       this.props.navigation.navigate('SellerOrder', {type, index});
+    }
+    _toBuyer = () => {
+      this.props.navigation.navigate('BuyerHome');
     }
 }

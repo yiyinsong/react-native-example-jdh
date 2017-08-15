@@ -42,6 +42,7 @@ export default class OrderSearchScreen extends Component {
       this.refs.searchInput.focus();
       this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
           //如果是全部订单，则更改订单状态
+          DeviceEventEmitter.emit('SellerHomeUpdate');
           this._search(this.state.keyword);
       });
     });

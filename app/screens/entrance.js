@@ -49,6 +49,7 @@ export default class EntranceScreen extends Component {
       if(t == 0) {
         this.props.navigation.navigate('Seller');
       } else {
+        this.props.navigation.navigate('Buyer');
       }
     }
 }

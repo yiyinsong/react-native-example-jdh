@@ -38,12 +38,15 @@
            </TouchableOpacity>),
      headerRight: <TouchableOpacity style={styles.common.headerBtnRight}></TouchableOpacity>
    }),
-  // transitionConfig: () => ({
+   transitionConfig: () => ({
+     transitionSpec: {
+       duration: 250
+     },
   //   screenInterpolator: (sceneProps) => {
   //     if (sceneProps.scene.route.withoutAnimation) return null;
   //     return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps)
   //   },
-  // }),
+  }),
  });
 
  const prevGetStateForAction = ReactNativeJdh.router.getStateForAction;

@@ -1988,5 +1988,16 @@ export default {
     group: {
       marginRight: 20
     }
-  }
+  },
+  cart: {
+    headerRight: {
+      height: 18,
+      marginTop: 3,
+      marginRight: 10,
+    },
+    headerRightText: {
+      color: COLOR_3,
+      fontSize: FONT_12,
+    }
+  },
 }
