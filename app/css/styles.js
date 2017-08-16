@@ -13,11 +13,13 @@ const COLOR_3 = '#333';
 const COLOR_6 = '#666';
 const COLOR_9 = '#999';
 const COLOR_E = '#eee';
+const COLOR_F = '#fafafa';
 
 const FONT_8 = 8;
 const FONT_10 = 10;
 const FONT_11 = 11;
 const FONT_12 = 12;
+const FONT_13 = 13;
 const FONT_14 = 14;
 const FONT_16 = 16;
 const FONT_18 = 18;
@@ -1753,7 +1755,7 @@ export default {
   control: {
     checkbox: {
       borderWidth: 1,
-      borderColor: COLOR_E,
+      borderColor: COLOR_D,
       width: 18,
       height: 18,
       borderRadius: 9
@@ -1998,6 +2000,115 @@ export default {
     headerRightText: {
       color: COLOR_3,
       fontSize: FONT_12,
+    },
+    store: {
+      borderBottomWidth: 10,
+      borderBottomColor: COLOR_F,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_E
+    },
+    storeBorderNone: {
+      borderTopWidth: 0
+    },
+    storeHeader: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
+      padding: 10
+    },
+    storeHeaderText: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+      marginLeft: 10
+    },
+    item: {
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    img: {
+      width: 78,
+      height: 78,
+      marginLeft: 10,
+      marginRight: 10,
+      borderWidth: 1,
+      borderColor: COLOR_GRAY
+    },
+    goodsName: {
+      fontSize: FONT_13,
+      color: COLOR_3,
+      lineHeight: 20,
+      height: 38
+    },
+    attr: {
+      fontSize: FONT_12,
+    },
+    price: {
+      color: COLOR_RED,
+    },
+    num: {
+      borderRadius: 3,
+      borderWidth: 1,
+      borderColor: COLOR_D,
+    },
+    calSub: {
+      borderRightWidth: 1,
+      borderRightColor: COLOR_D,
+      width: 20,
+      textAlign: 'center',
+      fontSize: FONT_14,
+      color: COLOR_3,
+      lineHeight: 20,
+      height: 22
+    },
+    calAdd: {
+      borderLeftWidth: 1,
+      borderLeftColor: COLOR_D,
+      width: 20,
+      textAlign: 'center',
+      fontSize: FONT_14,
+      color: COLOR_3,
+      lineHeight: 20,
+      height: 22
+    },
+    numInput: {
+      padding: 0,
+      margin: 0,
+      height: 22,
+      fontSize: FONT_12,
+      textAlign: 'center'
+    },
+    footer: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_GRAY,
+      paddingLeft: 10
+    },
+    all: {
+      color: COLOR_3,
+      marginLeft: 10
+    },
+    settle: {
+      backgroundColor: COLOR_RED,
+      marginLeft: 10
+    },
+    settleText: {
+      color: COLOR_WHITE,
+      fontSize: FONT_12,
+      width: 80,
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      height: 46
+    },
+    count: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    seletNum: {
+      fontSize: FONT_11,
+      textAlign: 'right'
+    },
+    selectCurrentNum: {
+      color: COLOR_RED
     }
   },
 }
