@@ -1837,10 +1837,13 @@ export default {
       fontSize: FONT_16,
       fontWeight: '500'
     },
+    attrDl: {
+      marginTop: 10
+    },
     attrDt: {
       fontSize: FONT_14,
       color: COLOR_3,
-      width: 50
+      width: 70
     },
     attrDd: {
       fontSize: FONT_12,

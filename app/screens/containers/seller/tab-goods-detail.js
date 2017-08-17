@@ -13,7 +13,7 @@ import {
   WebView
 } from 'react-native';
 
-import ViewPager from 'react-native-viewpager';
+import Swiper from 'react-native-swiper';
 
 import Utils from '../../../js/utils';
 import Config from '../../../config/config';
@@ -26,15 +26,11 @@ import UIToast from '../../common/ui-toast';
 export default class SellerGoodsDetailScreen extends Component {
     constructor(props) {
       super(props);
-      this.dataSource = new ViewPager.DataSource({
-        pageHasChanged: (p1, p2) => p1 !== p2,
-      });
       let _query = this.props.navigation.state.params;
       this.state = {
         tab: 0,
         loadingVisible: false,
         bodyShow: false,
-        dataSource: this.dataSource.cloneWithPages([]),
         goodsid: _query.id,
         goodstype: _query.type,
         data: {
@@ -90,14 +86,15 @@ export default class SellerGoodsDetailScreen extends Component {
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} scrollEnabled={false} ref="scrollViewContainer">
               <ScrollView style={{width: Utils.width}}>
                 <View style={styles.sgoodsDetail.banner}>
-                  <ViewPager
-                  ref={(viewpager) => {this.viewpager = viewpager}}
-                  dataSource={this.state.dataSource}
-                  renderPage={this._renderPage}
-                  renderPageIndicator={this._renderPageIndicator}
-                  onChangePage={this._onChangePage}
-                  isLoop={false}
-                  autoPlay={false}/>
+                  <Swiper style={{flex: 1}} loop={false} activeDotColor='#0386fc'>
+                    {this.state.data.img.map( (v, k) => {
+                      return (
+                        <Image
+                          source={{uri: v}}
+                          style={{flex: 1, height: 200, resizeMode: 'contain'}} />
+                      );
+                    })}
+                   </Swiper>
                 </View>
                  <View style={styles.sgoodsDetail.block}>
                   <Text style={styles.sgoodsDetail.title}>{this.state.data.goods_name}</Text>
@@ -114,8 +111,8 @@ export default class SellerGoodsDetailScreen extends Component {
                  <View style={styles.sgoodsDetail.block}>
                   {this.state.data.goods_attr.map((v, k) => {
                     return (
-                      <View style={[styles.common.flexDirectionRow, styles.common.flexCenterh]}>
-                        <Text style={styles.sgoodsDetail.attrDt}>{v.attr_name}</Text>
+                      <View style={[styles.common.flexDirectionRow, styles.common.flexCenterh, k > 0 ? styles.sgoodsDetail.attrDl : '']}>
+                        <Text style={styles.sgoodsDetail.attrDt} numberOfLines={1}>{v.attr_name}</Text>
                         <View style={styles.common.flex}>
                           {v.attributevalue.map((v1, k1) => {
                             return (
@@ -185,7 +182,7 @@ export default class SellerGoodsDetailScreen extends Component {
       .then((r) => {
         this.setState({loadingVisible: false});
         if(r.error_code == 0) {
-          this.setState({data: r.data.baseData,dataSource: this.dataSource.cloneWithPages(r.data.baseData.img || []), bodyShow: true});
+          this.setState({data: r.data.baseData, bodyShow: true});
         }
       });
     }
@@ -210,27 +207,6 @@ export default class SellerGoodsDetailScreen extends Component {
           this.setState({tab: i});
         }
       });
-    }
-    _renderPage = (data: Object,pageID: number | string,) => {
-      return (
-        <Image
-          source={{uri: data}}
-          style={{flex: 1, height: 200, resizeMode: 'contain'}} />
-      )
-    }
-    _onChangePage = (p) => {
-      this.setState({indicatorIndex: p});
-    }
-    _renderPageIndicator = () => {
-        return(
-          <View style={styles.sgoodsDetail.bannerFooter}>
-            <View style={[styles.common.flexDirectionRow, styles.sgoodsDetail.indicatorContainer, {width: Utils.width}]}>
-              {this.state.data.img.map((v, k) => {
-                return <View style={[styles.sgoodsDetail.indicator, this.state.indicatorIndex == k ? styles.sgoodsDetail.indicatorActive : '']}></View>
-              })}
-            </View>
-          </View>
-        );
     }
     _edit = () => {
       this.props.navigation.navigate('SellerGoodsEdit', {

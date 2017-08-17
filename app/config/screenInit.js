@@ -1,4 +1,3 @@
-import { NavigationActions } from 'react-navigation';
 import Config from './config';
 
 export default {
