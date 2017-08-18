@@ -23,9 +23,11 @@ import CartItem from '../../components/buyer/tab-cart-item';
     constructor(props){
     	super(props);
     	this.state = {
+        itemChecked: [],
         storeChecked: [],
+        allChecked: false,
         list: [],
-        loadingVisible: false
+        loadingVisible: false,
       };
     }
     componentWillMount() {
@@ -56,15 +58,19 @@ import CartItem from '../../components/buyer/tab-cart-item';
               return (
                 <View style={[styles.cart.store, k == 0 ? styles.cart.storeBorderNone : '']}>
                   <View style={[styles.cart.storeHeader, styles.common.flexDirectionRow, styles.common.flexCenterv]}>
-                    <TouchableOpacity activeOpacity={.8}>
-                      <View style={[styles.control.checkbox]}></View>
+                    <TouchableOpacity activeOpacity={.8} onPress={() => this._storeCheckFunc(k)}>
+                      {
+                        this.state.storeChecked[k] ?
+                        <Image source={require('../../../images/icon-checked.png')} style={styles.control.checked}/>
+                        : <View style={[styles.control.checkbox]}></View>
+                      }
                     </TouchableOpacity>
                     <Text style={[styles.common.flex, styles.cart.storeHeaderText]} numberOfLines={1}>{v.shop.shopName}</Text>
                   </View>
                   <View>
                     {v.carts.map((v1, k1) => {
                         return (
-                          <CartItem index={k1} data={v1}></CartItem>
+                          <CartItem pindex={k} index={k1} data={v1} checkFunc={(cartItemCheckResult, itemIndex, storeIndex) => this._cartItemCheckFunc(cartItemCheckResult, itemIndex, storeIndex)}></CartItem>
                         );
                     })}
                   </View>
@@ -73,8 +79,11 @@ import CartItem from '../../components/buyer/tab-cart-item';
             })}
           </ScrollView>
           <View style={[styles.common.flexDirectionRow, styles.cart.footer]}>
-            <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flex]}>
-              <View style={[styles.control.checkbox]}></View>
+            <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flex]} onPress={this._allCheckFunc}>
+              {this.state.allChecked ?
+                <Image source={require('../../../images/icon-checked.png')} style={styles.control.checked}/>
+                :<View style={[styles.control.checkbox]}></View>
+              }
               <Text style={styles.cart.all}>全选</Text>
             </TouchableOpacity>
             <View style={styles.common.flexDirectionRow}>
@@ -99,7 +108,16 @@ import CartItem from '../../components/buyer/tab-cart-item';
       .then((r) => {
         this.setState({loadingVisible: false});
         if(r.code == 1) {
-          this.setState({list: r.obj});
+          let _ic = [];
+          let _sc = [];
+          r.obj.forEach((v, k) => {
+            _ic[k] = [];
+            _sc[k] = false;
+            v.carts.forEach((v1, k1) => {
+              _ic[k][k1] = false;
+            });
+          });
+          this.setState({list: r.obj, itemChecked: _ic, storeChecked: _sc});
         } else if(r.code == -100) {
           UIToast(r.message || '获取数据失败');
         } else {
@@ -107,4 +125,73 @@ import CartItem from '../../components/buyer/tab-cart-item';
         }
       });
     }
+    _storeCheckFunc = (k) => {
+      let _storeChecked = this.state.storeChecked;
+      _storeChecked[k] = !_storeChecked[k];
+      DeviceEventEmitter.emit('buyerCartCheck', {
+        index: k,
+        checked: _storeChecked[k]
+      });
+      let _itemChecked = this.state.itemChecked;
+        _itemChecked[k].forEach((v1, k1) => {
+        _itemChecked[k][k1] = _storeChecked[k];
+      });
+      if(_storeChecked[k]) {
+        let _allChecked = true;
+        _storeChecked.forEach((v, k) => {
+          if(!v) {
+            _allChecked = false;
+          }
+        });
+        this.setState({storeChecked: _storeChecked, allChecked: _allChecked, itemChecked: _itemChecked});
+      } else {
+        this.setState({storeChecked: _storeChecked, allChecked: false, itemChecked: _itemChecked});
+      }
+
+     }
+     _cartItemCheckFunc = (r, k, pk) => {
+       let _itemChecked = this.state.itemChecked;
+       _itemChecked[pk][k] = r;
+
+       let _storeChecked = this.state.storeChecked;
+       let _allChecked = true;
+
+       if(r) {
+         let _allItemChecked = true;
+          _itemChecked[pk].forEach((v, k) => {
+            if(!v) {
+              _allItemChecked = false;
+            }
+          });
+          _storeChecked[pk] = _allItemChecked;
+          _storeChecked.forEach((v, k) => {
+            if(!v) {
+              _allChecked = false;
+            }
+          });
+       } else {
+         _storeChecked[pk] = false;
+         _allChecked = false;
+       }
+       this.setState({itemChecked: _itemChecked, storeChecked: _storeChecked, allChecked: _allChecked});
+     }
+     _allCheckFunc = () => {
+       let _allChecked = this.state.allChecked;
+       _allChecked = !_allChecked;
+       DeviceEventEmitter.emit('buyerCartCheck', {
+         all: true,
+         checked: _allChecked
+       });
+       let _storeChecked = this.state.storeChecked;
+       _storeChecked.forEach((v, k) => {
+         _storeChecked[k] = _allChecked;
+       });
+       let _itemChecked = this.state.itemChecked;
+       _itemChecked.forEach((v, k) => {
+         v.forEach((v1, k1) => {
+           _itemChecked[k][k1] = _allChecked;
+         });
+       });
+       this.setState({itemChecked: _itemChecked, storeChecked: _storeChecked, allChecked: _allChecked});
+     }
   }

@@ -17,12 +17,13 @@ export default class BuyerCartItemComponent extends Component {
     super(props);
     this.state = {
       index: this.props.index,
+      pindex: this.props.pindex,
       checked: false
     }
   }
   componentWillMount() {
     this.listener_check = DeviceEventEmitter.addListener('buyerCartCheck', (r) => {
-      if(this.state.index !== r.index) return;
+      if(!r.all && this.state.pindex !== r.index) return;
       this.setState({checked: r.checked});
     });
   }
@@ -66,6 +67,6 @@ export default class BuyerCartItemComponent extends Component {
     this.setState({
       checked: _ori
     });
-    this.props.checkFunc && this.props.checkFunc(_ori);
+    this.props.checkFunc && this.props.checkFunc(_ori, this.state.index, this.state.pindex);
   }
 }

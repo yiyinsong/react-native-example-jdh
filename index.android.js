@@ -14,7 +14,9 @@
 
  import Route from './app/config/route';
 
+ import UIToast from './app/screens/common/ui-toast';
  import styles from './app/css/styles';
+
 
  const ReactNativeJdh = StackNavigator(Route, {
    navigationOptions: ({ navigation, screenProps }) => ({
@@ -49,6 +51,9 @@
   }),
  });
 
+ let exit = false;
+ let exitTimer = null;
+
  const prevGetStateForAction = ReactNativeJdh.router.getStateForAction;
  ReactNativeJdh.router.getStateForAction = (action, state) => {
      if(state && action.type === 'ReplaceRoute') {
@@ -71,6 +76,25 @@
          ...state,
          routes,
          index: routes.length - 1
+       }
+     } else if(action.type === 'Navigation/BACK') {
+       let _currentRouteName = state.routes[state.routes.length - 1];
+       if(_currentRouteName.routeName === 'Seller' || _currentRouteName.routeName === 'Buyer' || _currentRouteName.routeName === 'Entrance' || _currentRouteName.routeName === 'Login') {
+         clearTimeout(exitTimer);
+         if(exit) {
+           exit = false;
+           return null;
+         } else {
+           UIToast('再按一次退出应用');
+           exit =  true;
+           exitTimer = setTimeout(() => {
+             exit = false;
+           }, 1000);
+           return {
+             ...state,
+             index: state.routes.length - 1,
+           }
+         }
        }
      }
      return prevGetStateForAction(action, state);
