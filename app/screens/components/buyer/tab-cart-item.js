@@ -18,7 +18,8 @@ export default class BuyerCartItemComponent extends Component {
     this.state = {
       index: this.props.index,
       pindex: this.props.pindex,
-      checked: false
+      checked: false,
+      num: this.props.data.qty
     }
   }
   componentWillMount() {
@@ -48,11 +49,11 @@ export default class BuyerCartItemComponent extends Component {
             <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
               <Text style={[styles.common.flex, styles.cart.price]}>￥{_data.price}</Text>
               <View style={[styles.common.flexDirectionRow, styles.cart.num]}>
-                <TouchableHighlight underlayColor='#f5f5f5'>
+                <TouchableHighlight underlayColor='#f5f5f5' onPress={this._sub}>
                   <Text style={styles.cart.calSub}>-</Text>
                 </TouchableHighlight>
-                <TextInput onChangeText={(text) => {}} underlineColorAndroid="transparent" value={_data.qty} style={styles.cart.numInput} keyboardType='numeric'/>
-                <TouchableHighlight underlayColor='#f5f5f5'>
+                <TextInput onChangeText={(text) => {_data.qty=text;this.setState({num: text})}} underlineColorAndroid="transparent" value={_data.qty.toString()} style={styles.cart.numInput} keyboardType='numeric' onBlur={this._blur}/>
+                <TouchableHighlight underlayColor='#f5f5f5' onPress={this._add}>
                   <Text style={styles.cart.calAdd}>+</Text>
                 </TouchableHighlight>
               </View>
@@ -68,5 +69,19 @@ export default class BuyerCartItemComponent extends Component {
       checked: _ori
     });
     this.props.checkFunc && this.props.checkFunc(_ori, this.state.index, this.state.pindex);
+  }
+  _sub = () => {
+    if(this.props.data.qty < 2) return;
+    this.props.sub && this.props.sub();
+  }
+  _add = () => {
+    this.props.add && this.props.add();
+  }
+  _blur = () => {
+    if(!/^\d+$/.test(this.props.data.qty)) {
+      this.props.data.qty = 1;
+      this.setState({num: 1});
+    }
+    this.props.blur && this.props.blur();
   }
 }

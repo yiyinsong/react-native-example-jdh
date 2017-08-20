@@ -2084,7 +2084,8 @@ export default {
     footer: {
       borderTopWidth: 1,
       borderTopColor: COLOR_GRAY,
-      paddingLeft: 10
+      paddingLeft: 10,
+      height: 48
     },
     all: {
       color: COLOR_3,
@@ -2112,6 +2113,9 @@ export default {
     },
     selectCurrentNum: {
       color: COLOR_RED
+    },
+    delete: {
+      marginRight: 10
     }
   },
 }
