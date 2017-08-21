@@ -7,6 +7,7 @@ const COLOR_BLACK = '#000';
 const COLOR_GRAY = '#f1f1f1';
 const COLOR_ORANGE = '#ff9504';
 const COLOR_WHITE = '#fff';
+const COLOR_VIOLET = '#7079f2';
 const COLOR_A = '#aaa';
 const COLOR_D = '#ddd';
 const COLOR_3 = '#333';
@@ -2118,4 +2119,45 @@ export default {
       marginRight: 10
     }
   },
+  order: {
+    tabActive: {
+      borderBottomColor: COLOR_RED
+    },
+    tabActiveText: {
+      color: COLOR_RED
+    },
+  },
+  orderItem: {
+    footer: {
+      paddingTop: 10,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    account: {
+      fontSize: FONT_12,
+      color: COLOR_3
+    },
+    type: {
+      backgroundColor: COLOR_RED,
+      color: COLOR_WHITE,
+      paddingLeft: 3,
+      paddingRight: 3,
+      marginRight: 5
+    },
+    type2: {
+      backgroundColor: COLOR_VIOLET,
+      color: COLOR_WHITE,
+      paddingLeft: 3,
+      paddingRight: 3,
+      marginRight: 5
+    },
+    typeText: {
+      fontSize: FONT_12,
+      color: COLOR_WHITE
+    },
+    shopName: {
+      fontSize: FONT_12,
+      color: COLOR_3
+    }
+  }
 }

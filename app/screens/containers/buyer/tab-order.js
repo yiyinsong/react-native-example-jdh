@@ -16,7 +16,7 @@ import {
 
 import styles from '../../../css/styles';
 
-import OrderItem from '../../components/seller/tab-order-item';
+import OrderItem from '../../components/buyer/tab-order-item';
 import RefundItem from '../../components/seller/tab-refund-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
@@ -29,7 +29,6 @@ export default class OrderListScreen extends Component {
     constructor(props){
     	super(props);
     	this.state = {
-        type: 0,
         shopId: '',
         orderNum: {
           '10': 0,
@@ -57,34 +56,20 @@ export default class OrderListScreen extends Component {
         ScreenInit.checkLogin(this);
         this._init();
         let _state = this.props.navigation.state;
-        let _initType = _state.params && _state.params.type || 0;
         let _initIndex = _state.params && _state.params.index || 0;
         if(_state.params) {
-          this._tabUpdate(_initType, _initIndex);
+          this._tabUpdate(_initIndex);
         } else {
           this._getData(_initIndex);
         }
-        this.props.navigation.setParams({type: _initType});
         this.setState({ bodyShow: true });
 
       })
-      this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
-        if(this.state.type == 0) {
-          //如果是全部订单，则更改订单状态
-          this._reset();
-          this._init();
-          DeviceEventEmitter.emit('SellerHomeUpdate');
-          requestAnimationFrame(()=>{
-            this._getData(this.state.activeIndex);
-          });
-        }
-      });
       this.listener_tab_update = DeviceEventEmitter.addListener('orderTabModule', (result) => {
-        this._tabUpdate(result.type, result.index);
+        this._tabUpdate(result.index);
       });
     }
     componentWillUnmount() {
-      this.listener_deliver_success && this.listener_deliver_success.remove();
       this.listener_tab_update && this.listener_tab_update.remove();
     }
     _init = () => {
@@ -138,102 +123,85 @@ export default class OrderListScreen extends Component {
         list: [],
         canload: false,
         tips: '',
-
         loadingVisible: true,
       });
     }
     _getData = (i) => {
       let _status = '';
-      let _type = this.state.type;
       let payOfflineStatus = '';
-      if(_type == 0) {
-        let _tp = this.state.page;
-        _tp = ++_tp;
-        this.state.page = _tp;
-      }
+      let _tp = this.state.page;
+      _tp = ++_tp;
+      this.state.page = _tp;
       switch(i) {
         case 0:
           _status = '';
         break;
         case 1:
-          _status =  (_type == 0 ? 10 : 0);
+          _status =  10;
         break;
         case 2:
-          _status = 10;
-          payOfflineStatus = (_type == 0 ? 10 : 0);
-        break;
-        case 3:
           _status = 20;
         break;
-        case 4:
+        case 3:
           _status = 30;
         break;
-        case 5:
+        case 4:
           _status = 31;
         break;
-        case 6:
+        case 5:
           _status = 40;
         break;
-        case 7:
-          _status = -10;
-        break;
-        case 8:
-          _status = "";
+        case 6:
+          _status = '';
         break;
         default:
         break;
       }
       /**如果是自建商品的退货退款**/
-      if(_type == 0 && i == 8) {
-        this._getRefundData(0, 8);
-      }
-      /**如果是即采商品的退货退款**/
-      else if(_type == 1 && i == 8) {
-        this._getRefundData(1, 8);
+      if(i == 6) {
+        this._getRefundData(0, 6);
       }
       /**普通订单**/
       else {
         let _tempIndex = i;
-        fetch(Config.JAVAAPI + `shop/wap/client/order/list?orderType=${_type == 1 ? 31 : 40}&status=${_status}&pageIndex=${this.state.page}&pageSize=10&token=${token}&payOfflineStatus=${payOfflineStatus}`, {
+        fetch(Config.JAVAAPI + `shop/wap/order/list?status=${_status}&pageIndex=${this.state.page}&pageSize=10&token=${token}`, {
            method: 'POST'
         })
         .then((response) => response.json())
         .then((data) => {
-          if(_tempIndex != this.state.activeIndex || _type != this.state.type) return;
+          if(_tempIndex != this.state.activeIndex) return;
           this.setState({loadingVisible: false});
           if(data.code == 1) {
             let _data = data.obj;
-            if(_type == 0) {
-              let _temp;
-              if(this.state.page == 1) {
-                _temp = [];
-              } else {
-                _temp = this.state.list;
-              }
-              _temp = _temp.concat(_data.results);
-              let _canload = '';
-              let _tips = '';
-              if(_data.pageIndex < _data.totalPage) {
-                _canload = true;
-                _tips = '数据加载中...';
-              } else {
-                _canload = false;
-                _tips = '没有更多数据！';
-              }
-              this.setState({list: _temp, canload: _canload, tips: _tips});
+            let _temp;
+            if(this.state.page == 1) {
+              _temp = [];
+            } else {
+              _temp = this.state.list;
             }
+            _temp = _temp.concat(_data.results);
+            let _canload = '';
+            let _tips = '';
+            if(_data.pageIndex < _data.totalPage) {
+              _canload = true;
+              _tips = '数据加载中...';
+            } else {
+              _canload = false;
+              _tips = '没有更多数据！';
+            }
+            this.setState({list: _temp, canload: _canload, tips: _tips});
           }
         });
       }
     }
     _getRefundData = (_type, i) => {
       let _tempIndex = i;
-      fetch(Config.JAVAAPI + `shop/mobile/refund/blist?orderType[0]=${_type == 1 ? 30 : 40}&status=&page=${this.state.page}&token=${token}`, {
+      fetch(Config.JAVAAPI + `shop/mobile/refund/blist?orderType[0]= 40&status=&page=${this.state.page}&token=${token}`, {
          method: 'POST'
       })
       .then((response) => response.json())
       .then((data) => {
-        if(_tempIndex != this.state.activeIndex || _type != this.state.type) return;
+        if(_tempIndex != this.state.activeIndex) return;
 
         this.setState({loadingVisible: false});
         let _list = data.page.list;
@@ -292,34 +260,29 @@ export default class OrderListScreen extends Component {
         });
 
         let _temp = [];
-        if(_type == 0) {
-          if(this.state.page != 1) {
-            _temp = this.state.list;
-          }
-          _temp = _temp.concat(_list);
-          let _canload = this.state.canload;
-          let _tips = this.state.tips;
-          if(data.page.pageNum < data.page.pages) {
-            _canload = true;
-            _tips = '数据加载中...';
-          } else {
-            _canload = false;
-            _tips = '没有更多数据！';
-          }
-          this.setState({list: _temp, canload: _canload, tips: _tips});
+        if(this.state.page != 1) {
+          _temp = this.state.list;
         }
+        _temp = _temp.concat(_list);
+        let _canload = this.state.canload;
+        let _tips = this.state.tips;
+        if(data.page.pageNum < data.page.pages) {
+          _canload = true;
+          _tips = '数据加载中...';
+        } else {
+          _canload = false;
+          _tips = '没有更多数据！';
+        }
+        this.setState({list: _temp, canload: _canload, tips: _tips});
     });
     }
 
     _loadingMore = (p) => {
-      if(this.state.type == 0) {
-        if(this.state.canload) {
-          this._getData(p);
-        }
+      if(this.state.canload) {
+        this._getData(p);
       }
     }
     render() {
-        let _type = this.state.type;
         let _orderNum = this.state.orderNum;
         return (
             <View style={[styles.common.flexv, styles.common.init]}>
@@ -327,7 +290,7 @@ export default class OrderListScreen extends Component {
               <View style={styles.common.flexv}>
                 <View style={styles.common.flexv}>
                   <View style={styles.sorder.tab}>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollViewZj">
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref="scrollView">
                       { this._renderTab(0, '全部订单', false, 0)}
                       { this._renderTab(1, '待付款', _orderNum['10'], Utils.width/4 * .5 + 15)}
                       { this._renderTab(2, '待发货', _orderNum['20'], Utils.width/4 * .5 + 15)}
@@ -339,9 +302,8 @@ export default class OrderListScreen extends Component {
                   </View>
                   <FlatList
                     data={this.state.list}
-                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem
+                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} props={this.props}></RefundItem> : <OrderItem
                     data={item}
-                    type={_type}
                     props={this.props}
                     refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
                     confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
@@ -376,39 +338,18 @@ export default class OrderListScreen extends Component {
           </View>
         );
     }
-    _selectType = (t, index) => {
-      if(this.state.type == t) return;
+    _tabUpdate = (index) => {
       this._reset();
-      this.setState({activeIndex: index, type: t});
-      this.props.navigation.setParams({type: t});
+      this.setState({activeIndex: index});
       requestAnimationFrame(()=>{
-        if(t == 0) {
-          this.refs.scrollViewZj.scrollTo(0, 0);
-        } else {
-          this.refs.scrollViewJc.scrollTo(0, 0);
-        }
-        this._getData(0);
-      });
-    }
-    _tabUpdate = (t, index) => {
-      this._reset();
-      this.setState({activeIndex: index, type: t});
-      this.props.navigation.setParams({type: t});
-      requestAnimationFrame(()=>{
-        if(t == 0) {
-          this.refs.scrollViewZj.scrollTo({x: Utils.width / 4 * (index-1), y: 0, animated: false});
-        } else {
-          this.refs.scrollViewJc.scrollTo({x: Utils.width / 4 * (index-1), y: 0, animated: false});
-        }
+        this.refs.scrollView.scrollTo({x: Utils.width / 4 * (index-1), y: 0, animated: false});
         this._getData(index);
       });
     }
     _flatListFooter = () => {
-      if(this.state.type == 0) {
         return (
           <Text style={styles.common.loadingTips}>{this.state.tips != '' ? this.state.tips : null}</Text>
         )
-      }
     }
     _tabHandle = (k) => {
         this._reset();
@@ -420,9 +361,9 @@ export default class OrderListScreen extends Component {
     /**渲染tab**/
     _renderTab = (i, txt, badge, bageLeft) => {
       return (
-        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(i)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == i ? styles.sorder.tabActive : '']}>
+        <TouchableOpacity activeOpacite={.8} onPress={() => {this._tabHandle(i)}} style={[styles.sorder.tabItem, {width: Utils.width/4}, this.state.activeIndex == i ? styles.order.tabActive : '']}>
           <View>
-            <Text style={[styles.sorder.tabText, this.state.activeIndex == i ? styles.sorder.tabActiveText : '']}>{txt}</Text>
+            <Text style={[styles.sorder.tabText, this.state.activeIndex == i ? styles.order.tabActiveText : '']}>{txt}</Text>
             {badge && badge > 0 ?
               <View style={[styles.sorder.tabBadge, {left: bageLeft}]}>
                 <Text style={styles.sorder.tabBadgeText}>{badge}</Text>
@@ -432,56 +373,11 @@ export default class OrderListScreen extends Component {
         </TouchableOpacity>
       )
     }
-    /**不发货**/
-    _openRefuseDeliverModal = (id) => {
-      DeviceEventEmitter.emit('confirmShow', {
-        keys: 1,
-        data: {
-          text: '是否不发货？',
-          confirm: (arg) => {
-            this._refuseDeliver(arg);
-          }
-        },
-        params: {
-          id
-        }
-      });
-    }
-    _refuseDeliver = (arg) => {
-      fetch(Config.JAVAAPI+`shop/wap/client/order/noDeliver?id=${arg.id}&token=${token}`,{
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then((_res)=>{
-            if (_res.code==1) {
-                UIToast('操作成功');
-                this._reset();
-                this._init();
-                requestAnimationFrame(()=>{
-                  this._getData(this.state.activeIndex);
-                });
-            }else{
-                UIToast(_res.message || '操作失败');
-            }
-        })
-    }
+
     _posPay = (sn) => {
       this.setState({
         posCodeVisible: true,
         posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
       });
-    }
-    _confirmReceipt = (id) => {
-      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then((_res)=>{
-          if (_res.code==1) {
-            DeviceEventEmitter.emit('sellerOrderUpdate');
-          } else {
-            UIToast('确认收款失败');
-          }
-      })
     }
 }
