@@ -770,7 +770,7 @@ export default {
   sorder: {
     tab: {
       backgroundColor: BACKGROUNDCOLOR_WHITE,
-      height: 50,
+      height: 42,
       borderBottomWidth: 1,
       borderBottomColor: COLOR_E
     },

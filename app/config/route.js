@@ -36,7 +36,7 @@ const renderBuyerHeaderRight = (navigation) => {
   if(navigation.state.index == 4) {
     return (
       <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
-            <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
+            <Image source={require('../images/icon-search-b.png')} style={styles.common.headerBtnRight}/>
         </TouchableOpacity>
     );
   } else if (navigation.state.index == 3) {
