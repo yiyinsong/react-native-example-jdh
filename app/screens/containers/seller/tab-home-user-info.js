@@ -161,7 +161,7 @@ export default class SellerUserInfoScreen extends Component {
             index: 0,
             actions: [
               NavigationActions.navigate({ routeName: 'Login', params: {
-                routeName: 'Entrance',
+                routeName: 'Buyer',
                 params: {}
               }})
             ]

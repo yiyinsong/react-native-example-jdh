@@ -6,10 +6,9 @@ import {
 import { TabNavigator } from 'react-navigation';
 
 import BHomeScreen from './tab-home';
-import ShoppingScreen from './tab-shopping';
-import MultiScreen from './tab-multi';
+import CategoryScreen from './tab-category';
 import CartScreen from './tab-cart';
-import BOrderScreen from './tab-order';
+import UserScreen from './tab-user';
 
 import styles from '../../../css/styles';
 
@@ -19,7 +18,7 @@ export default TabNavigator({
       screen: BHomeScreen,
       navigationOptions: {
         header: null,
-        tabBarLabel: '个人中心',
+        tabBarLabel: '首页',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-home-active.png') : require('../../../images/icon-home.png')}
             style={styles.common.tabIcon}
@@ -27,25 +26,13 @@ export default TabNavigator({
         ),
       }
     },
-    'Shopping': {
-      screen: ShoppingScreen,
+    'Category': {
+      screen: CategoryScreen,
       navigationOptions: {
-        headerTitle: '采购中心',
-        tabBarLabel: '采购中心',
+        headerTitle: '分类',
+        tabBarLabel: '分类',
         tabBarIcon: ({ focused }) => (
-          <Image source={ focused ? require('../../../images/icon-shopping-active.png') : require('../../../images/icon-shopping.png')}
-            style={styles.common.tabIcon}
-          />
-        ),
-      }
-    },
-    'Multi': {
-      screen: MultiScreen,
-      navigationOptions: {
-        headerTitle: '众采',
-        tabBarLabel: '众采',
-        tabBarIcon: ({ focused }) => (
-          <Image source={ focused ? require('../../../images/icon-multi-active.png') : require('../../../images/icon-multi.png')}
+          <Image source={ focused ? require('../../../images/icon-cate-active.png') : require('../../../images/icon-cate.png')}
             style={styles.common.tabIcon}
           />
         ),
@@ -55,7 +42,6 @@ export default TabNavigator({
       screen: CartScreen,
       navigationOptions: {
         headerTitle: '购物车',
-        headerRight: <Text>yaya</Text>,
         tabBarLabel: '购物车',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-cart-active.png') : require('../../../images/icon-cart.png')}
@@ -64,13 +50,13 @@ export default TabNavigator({
         ),
       }
     },
-    'BuyerOrder': {
-      screen: BOrderScreen,
+    'User': {
+      screen: UserScreen,
       navigationOptions: {
-        headerTitle: '采购订单',
-        tabBarLabel: '采购订单',
+        headerTitle: '我的',
+        tabBarLabel: '我的',
         tabBarIcon: ({ focused }) => (
-          <Image source={ focused ? require('../../../images/icon-order-active.png') : require('../../../images/icon-order.png')}
+          <Image source={ focused ? require('../../../images/icon-user-active.png') : require('../../../images/icon-user.png')}
             style={styles.common.tabIcon}
           />
         ),

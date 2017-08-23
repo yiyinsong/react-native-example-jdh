@@ -65,13 +65,9 @@ export default class LoginScreen extends Component {
             global.token = data.data.token;
             const { routeName, params } = this.props.navigation.state.params;
             if(routeName) {
-              this.props.navigation.dispatch({
-                key: routeName,
-                type: 'ReplaceRoute',
-                routeName,
-                params,
-              });
+              this.props.navigation.navigate(routeName);
             } else {
+              alert('haha');
               this.props.navigation.goBack();
             }
           } else {

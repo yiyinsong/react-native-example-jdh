@@ -8,6 +8,8 @@ import {
   View
 } from 'react-native';
 
+import { NavigationActions } from 'react-navigation'
+
 import SplashScreen from 'react-native-splash-screen';
 
 import Swiper from 'react-native-swiper';
@@ -72,18 +74,18 @@ export default class MainScreen extends Component {
           syncInBackground: false,
       }).then(ret => {
         global.token = ret.token;
-        Nav.dispatch({
-          type: 'ReplaceRoute',
-          routeName: 'Entrance',
-          params: {},
-          key: 'Entrance'
-        });
+        Nav.dispatch(NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Buyer'})
+          ]
+        }));
       }).catch(err => {
         Nav.dispatch({
           type: 'ReplaceRoute',
           routeName: 'Login',
           params: {
-            routeName: 'Entrance',
+            routeName: 'Buyer',
             params: {}
           },
           key: 'Login'
@@ -95,7 +97,7 @@ export default class MainScreen extends Component {
         type: 'ReplaceRoute',
         routeName: 'Login',
         params: {
-          routeName: 'Entrance',
+          routeName: 'Buyer',
           params: {}
         },
         key: 'Login'

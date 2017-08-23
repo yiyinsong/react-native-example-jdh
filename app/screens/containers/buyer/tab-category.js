@@ -11,7 +11,7 @@ import {
     }
     render() {
       return(
-        <Text>Shopping</Text>
+        <Text>Category</Text>
       );
     }
   }

@@ -1,4 +1,5 @@
 const BACKGROUNDCOLOR_GRAY = '#f5f5f5';
+const BACKGROUNDCOLOR_GRAY2 = '#f4f4f4';
 const BACKGROUNDCOLOR_WHITE = '#fff';
 
 const COLOR_RED = '#f93b31';
@@ -305,37 +306,6 @@ export default {
     },
     downActive: {
       borderTopColor: COLOR_BLUE
-    }
-  },
-  //买家买家入口
-  entrance: {
-    wrapper: {
-      backgroundColor: BACKGROUNDCOLOR_WHITE
-    },
-    h1: {
-      fontSize: FONT_18,
-      textAlign: 'center',
-      marginTop: 50,
-      color: COLOR_3,
-    },
-    h5: {
-      fontSize: FONT_12,
-      textAlign: 'center',
-      marginTop: 10,
-      color: COLOR_9,
-    },
-    icon: {
-      resizeMode: 'contain',
-      alignSelf: 'center'
-    },
-    iconText: {
-      color: COLOR_6,
-      textAlign: 'center',
-      marginTop: 5,
-      fontSize: FONT_12
-    },
-    entr: {
-      marginTop: 100,
     }
   },
   //卖家中心
@@ -2156,6 +2126,93 @@ export default {
       color: COLOR_WHITE
     },
     shopName: {
+      fontSize: FONT_12,
+      color: COLOR_3
+    }
+  },
+  home: {
+    header: {
+      position: 'absolute',
+      zIndex: 9,
+      paddingTop: 30,
+      paddingBottom: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+      left: 0,
+      right: 0,
+    },
+    search: {
+      borderRadius: 24,
+      paddingTop: 8,
+      paddingBottom: 8,
+      paddingLeft: 15,
+      paddingRight: 15
+    },
+    searchText: {
+      color: COLOR_A
+    },
+    searchIcon: {
+      width: 16,
+      height: 16,
+      marginRight: 5
+    },
+    swiperDot: {
+      width: 8,
+      height: 1,
+      borderRadius: 0,
+      backgroundColor: COLOR_WHITE
+    },
+    swiperDotActive: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: COLOR_WHITE
+    },
+    cateContainer: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY2,
+      paddingBottom: 15,
+    },
+    cate: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY2,
+      paddingTop: 15,
+    },
+    cateIcon: {
+      width: 40,
+      height: 40,
+      marginBottom: 5
+    },
+    cateText: {
+      fontSize: FONT_12
+    },
+    news: {
+      backgroundColor: COLOR_WHITE,
+      marginTop: 10,
+      marginLeft: 10,
+      marginRight: 10,
+      paddingTop: 6,
+      paddingBottom: 6,
+      paddingLeft: 10,
+      paddingRight: 10,
+      borderRadius: 15
+    },
+    newsIcon: {
+      width: 74,
+      height: 13,
+    },
+    newsAni: {
+      marginLeft: 20,
+      height: 16,
+      textAlignVertical: 'center',
+      overflow: 'hidden'
+    },
+    newsMore: {
+      paddingLeft: 10,
+      borderLeftWidth: 1,
+      borderLeftColor: COLOR_D,
+      marginLeft: 10,
+      color: COLOR_9,
+      fontSize: FONT_12
+    },
+    newsText: {
       fontSize: FONT_12,
       color: COLOR_3
     }

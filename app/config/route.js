@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import HomeScreen from '../screens/index';
-import EntranceScreen from '../screens/entrance';
 import LoginScreen from '../screens/login';
 import FindPasswordScreen from '../screens/findPassword';
 
@@ -33,13 +32,7 @@ import BuyerScreen from '../screens/containers/buyer/index';
 import styles from '../css/styles';
 
 const renderBuyerHeaderRight = (navigation) => {
-  if(navigation.state.index == 4) {
-    return (
-      <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
-            <Image source={require('../images/icon-search-b.png')} style={styles.common.headerBtnRight}/>
-        </TouchableOpacity>
-    );
-  } else if (navigation.state.index == 3) {
+  if (navigation.state.index == 2) {
     let _params = navigation.state.routes[navigation.state.index].params;
     return (
       <TouchableOpacity activeOpacity={.8} onPress={() => {DeviceEventEmitter.emit('cartEdit')}} style={styles.cart.headerRight}>
@@ -56,13 +49,6 @@ export default {
     screen: HomeScreen,
     navigationOptions: {
       header: null
-    }
-  },
-  Entrance: {
-    screen: EntranceScreen,
-    navigationOptions: {
-      title: '选择身份',
-      headerLeft: <TouchableOpacity style={styles.common.headerLeftNone}></TouchableOpacity>,
     }
   },
   //登录页
@@ -208,7 +194,7 @@ export default {
           alignSelf: 'center',
           fontWeight: '100'
       },
-      headerLeft: (navigation.state.index == 3 || navigation.state.index == 4 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
+      headerLeft: (navigation.state.index == 2 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
       headerRight: renderBuyerHeaderRight(navigation)
     })
   },

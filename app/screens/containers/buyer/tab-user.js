@@ -4,14 +4,14 @@ import {
   Text
   } from 'react-native';
 
-  export default class MultiScreen extends Component {
+  export default class ShoppingScreen extends Component {
     constructor(props){
     	super(props);
     	this.state = {};
     }
     render() {
       return(
-        <Text>Multi</Text>
+        <Text>User</Text>
       );
     }
   }

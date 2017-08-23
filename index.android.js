@@ -79,7 +79,7 @@
        }
      } else if(action.type === 'Navigation/BACK') {
        let _currentRouteName = state.routes[state.routes.length - 1];
-       if(_currentRouteName.routeName === 'Seller' || _currentRouteName.routeName === 'Buyer' || _currentRouteName.routeName === 'Entrance' || _currentRouteName.routeName === 'Login') {
+       if(_currentRouteName.routeName === 'Seller' || _currentRouteName.routeName === 'Buyer' || _currentRouteName.routeName === 'Login') {
          clearTimeout(exitTimer);
          if(exit) {
            exit = false;

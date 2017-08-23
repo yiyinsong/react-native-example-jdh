@@ -8,7 +8,6 @@ import {
   DeviceEventEmitter,
   TouchableOpacity,
   TouchableHighlight,
-  InteractionManager
   } from 'react-native';
 
 import ScreenInit from '../../../config/screenInit';
@@ -41,10 +40,9 @@ import ModalConfirm from '../../common/modal-confirm';
     }
     componentDidMount() {
       this.setState({loadingVisible: true});
-      InteractionManager.runAfterInteractions(() => {
-        ScreenInit.checkLogin(this);
-        this._init(true);
-      })
+      ScreenInit.checkLogin(this);
+      this._init(true);
+      
       this.listener_edit = DeviceEventEmitter.addListener('cartEdit', () => {
         if(this.props.navigation.state.params.headerRight == '编辑') {
           this.props.navigation.setParams({headerRight: '完成'});
