@@ -2134,19 +2134,23 @@ export default {
     header: {
       position: 'absolute',
       zIndex: 9,
-      paddingTop: 30,
-      paddingBottom: 10,
-      paddingLeft: 10,
-      paddingRight: 10,
       left: 0,
       right: 0,
+      height: 75,
+      backgroundColor: 'rgba(249, 59, 49, 1)'
     },
     search: {
       borderRadius: 24,
       paddingTop: 8,
       paddingBottom: 8,
       paddingLeft: 15,
-      paddingRight: 15
+      paddingRight: 15,
+      position: 'absolute',
+      top: 30,
+      left: 10,
+      right: 10,
+      zIndex: 10,
+      backgroundColor: COLOR_WHITE
     },
     searchText: {
       color: COLOR_A
@@ -2215,6 +2219,86 @@ export default {
     newsText: {
       fontSize: FONT_12,
       color: COLOR_3
+    },
+    ad1: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D,
+      borderRightWidth: 1,
+      borderRightColor: COLOR_D
+    },
+    ad2: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D,
+    },
+    ad3: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_D
+    },
+    ad4: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_D
+    },
+    floorHeader: {
+      paddingTop: 15,
+      paddingBottom: 10
+    },
+    floorLine: {
+      backgroundColor: COLOR_RED,
+      width: 50,
+      height: 1,
+      marginLeft: 15,
+      marginRight: 15
+    },
+    floorIcon: {
+      width: 22,
+      height: 22,
+    },
+    floorText: {
+      fontSize: FONT_16,
+      color: COLOR_RED,
+      marginLeft: 5
+    },
+    floorTab: {
+      borderBottomWidth: 1,
+      borderBottomColor: BACKGROUNDCOLOR_GRAY2
+    },
+    floorTabText: {
+      paddingTop: 10,
+      paddingBottom: 10,
+      fontSize: FONT_12,
+      color: COLOR_3,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_WHITE
+    },
+    floorTabTextActive: {
+      color: COLOR_RED,
+      borderBottomColor: COLOR_RED
+    },
+    floorTabContainer: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY2,
+      paddingBottom: 10
+    },
+    floorSv: {
+      paddingLeft: 5,
+    },
+    goods: {
+      backgroundColor: '#fff',
+      marginRight: 5
+    },
+    goodsName: {
+      padding: 5,
+      fontSize: FONT_12,
+      color: COLOR_3
+    },
+    goodsPrice: {
+      fontSize: FONT_14,
+      color: COLOR_RED,
+      fontWeight: '700',
+      paddingLeft: 5,
+      paddingBottom: 10,
+      paddingRight: 5
     }
   }
 }
