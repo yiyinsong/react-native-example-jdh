@@ -36,8 +36,8 @@ export default class SellerHomeScreen extends Component {
       };
     }
     componentDidMount() {
-      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
+        this.setState({loadingVisible: true});
         let Nav = this.props.navigation;
         ScreenInit.checkLogin(this);
         this._init();

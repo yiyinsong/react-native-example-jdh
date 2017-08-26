@@ -38,8 +38,8 @@ export default class SellerGoodsEditScreen extends Component {
       };
     }
     componentDidMount() {
-      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
+        this.setState({loadingVisible: true});
         ScreenInit.checkLogin(this);
         this._init();
       });

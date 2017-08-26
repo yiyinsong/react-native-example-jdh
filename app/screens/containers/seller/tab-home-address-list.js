@@ -32,8 +32,8 @@ export default class SellerAddrList extends Component {
       };
     }
     componentDidMount() {
-      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
+        this.setState({loadingVisible: true});
         ScreenInit.checkLogin();
         this._updateData();
         /**添加新增地址侦听**/

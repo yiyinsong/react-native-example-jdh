@@ -28,6 +28,8 @@ import SellerGoodsDetailScreen from '../screens/containers/seller/tab-goods-deta
 import SellerGoodsEditScreen from '../screens/containers/seller/tab-goods-edit';
 
 import BuyerScreen from '../screens/containers/buyer/index';
+import BuyserSearchScreen from '../screens/containers/buyer/home-search';
+import BuyserSignScreen from '../screens/containers/buyer/home-sign';
 
 import styles from '../css/styles';
 
@@ -197,5 +199,19 @@ export default {
       headerLeft: (navigation.state.index == 2 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
       headerRight: renderBuyerHeaderRight(navigation)
     })
+  },
+  //买家商品搜索
+  BuyerSearch: {
+    screen: BuyserSearchScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  //买家签到
+  BuyerSign: {
+    screen: BuyserSignScreen,
+    navigationOptions: {
+      header: null
+    }
   },
 }

@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   Animated,
   InteractionManager
   } from 'react-native';
@@ -42,14 +43,20 @@ export default class BuyerHomeScreen extends Component {
       ad: [],
       floorBanner: [],
       floorTab: [0, 0, 0, 0, 0, 0, 0, 0],
-      glist1: [[], [], []],
-      glist2: [[], [], []],
-      glist3: [[], [], []],
-      glist4: [[], [], []],
-      glist5: [[], [], []],
-      glist6: [[], [], []],
-      glist7: [[], [], []],
-      glist8: [[], [], []],
+      glist: [
+        [[], [], []],
+        [[], [], []],
+        [[], [], []],
+        [[], [], []],
+        [[], [], []],
+        [[], [], []],
+        [[], [], []],
+        [[], [], []],
+      ],
+      hotList: [[], []],
+      hotPage: [0, 0],
+      hotTab: 0,
+      hotLoading: false
     };
   }
   componentDidMount() {
@@ -63,322 +70,264 @@ export default class BuyerHomeScreen extends Component {
     return(
       <View style={[styles.common.flexv, styles.common.initWhite]}>
         <Animated.View style={[styles.home.header, {opacity: this.state.headerBgOpacity}]}></Animated.View>
-        <Animated.View style={[styles.common.flex, styles.common.flexCenterv, styles.home.search, {opacity: this.state.searchOpacity}]}>
-          <Image source={require('../../../images/icon-search@30x30.png')} style={styles.home.searchIcon} />
-          <Text style={styles.home.searchText}>请输入商品名称</Text>
+        <Animated.View style={[styles.home.search, {opacity: this.state.searchOpacity}]}>
+          <TouchableWithoutFeedback onPress={this._toSearch}>
+            <View style={[styles.common.flex, styles.common.flexCenterv, ]}>
+              <Image source={require('../../../images/icon-search@30x30.png')} style={styles.home.searchIcon} />
+              <Text style={styles.home.searchText}>请输入商品名称</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </Animated.View>
-        <ScrollView onScroll={this._bodyScroll} ref="bodyScrollView">
+        <ScrollView onScroll={this._bodyScroll} ref="bodyScrollView" scrollEventThrottle={1} showsVerticalScrollIndicator={false}>
           <Swiper
-          style={{height:Utils.width*.4}}
+          style={{height:Utils.width*.4, overflow: 'hidden'}}
           loop={true}
           activeDotStyle={styles.home.swiperDotActive} dotStyle={styles.home.swiperDot}
-          paginationStyle={{bottom: 10}}
+          paginationStyle={{bottom: 5}}
           autoplay={true}
           autoplayTimeout={4}>
-            {this.state.banner.map( (v, k) => {
-              return (
-                <TouchableOpacity activeOpacity={1}>
-                  <Image
-                    source={{uri: v.img}}
-                    style={{width: Utils.width, height: Utils.width*.4}} />
-                </TouchableOpacity>
-              );
-            })}
+              {this.state.banner.map( (v, k) => {
+                return (
+                  <TouchableOpacity activeOpacity={1}>
+                    <Image
+                      source={{uri: v.img}}
+                      style={{width: Utils.width, height: Utils.width*.4}} />
+                  </TouchableOpacity>
+                );
+              })}
            </Swiper>
            <View style={styles.home.cateContainer}>
-           <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
-           {
-             this.state.cate.slice(0, 4).map((v, k) => {
-               return (
-                 <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
-                   <Image source={{uri: v.img}} style={styles.home.cateIcon} />
-                   <Text style={styles.home.cateText}>{v.name}</Text>
-                 </TouchableOpacity>
-               );
-             })
-           }
-           <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
-             <Image source={require('../../../images/icon-home-cate5.png')} style={styles.home.cateIcon} />
-             <Text style={styles.home.cateText}>众采</Text>
-           </TouchableOpacity>
+             <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
+               {
+                 this.state.cate.slice(0, 4).map((v, k) => {
+                   return (
+                     <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
+                       <Image source={{uri: v.img}} style={styles.home.cateIcon} />
+                       <Text style={styles.home.cateText}>{v.name}</Text>
+                     </TouchableOpacity>
+                   );
+                 })
+               }
+               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={() => this._toCateHandle(4)}>
+                 <Image source={require('../../../images/icon-home-cate5.png')} style={styles.home.cateIcon} />
+                 <Text style={styles.home.cateText}>众采</Text>
+               </TouchableOpacity>
+             </View>
+             <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
+               {
+                 this.state.cate.slice(4, 8).map((v, k) => {
+                   return (
+                     <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
+                       <Image source={{uri: v.img}} style={styles.home.cateIcon} />
+                       <Text style={styles.home.cateText}>{v.name}</Text>
+                     </TouchableOpacity>
+                   );
+                 })
+               }
+               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={this._toSign}>
+                 <Image source={require('../../../images/icon-home-cate10.png')} style={styles.home.cateIcon} />
+                 <Text style={styles.home.cateText}>签到</Text>
+               </TouchableOpacity>
+             </View>
+             <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.home.news]}>
+              <Image source={require('../../../images/home-news.png')} style={styles.home.newsIcon} />
+              <View style={[styles.common.flexv, styles.home.newsAni]}>
+                <Animated.View style={{transform: [{translateY: this.state.newsAniVal }]}}>
+                  {this.state.newsList.map((v, k) => {
+                    return (
+                      <Text numberOfLines={1} style={styles.home.newsText}>{v.name}</Text>
+                    )
+                  })}
+                  {
+                    this.state.newsList[0] ?
+                    <Text numberOfLines={1} style={styles.home.newsText}>{this.state.newsList[0].name}</Text>
+                    : null
+                  }
+                </Animated.View>
+              </View>
+              <TouchableOpacity activeOpacity={1}>
+                <Text style={styles.home.newsMore}>更多</Text>
+              </TouchableOpacity>
+             </View>
            </View>
-           <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
-           {
-             this.state.cate.slice(4, 8).map((v, k) => {
-               return (
-                 <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
-                   <Image source={{uri: v.img}} style={styles.home.cateIcon} />
-                   <Text style={styles.home.cateText}>{v.name}</Text>
-                 </TouchableOpacity>
-               );
-             })
-           }
-           <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
-             <Image source={require('../../../images/icon-home-cate10.png')} style={styles.home.cateIcon} />
-             <Text style={styles.home.cateText}>签到</Text>
-           </TouchableOpacity>
-           </View>
-           <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.home.news]}>
-            <Image source={require('../../../images/home-news.png')} style={styles.home.newsIcon} />
-            <View style={[styles.common.flexv, styles.home.newsAni]}>
-              <Animated.View style={{transform: [{translateY: this.state.newsAniVal }]}}>
-                {this.state.newsList.map((v, k) => {
-                  return (
-                    <Text numberOfLines={1} style={styles.home.newsText}>{v.name}</Text>
-                  )
-                })}
-                {
-                  this.state.newsList[0] ?
-                  <Text numberOfLines={1} style={styles.home.newsText}>{this.state.newsList[0].name}</Text>
-                  : null
-                }
-              </Animated.View>
-            </View>
-            <TouchableOpacity activeOpacity={1}>
-              <Text style={styles.home.newsMore}>更多</Text>
-            </TouchableOpacity>
-           </View>
+           <View style={[styles.common.flexDirectionRow, styles.home.ad]}>
+             {this.state.ad[0] ?
+              <TouchableOpacity activeOpacity={.8} style={styles.home.ad1}>
+                <Image source={{uri: this.state.ad[0].img}}  style={{width: Utils.width/2, height: Utils.width/2}}/>
+              </TouchableOpacity>
+             : null}
+              <View>
+              {this.state.ad[1] ?
+                <TouchableOpacity activeOpacity={.8} style={styles.home.ad2}>
+                  <Image source={{uri: this.state.ad[1].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
+                </TouchableOpacity>
+              : null}
+              {this.state.ad[2] ?
+                <TouchableOpacity activeOpacity={.8} style={styles.home.ad2}>
+                  <Image source={{uri: this.state.ad[2].img}}  style={{width: Utils.width/2, height: Utils.width/4-1}}/>
+                </TouchableOpacity>
+              : null}
+              </View>
            </View>
            <View style={styles.common.flexDirectionRow}>
-           {this.state.ad[0] ?
-            <TouchableOpacity activeOpacity={.8} style={styles.home.ad1}>
-              <Image source={{uri: this.state.ad[0].img}}  style={{width: Utils.width/2, height: Utils.width/2}}/>
-            </TouchableOpacity>
-           : null}
-            <View>
-            {this.state.ad[1] ?
-              <TouchableOpacity activeOpacity={.8} style={styles.home.ad2}>
-                <Image source={{uri: this.state.ad[1].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
-              </TouchableOpacity>
-            : null}
-            {this.state.ad[2] ?
-              <TouchableOpacity activeOpacity={.8} style={styles.home.ad2}>
-                <Image source={{uri: this.state.ad[2].img}}  style={{width: Utils.width/2, height: Utils.width/4-1}}/>
-              </TouchableOpacity>
-            : null}
-            </View>
+             {this.state.ad[3] ?
+               <TouchableOpacity activeOpacity={.8} style={[styles.home.ad1, styles.home.ad3]}>
+                 <Image source={{uri: ad[3].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
+               </TouchableOpacity>
+              : null}
+              {this.state.ad[4] ?
+               <TouchableOpacity activeOpacity={.8} style={styles.home.ad4}>
+                 <Image source={{uri: ad[4].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
+               </TouchableOpacity>
+              : null}
            </View>
-           <View style={styles.common.flexDirectionRow}>
-           {this.state.ad[3] ?
-             <TouchableOpacity activeOpacity={.8} style={[styles.home.ad1, styles.home.ad3]}>
-               <Image source={{uri: ad[3].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
-             </TouchableOpacity>
-            : null}
-            {this.state.ad[4] ?
-             <TouchableOpacity activeOpacity={.8} style={styles.home.ad4}>
-               <Image source={{uri: ad[4].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
-             </TouchableOpacity>
-            : null}
-           </View>
+           {this._renderFloor({
+             icon: require('../../../images/home-f1.png'),
+             title: '空调',
+             index: 0,
+             ids: [1,2,3],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f2.png'),
+             title: '两季电器',
+             index: 1,
+             ids: [4,5,6],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f3.png'),
+             title: '冰箱洗衣机',
+             index: 2,
+             ids: [7,8,9],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f4.png'),
+             title: '厨房卫浴',
+             index: 3,
+             ids: [10,11,12],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f5.png'),
+             title: '电视影音',
+             index: 4,
+             ids: [13,14,15],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f6.png'),
+             title: '厨房小电',
+             index: 5,
+             ids: [16,17,18],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f7.png'),
+             title: '生活电器',
+             index: 6,
+             ids: [19,20,21],
+           })}
+           {this._renderFloor({
+             icon: require('../../../images/home-f8.png'),
+             title: '个护健康',
+             index: 7,
+             ids: [22,23,24],
+           })}
            <View style={styles.home.floor}>
             <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh, styles.home.floorHeader]}>
               <View style={styles.home.floorLine}></View>
-              <Image source={require('../../../images/home-f1.png')} style={styles.home.floorIcon}/>
-              <Text style={styles.home.floorText}>空调</Text>
+              <Image source={require('../../../images/home-hot.png')} style={styles.home.floorIcon}/>
+              <Text style={styles.home.floorText}>热销推荐</Text>
               <View style={styles.home.floorLine}></View>
             </View>
-            {this.state.floorBanner[0] && this.state.floorBanner[0][0]?
-            <TouchableOpacity activeOpacity={.8}>
-              <Image source={{uri: this.state.floorBanner[0][0].img}} style={{width: Utils.width, height: Utils.width/3}}/>
-            </TouchableOpacity>
-            : null}
-            <View style={[styles.common.flexDirectionRow, styles.home.floorTab]}>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(0, 0, 51)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[0] === 0 ? styles.home.floorTabTextActive : '']}>全网热销</Text>
+            <View style={styles.common.flexDirectionRow}>
+              <TouchableHighlight underlayColor='fafafa' onPress={() => this._tabHotFunc(0)} style={styles.common.flex}>
+                <View style={[styles.common.flexv, styles.common.flexCenterv, styles.home.hot1]}>
+                  <Text style={[styles.home.hotText, this.state.hotTab === 0 ? styles.home.hotTextActive : '']}>爆款</Text>
+                  {this.state.hotTab === 0 ? <View style={styles.home.triangle}></View> : null}
+                </View>
               </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(0, 1, 52)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[0] === 1 ? styles.home.floorTabTextActive : '']}>即采即销</Text>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(0, 2, 53)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[0] === 2 ? styles.home.floorTabTextActive : '']}>精选优品</Text>
+              <TouchableHighlight underlayColor='fafafa' onPress={() => this._tabHotFunc(1)} style={styles.common.flex}>
+                <View style={[styles.common.flexv, styles.common.flexCenterv, styles.home.hot1]}>
+                  <Text style={[styles.home.hotText, this.state.hotTab === 1 ? styles.home.hotTextActive : '']}>毛利王</Text>
+                  {this.state.hotTab === 1 ? <View style={styles.home.triangle}></View> : null}
+                </View>
               </TouchableHighlight>
             </View>
-            {this.state.floorTab[0] === 0 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-              <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-              {this.state.glist1[0].map((v, k) => {
-                return(
-                  <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                    <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                    <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                    <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-              </View>
-            </ScrollView>
-            : null}
-            {this.state.floorTab[0] === 1 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-            <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-            {this.state.glist1[1].map((v, k) => {
-              return(
-                <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                  <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                  <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                  <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            </View>
-            </ScrollView>
-            : null}
-            {this.state.floorTab[0] === 2 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-            <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-            {this.state.glist1[2].map((v, k) => {
-              return(
-                <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                  <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                  <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                  <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            </View>
-            </ScrollView>
-            : null}
-           </View>
-           <View style={styles.home.floor}>
-            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh, styles.home.floorHeader]}>
-              <View style={styles.home.floorLine}></View>
-              <Image source={require('../../../images/home-f2.png')} style={styles.home.floorIcon}/>
-              <Text style={styles.home.floorText}>两季电器</Text>
-              <View style={styles.home.floorLine}></View>
-            </View>
-            {this.state.floorBanner[1] && this.state.floorBanner[1][0]?
-            <TouchableOpacity activeOpacity={.8}>
-              <Image source={{uri: this.state.floorBanner[1][0].img}} style={{width: Utils.width, height: Utils.width/3}}/>
-            </TouchableOpacity>
-            : null}
-            <View style={[styles.common.flexDirectionRow, styles.home.floorTab]}>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(1, 0, 54)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[1] === 0 ? styles.home.floorTabTextActive : '']}>全网热销</Text>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(1, 1, 55)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[1] === 1 ? styles.home.floorTabTextActive : '']}>即采即销</Text>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(1, 2, 56)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[1] === 2 ? styles.home.floorTabTextActive : '']}>精选优品</Text>
-              </TouchableHighlight>
-            </View>
-            {this.state.floorTab[0] === 0 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-              <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-              {this.state.glist2[0].map((v, k) => {
-                return(
-                  <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                    <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                    <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                    <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-              </View>
-            </ScrollView>
-            : null}
-            {this.state.floorTab[0] === 1 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-            <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-            {this.state.glist2[1].map((v, k) => {
-              return(
-                <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                  <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                  <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                  <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            </View>
-            </ScrollView>
-            : null}
-            {this.state.floorTab[0] === 2 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-            <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-            {this.state.glist2[2].map((v, k) => {
-              return(
-                <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                  <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                  <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                  <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            </View>
-            </ScrollView>
-            : null}
-           </View>
-           <View style={styles.home.floor}>
-            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh, styles.home.floorHeader]}>
-              <View style={styles.home.floorLine}></View>
-              <Image source={require('../../../images/home-f3.png')} style={styles.home.floorIcon}/>
-              <Text style={styles.home.floorText}>冰箱洗衣机</Text>
-              <View style={styles.home.floorLine}></View>
-            </View>
-            {this.state.floorBanner[2] && this.state.floorBanner[2][0]?
-            <TouchableOpacity activeOpacity={.8}>
-              <Image source={{uri: this.state.floorBanner[2][0].img}} style={{width: Utils.width, height: Utils.width/3}}/>
-            </TouchableOpacity>
-            : null}
-            <View style={[styles.common.flexDirectionRow, styles.home.floorTab]}>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(2, 0, 58)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[2] === 0 ? styles.home.floorTabTextActive : '']}>全网热销</Text>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(2, 1, 59)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[2] === 1 ? styles.home.floorTabTextActive : '']}>即采即销</Text>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(2, 2, 60)} style={[styles.common.flex, styles.common.flexCenterh]}>
-                <Text style={[styles.home.floorTabText, this.state.floorTab[2] === 2 ? styles.home.floorTabTextActive : '']}>精选优品</Text>
-              </TouchableHighlight>
-            </View>
-            {this.state.floorTab[0] === 0 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-              <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-              {this.state.glist3[0].map((v, k) => {
-                return(
-                  <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                    <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                    <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                    <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-              </View>
-            </ScrollView>
-            : null}
-            {this.state.floorTab[0] === 1 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-            <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-            {this.state.glist3[1].map((v, k) => {
-              return(
-                <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                  <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                  <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                  <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            </View>
-            </ScrollView>
-            : null}
-            {this.state.floorTab[0] === 2 ?
-            <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-            <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-            {this.state.glist3[2].map((v, k) => {
-              return(
-                <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-                  <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-                  <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-                  <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-                </TouchableOpacity>
-              );
-            })}
-            </View>
-            </ScrollView>
-            : null}
-           </View>
+          </View>
+          {this._renderHotList(this.state.hotTab)}
+          <Text style={[styles.common.loadingTips, styles.home.hotLoadTips]}>{this.state.hotPage[this.state.hotTab] > 7 ? '没有更多商品' : '加载商品中...'}</Text>
         </ScrollView>
         <Loading visible={this.state.loadingVisible}></Loading>
+      </View>
+    );
+  }
+  _renderFloor = (o) => {
+    return (
+      <View style={styles.home.floor}>
+       <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh, styles.home.floorHeader]}>
+         <View style={styles.home.floorLine}></View>
+         <Image source={o.icon} style={styles.home.floorIcon}/>
+         <Text style={styles.home.floorText}>{o.title}</Text>
+         <View style={styles.home.floorLine}></View>
+       </View>
+       {this.state.floorBanner[o.index] && this.state.floorBanner[o.index][0]?
+       <TouchableOpacity activeOpacity={.8}>
+         <Image source={{uri: this.state.floorBanner[o.index][0].img}} style={{width: Utils.width, height: Utils.width/3}}/>
+       </TouchableOpacity>
+       : null}
+       <View style={[styles.common.flexDirectionRow, styles.home.floorTab]}>
+         <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(o.index, 0, o.ids[0])} style={[styles.common.flex, styles.common.flexCenterh]}>
+           <Text style={[styles.home.floorTabText, this.state.floorTab[o.index] === 0 ? styles.home.floorTabTextActive : '']}>全网热销</Text>
+         </TouchableHighlight>
+         <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(o.index, 1, o.ids[1])} style={[styles.common.flex, styles.common.flexCenterh]}>
+           <Text style={[styles.home.floorTabText, this.state.floorTab[o.index] === 1 ? styles.home.floorTabTextActive : '']}>即采即销</Text>
+         </TouchableHighlight>
+         <TouchableHighlight underlayColor='#fafafa' onPress={() => this._floorTabFunc(o.index, 2, o.ids[2])} style={[styles.common.flex, styles.common.flexCenterh]}>
+           <Text style={[styles.home.floorTabText, this.state.floorTab[o.index] === 2 ? styles.home.floorTabTextActive : '']}>精选优品</Text>
+         </TouchableHighlight>
+       </View>
+       {this.state.floorTab[o.index] === 0 ?
+       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
+         <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
+         {this.state.glist[o.index][0].map((v, k) => {
+           return(
+             <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
+               <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
+               <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
+               <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
+             </TouchableOpacity>
+           );
+         })}
+         </View>
+       </ScrollView>
+       : null}
+       {this.state.floorTab[o.index] === 1 ?
+       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
+       <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
+       {this.state.glist[o.index][1].map((v, k) => {
+         return(
+           <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
+             <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
+             <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
+             <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
+           </TouchableOpacity>
+         );
+       })}
+       </View>
+       </ScrollView>
+       : null}
+       {this.state.floorTab[o.index] === 2 ?
+       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
+       <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
+       {this.state.glist[o.index][2].map((v, k) => {
+         return(
+           <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
+             <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
+             <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
+             <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
+           </TouchableOpacity>
+         );
+       })}
+       </View>
+       </ScrollView>
+       : null}
       </View>
     );
   }
@@ -413,24 +362,27 @@ export default class BuyerHomeScreen extends Component {
         }
       }
     });
-    fetch(Config.PHPAPI + 'api/mapp/ad/ad-goodslist?id=51,54,57,60,63,66,69,72,75', {
+    fetch(Config.PHPAPI + 'api/mapp/ad/ad-goodslist?id=1,4,7,10,13,16,19,22', {
       method: 'GET'
     })
     .then(response => response.json())
     .then((r) => {
        if(r.error_code === 0) {
           this.setState({
-            glist1: [r.data['51'], [], []],
-            glist2: [r.data['54'], [], []],
-            glist3: [r.data['57'], [], []],
-            glist4: [r.data['60'], [], []],
-            glist5: [r.data['63'], [], []],
-            glist6: [r.data['66'], [], []],
-            glist7: [r.data['69'], [], []],
-            glist8: [r.data['72'], [], []],
+            glist: [
+              [r.data['1'], [], []],
+              [r.data['4'], [], []],
+              [r.data['7'], [], []],
+              [r.data['10'], [], []],
+              [r.data['13'], [], []],
+              [r.data['16'], [], []],
+              [r.data['19'], [], []],
+              [r.data['22'], [], []]
+            ]
           });
        }
    });
+   this._getHotFunc(0);
   }
   _newsScroll = (i) => {
     Animated.timing(
@@ -463,10 +415,35 @@ export default class BuyerHomeScreen extends Component {
     let _temp = this.state.floorTab;
     _temp[k] = i;
     this.setState({floorTab: _temp});
+    if(this.state.glist[k][i].length === 0) {
+      fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${id}`, {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then((r) => {
+         if(r.error_code === 0) {
+           let _temp = this.state.glist;
+           _temp[k][i] = r.data[id];
+            this.setState({
+              glist: _temp
+            });
+         }
+     });
+    }
   }
   _bodyScroll = (e) => {
+    let _bodyHeight = e.nativeEvent.contentSize.height;
+    let _windowHeight = e.nativeEvent.layoutMeasurement.height;
     let _y = e.nativeEvent.contentOffset.y;
-    InteractionManager.runAfterInteractions(() => {
+
+    if(_y + _windowHeight >= _bodyHeight - 20){
+      if(!this.state.hotLoading) {
+        this._getHotFunc(this.state.hotTab);
+      }
+    }
+
+    this.bodyScrollTimer && clearTimeout(this.bodyScrollTimer);
+    this.bodyScrollTimer = setTimeout(() => {
       Animated.timing(
         this.state.headerBgOpacity,
         {
@@ -481,6 +458,71 @@ export default class BuyerHomeScreen extends Component {
           useNativeDriver: true
         }
       ).start();
-    });
+    }, 100);
+  }
+  _tabHotFunc = (t) => {
+    if(this.state.hotTab === t) return;
+    this.setState({hotTab: t});
+    if(t === 0 && this.state.hotList[0].length === 0) {
+      this._getHotFunc(0);
+    } else if(t === 1 && this.state.hotList[1].length === 0) {
+      this._getHotFunc(1);
+    }
+  }
+  _getHotFunc = (t) => {
+    let ids = '';
+    if(t === 0) {
+        if(this.state.hotPage[0] > 7) return;
+        ids = 25 + this.state.hotPage[0] * 2;
+    } else {
+        if(this.state.hotPage[1] > 7) return;
+        ids = 26 + this.state.hotPage[1] * 2;
+    }
+    this.state.hotLoading = true;
+    fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${ids}`, {
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then((r) => {
+       if(r.error_code === 0) {
+         this.state.hotLoading = false;
+         let _page = this.state.hotPage;
+         _page[t]++;
+         this.setState({hotPage: _page});
+         //如果当前楼层没有数据，继续读取下一层
+         if(r.data[ids].length === 0) {
+           this._getHotFunc(t);
+           return;
+         }
+         let _temp = this.state.hotList;
+         _temp[t] = [..._temp[t], ...r.data[ids]];
+         this.setState({hotList: _temp});
+       }
+   });
+  }
+  _renderHotList = (t) => {
+    return (
+      <View style={[styles.common.flexDirectionRow, styles.home.hotList]}>
+      {this.state.hotList[t].map((v, k) => {
+        return(
+          <View style={[styles.home.hotItem, {width: (Utils.width - 30)/2}]}>
+            <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: (Utils.width - 30)/2, height: (Utils.width - 30)/2}} />
+            <Text numberOfLines={2} style={styles.home.hotGoodsName}>{v.goods_name || v.product.goods_name}</Text>
+            <Text style={styles.home.hotGoodsPrice}>￥{v.showprice}</Text>
+          </View>
+        )
+      })}
+      </View>
+    )
+  }
+  _toSearch = () => {
+    this.props.navigation.navigate('BuyerSearch');
+  }
+  _toSign = () => {
+    this.props.navigation.navigate('BuyerSign');
+  }
+  _toCateHandle = (k) => {
+    if(k === 4) {
+    }
   }
 }

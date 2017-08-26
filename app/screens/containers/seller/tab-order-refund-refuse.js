@@ -47,8 +47,8 @@ export default class OrderDetailScreen extends Component{
     };
   }
   componentWillMount() {
-    this.props.navigation.setParams({title: this.state.refundtype == 1 ? '拒绝退款' : '拒绝退货退款'});
     InteractionManager.runAfterInteractions(() => {
+      this.props.navigation.setParams({title: this.state.refundtype == 1 ? '拒绝退款' : '拒绝退货退款'});
       ScreenInit.checkLogin(this);
     })
   }

@@ -38,8 +38,8 @@ export default class OrderDetailScreen extends Component{
     };
   }
   componentWillMount() {
-    this.setState({loadingVisible: true});
     InteractionManager.runAfterInteractions(() => {
+      this.setState({loadingVisible: true});
       ScreenInit.checkLogin(this);
       this._init();
     });

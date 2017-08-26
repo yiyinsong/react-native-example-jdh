@@ -42,8 +42,8 @@ export default class SellerUserInfoScreen extends Component {
       };
     }
     componentDidMount() {
-      this.setState({loadingVisible: true});
       InteractionManager.runAfterInteractions(() => {
+        this.setState({loadingVisible: true});
         ScreenInit.checkLogin();
 
         //添加地址事件侦听

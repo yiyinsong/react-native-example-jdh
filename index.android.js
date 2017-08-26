@@ -7,7 +7,7 @@
  import { AppRegistry, Image, TouchableOpacity } from 'react-native';
  import { StackNavigator } from 'react-navigation';
  //安卓实现左右切换
- // import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
+ import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 
  //初始化项目
  import Init from './app/config/init';
@@ -20,21 +20,8 @@
 
  const ReactNativeJdh = StackNavigator(Route, {
    navigationOptions: ({ navigation, screenProps }) => ({
-     headerStyle: {
-       backgroundColor: '#fff',
-       height: 65,
-       elevation: 0,
-       shadowOpacity: 0,
-       borderBottomColor: '#ddd',
-       borderBottomWidth: 1,
-       paddingTop: 20,
-     },
-     headerTitleStyle : {
-         color: '#333',
-         fontSize: 16,
-         alignSelf: 'center',
-         fontWeight: '100'
-     },
+     headerStyle: styles.common.header,
+     headerTitleStyle : styles.common.headerTitle,
      headerLeft: (<TouchableOpacity onPress={ () => {navigation.goBack()} }>
                <Image style={styles.common.iconBackArrow} source={require('./app/images/icon-back.png')} />
            </TouchableOpacity>),
@@ -42,12 +29,12 @@
    }),
    transitionConfig: () => ({
      transitionSpec: {
-       duration: 250
+       duration: 350
      },
-  //   screenInterpolator: (sceneProps) => {
-  //     if (sceneProps.scene.route.withoutAnimation) return null;
-  //     return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps)
-  //   },
+    screenInterpolator: (sceneProps) => {
+      if (sceneProps.scene.route.withoutAnimation) return null;
+      return CardStackStyleInterpolator.forHorizontal(sceneProps)
+    },
   }),
  });
 

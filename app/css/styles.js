@@ -66,6 +66,21 @@ export default {
     flexSelfRight: {
       alignSelf: 'flex-end'
     },
+    header: {
+      backgroundColor: COLOR_WHITE,
+      height: 65,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomColor: COLOR_D,
+      borderBottomWidth: 1,
+      paddingTop: 20,
+    },
+    headerTitle: {
+        color: COLOR_3,
+        fontSize: 16,
+        alignSelf: 'center',
+        fontWeight: '100'
+    },
     iconBackArrow: {
       width: 18,
       height: 18,
@@ -2136,7 +2151,7 @@ export default {
       zIndex: 9,
       left: 0,
       right: 0,
-      height: 75,
+      height: 73,
       backgroundColor: 'rgba(249, 59, 49, 1)'
     },
     search: {
@@ -2174,6 +2189,7 @@ export default {
     cateContainer: {
       backgroundColor: BACKGROUNDCOLOR_GRAY2,
       paddingBottom: 15,
+      overflow: 'hidden'
     },
     cate: {
       backgroundColor: BACKGROUNDCOLOR_GRAY2,
@@ -2196,7 +2212,8 @@ export default {
       paddingBottom: 6,
       paddingLeft: 10,
       paddingRight: 10,
-      borderRadius: 15
+      borderRadius: 15,
+      overflow: 'hidden'
     },
     newsIcon: {
       width: 74,
@@ -2220,6 +2237,9 @@ export default {
       fontSize: FONT_12,
       color: COLOR_3
     },
+    ad: {
+      overflow: 'hidden'
+    },
     ad1: {
       borderTopWidth: 1,
       borderTopColor: COLOR_D,
@@ -2239,6 +2259,9 @@ export default {
       borderTopColor: COLOR_D,
       borderBottomWidth: 1,
       borderBottomColor: COLOR_D
+    },
+    floor: {
+      overflow: 'hidden'
     },
     floorHeader: {
       paddingTop: 15,
@@ -2284,7 +2307,7 @@ export default {
       paddingLeft: 5,
     },
     goods: {
-      backgroundColor: '#fff',
+      backgroundColor: COLOR_WHITE,
       marginRight: 5
     },
     goodsName: {
@@ -2299,6 +2322,144 @@ export default {
       paddingLeft: 5,
       paddingBottom: 10,
       paddingRight: 5
+    },
+    hot1: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_GRAY,
+      borderRightWidth: 1,
+      borderRightColor: COLOR_GRAY,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      paddingTop: 10,
+    },
+    hot2: {
+      borderRightWidth: 0
+    },
+    hotText: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+      marginBottom: 5
+    },
+    hotTextActive: {
+      color: COLOR_RED
+    },
+    triangle: {
+      width: 0,
+      height: 0,
+      borderLeftWidth: 6,
+      borderLeftColor: 'transparent',
+      borderRightWidth: 6,
+      borderRightColor: 'transparent',
+      borderBottomWidth: 8,
+      borderBottomColor: COLOR_GRAY,
+    },
+    hotList: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
+      flexWrap: 'wrap',
+      overflow: 'hidden'
+    },
+    hotItem: {
+      backgroundColor: COLOR_WHITE,
+      marginLeft: 10,
+      marginTop: 10,
+      paddingBottom: 10
+    },
+    hotGoodsName: {
+      paddingTop: 5,
+      paddingLeft: 10,
+      paddingBottom: 5,
+      paddingRight: 10,
+      fontSize: FONT_12,
+      color: COLOR_3
+    },
+    hotGoodsPrice: {
+      color: COLOR_RED,
+      fontSize: FONT_14,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    hotLoadTips: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY
+    }
+  },
+  search: {
+    searchContainer: {
+      backgroundColor: COLOR_GRAY,
+      borderRadius: 20,
+      marginLeft: 8,
+      marginRight: 10,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    input: {
+      margin: 0,
+      padding: 0,
+      flex: 1,
+      marginLeft: 5,
+      fontSize: FONT_12
+    },
+    icon: {
+      width: 16,
+      height: 16
+    },
+    btn: {
+      color: COLOR_WHITE,
+      backgroundColor: COLOR_BLUE,
+      marginRight: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 5,
+      paddingBottom: 5,
+      borderRadius: 5
+    },
+    body: {
+      padding: 10
+    },
+    recent: {
+      fontSize: FONT_12,
+      color: COLOR_3
+    },
+    clear: {
+      fontSize: FONT_12,
+      color: COLOR_BLUE
+    },
+    history: {
+      flexDirection: 'row',
+      flexWrap: 'wrap'
+    },
+    historyText: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      color: COLOR_9,
+      fontSize: FONT_14,
+      marginTop: 10,
+      marginRight: 10,
+      paddingTop: 5,
+      paddingLeft: 10,
+      paddingBottom: 5,
+      paddingRight: 10,
+      borderRadius: 20
+    }
+  },
+  sign: {
+    tipsLink: {
+      position: 'absolute',
+      top: 30,
+      right: 10,
+      zIndex: 9
+    },
+    tipsIcon: {
+      width: 22,
+      height: 22
+    },
+    signedText: {
+      fontSize: FONT_12,
+      color: COLOR_6,
+      marginTop: 25
+    },
+    signedDay: {
+      color: COLOR_RED
     }
   }
 }
