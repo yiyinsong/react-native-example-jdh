@@ -16,6 +16,7 @@ const COLOR_6 = '#666';
 const COLOR_9 = '#999';
 const COLOR_E = '#eee';
 const COLOR_F = '#fafafa';
+const COLOR_SIGN_BG = '#fbf1f1';
 
 const FONT_8 = 8;
 const FONT_10 = 10;
@@ -2460,6 +2461,114 @@ export default {
     },
     signedDay: {
       color: COLOR_RED
+    },
+    date: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+      textAlign: 'center',
+      paddingTop: 20,
+      paddingBottom: 20
+    },
+    table: {
+      paddingLeft: 10,
+      paddingRight: 10,
+    },
+    week: {
+      fontSize: FONT_14,
+      textAlign: 'center',
+      color: COLOR_6
+    },
+    tbody: {
+      flexWrap: 'wrap',
+      marginTop: 10,
+      borderRightWidth: 1,
+      borderRightColor: COLOR_E,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+    },
+    day: {
+      borderLeftWidth: 1,
+      borderLeftColor: COLOR_E,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_E,
+      height: 40,
+      position: 'relative',
+    },
+    dayText: {
+      fontSize: FONT_12,
+      textAlign: 'center'
+    },
+    dayActive: {
+      backgroundColor: COLOR_SIGN_BG
+    },
+    daySignIcon: {
+      width: 12,
+      height: 12,
+      resizeMode: 'contain',
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+    },
+    tips: {
+      backgroundColor: COLOR_WHITE,
+      borderRadius: 5,
+      marginLeft: 15,
+      marginRight: 15,
+      padding: 20
+    },
+    tipsTitle: {
+      fontSize: FONT_18,
+      textAlign: 'center',
+      color: COLOR_3,
+      marginBottom: 20
+    },
+    tipsText: {
+      fontSize: FONT_12,
+      marginBottom: 3
+    },
+    tipsLine: {
+      backgroundColor: 'rgba(255, 255, 255, .6)',
+      width: 1,
+      height: 40
+    },
+    tipsClose: {
+      width: 40,
+      height: 40,
+      resizeMode: 'contain'
+    },
+    ticketMsg: {
+      color: COLOR_RED,
+      fontSize: FONT_16,
+      textAlign: 'center'
+    },
+    ticketCancel: {
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      borderRadius: 4,
+      marginTop: 20,
+      marginRight: 10,
+      justifyContent: 'center',
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    ticketCancelText: {
+      fontSize: FONT_14,
+      color: COLOR_6
+    },
+    ticketConfirm: {
+      borderWidth: 1,
+      borderColor: COLOR_RED,
+      borderRadius: 4,
+      marginTop: 20,
+      marginLeft: 10,
+      justifyContent: 'center',
+      paddingTop: 10,
+      paddingBottom: 10,
+      backgroundColor: COLOR_RED
+    },
+    ticketConfirmText: {
+      fontSize: FONT_14,
+      color: COLOR_WHITE
     }
   }
 }

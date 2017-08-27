@@ -13,6 +13,7 @@ import {
   } from 'react-native';
 import Swiper from 'react-native-swiper';
 
+import ScreenInit from '../../../config/screenInit'
 import Config from '../../../config/config';
 import styles from '../../../css/styles';
 import Utils from '../../../js/utils';
@@ -61,6 +62,7 @@ export default class BuyerHomeScreen extends Component {
   }
   componentDidMount() {
     this.setState({loadingVisible: true});
+    ScreenInit.checkLogin(this);
     this._init();
   }
   componentWillUnmount() {

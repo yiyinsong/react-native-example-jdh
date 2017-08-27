@@ -63,12 +63,18 @@ export default class LoginScreen extends Component {
               data: data.data
             });
             global.token = data.data.token;
-            const { routeName, params } = this.props.navigation.state.params;
+
+            let routeName,
+                params,
+                sp = this.props.navigation.state.params;
+            if(sp) {
+              routeName = sp.routeName
+              params = sp.params;
+            }
             if(routeName) {
               this.props.navigation.navigate(routeName);
             } else {
-              alert('haha');
-              this.props.navigation.goBack();
+              this.props.navigation.navigate('Buyer');
             }
           } else {
             UIToast(data.msg || '登录失败');

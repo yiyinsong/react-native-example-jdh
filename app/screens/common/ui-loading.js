@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 // import Spinner from 'react-native-spinkit';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 import styles from '../../css/styles';
 import Utils from '../../js/utils';
@@ -12,7 +11,16 @@ export default class UiLoading extends Component {
   }
   render() {
     return (
-      <Spinner visible={this.props.visible} animation='fade'/>
+      <View style={[styles.loading.spinner, {left: Utils.width/2 - 14, top: Utils.height/2 - 14}]}>
+      {this.props.visible ?
+        <View style={styles.loading.content}>
+        <ActivityIndicator
+          animating={this.props.visible}
+          size="small"
+          color="#ffffff" />
+        </View>
+      : null}
+      </View>
     )
   }
 }
