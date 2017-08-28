@@ -327,29 +327,24 @@ export default {
   //卖家中心
   shome: {
     container: {
-      flex: 1,
+      flex: 1
     },
     head: {
       position: 'relative',
-      paddingTop: 20,
-      backgroundColor: COLOR_BLUE,
     },
     headContent: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: 1,
+      paddingTop: 20,
+    },
+    ht: {
+      alignItems: 'flex-start'
     },
     userBlock: {
-      flex: 1,
       padding: 10,
       flexDirection: 'row',
     },
     userBlockLeft: {
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center'
     },
     arrowRight: {
       width: 14,
@@ -384,10 +379,24 @@ export default {
       lineHeight: 13,
       color: COLOR_RED
     },
+    hb: {
+      flexDirection: 'row',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 2
+    },
+    logoContainer: {
+      borderRadius: 30,
+      width: 54,
+      height: 54,
+      padding: 2,
+      backgroundColor: COLOR_WHITE
+    },
     userHeadIcon: {
-      width: 65,
-      height: 65,
-      borderRadius: 4
+      width: 50,
+      height: 50,
+      resizeMode: 'contain',
+      borderRadius: 30,
     },
     userData: {
       paddingLeft: 10
@@ -418,9 +427,7 @@ export default {
       height: 16
     },
     userToOther: {
-      flex: 1,
       flexDirection: 'row',
-      justifyContent: 'flex-end',
     },
     userQrcode: {
       width: 16,
@@ -428,7 +435,7 @@ export default {
       marginLeft: 20
     },
     userInfo: {
-      alignItems: 'flex-end'
+      alignItems: 'flex-end',
     },
     dl: {
       backgroundColor: BACKGROUNDCOLOR_WHITE,
@@ -474,6 +481,13 @@ export default {
       paddingTop: 5,
       paddingBottom: 5
     },
+    storeDataItem2: {
+      flex: 1,
+      marginTop: 10,
+      marginBottom: 10,
+      paddingTop: 5,
+      paddingBottom: 5
+    },
     storeDataIs: {
       fontSize: FONT_12,
       color: COLOR_3,
@@ -488,7 +502,9 @@ export default {
     },
     borderNone: {
       borderRightWidth: 0,
-      borderBottomWidth: 0
+      borderRightColor: 'transparent',
+      borderBottomWidth: 0,
+      borderBottomColor: 'transparent',
     },
     order: {
       flex: 1,
@@ -2568,6 +2584,34 @@ export default {
     ticketConfirmText: {
       fontSize: FONT_14,
       color: COLOR_WHITE
+    },
+    signedImg: {
+      resizeMode: 'contain'
+    },
+    signedTitle: {
+      fontSize: 20,
+      color: COLOR_3,
+      textAlign: 'center'
+    },
+    signedOkText: {
+      fontSize: FONT_14,
+      textAlign: 'center',
+      marginBottom: 10
+    },
+    signed: {
+      position: 'relative'
+    },
+    signCloseAbsolute: {
+      position: 'absolute',
+      zIndex: 9,
+      top: 0,
+      right: 0,
+    },
+    signedClose: {
+      width: 30,
+      height: 30
     }
+  },
+  buyer: {
   }
 }

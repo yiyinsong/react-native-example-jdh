@@ -8,8 +8,8 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 import BHomeScreen from './tab-home';
 import CategoryScreen from './tab-category';
 import CartScreen from './tab-cart';
-import UserBuyerScreen from './tab-user';
-import UserSellerScreen from '../seller/tab-home';
+import UserBuyerScreen from './tab-buyer';
+import UserSellerScreen from '../seller/tab-seller';
 
 import styles from '../../../css/styles';
 

@@ -11,7 +11,7 @@ import HomeScreen from '../screens/index';
 import LoginScreen from '../screens/login';
 import FindPasswordScreen from '../screens/findPassword';
 
-import SellerScreen from '../screens/containers/seller/index';
+// import SellerScreen from '../screens/containers/seller/index';
 import SellerStoreInfoScreen from '../screens/containers/seller/tab-home-store-info';
 import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-info';
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
@@ -68,31 +68,31 @@ export default {
       title: '找回密码',
     }
   },
-  Seller: {
-    screen: SellerScreen,
-    navigationOptions: ({navigation}) => ({
-      headerStyle: {
-        backgroundColor: '#0386fc',
-        color: '#fff',
-        height: 65,
-        elevation: 0,
-        shadowOpacity: 0,
-        borderBottomColor: '#0386fc',
-        borderBottomWidth: 1,
-        paddingTop: 20,
-      },
-      headerTitleStyle : {
-          color: '#fff',
-          fontSize: 16,
-          alignSelf: 'center',
-          fontWeight: '100'
-      },
-      headerLeft: (navigation.state.index == 2 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
-      headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
-            <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
-        </TouchableOpacity> : null)
-    })
-  },
+  // Seller: {
+  //   screen: SellerScreen,
+  //   navigationOptions: ({navigation}) => ({
+  //     headerStyle: {
+  //       backgroundColor: '#0386fc',
+  //       color: '#fff',
+  //       height: 65,
+  //       elevation: 0,
+  //       shadowOpacity: 0,
+  //       borderBottomColor: '#0386fc',
+  //       borderBottomWidth: 1,
+  //       paddingTop: 20,
+  //     },
+  //     headerTitleStyle : {
+  //         color: '#fff',
+  //         fontSize: 16,
+  //         alignSelf: 'center',
+  //         fontWeight: '100'
+  //     },
+  //     headerLeft: (navigation.state.index == 2 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
+  //     headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
+  //           <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
+  //       </TouchableOpacity> : null)
+  //   })
+  // },
   SellerStoreInfo: {
     screen: SellerStoreInfoScreen,
     navigationOptions: {

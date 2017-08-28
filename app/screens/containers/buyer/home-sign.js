@@ -32,7 +32,8 @@ export default class HomeSignScreen extends Component {
         end: [],
         tipsVisible: false,
         ticketVisible: false,
-        ticketMsg: ''
+        ticketMsg: '',
+        signedVisible: false
       };
     }
     componentDidMount() {
@@ -52,9 +53,11 @@ export default class HomeSignScreen extends Component {
                 <Image source={require('../../../images/sign-bg.png')} style={[styles.common.flexCenterh, styles.common.flexCenterv, {width: Utils.width, height: Utils.width/1.63}]} resizeMode="contain">
                   {
                     this.state.data.is_sign ?
-                    <Image source={require('../../../images/sign-btn-active.png')} style={[styles.common.flexCenterv, styles.common.flexCenterh, {width: Utils.width*.3, height: Utils.width*.3}]} resizeMode="contain">
-                      <Text style={styles.sign.signedText}>已连续<Text style={styles.sign.signedDay}>{this.state.data.signinnum}</Text>天</Text>
-                    </Image>
+                    <TouchableOpacity activeOpacity={.8} onPress={() => this._setSignedVisible(true)}>
+                      <Image source={require('../../../images/sign-btn-active.png')} style={[styles.common.flexCenterv, styles.common.flexCenterh, {width: Utils.width*.3, height: Utils.width*.3}]} resizeMode="contain">
+                        <Text style={styles.sign.signedText}>已连续<Text style={styles.sign.signedDay}>{this.state.data.signinnum}</Text>天</Text>
+                      </Image>
+                    </TouchableOpacity>
                     :
                     <TouchableOpacity activeOpacity={.8} onPress={this._signFunc}>
                       <Image source={require('../../../images/sign-btn.png')} style={{width: Utils.width*.3, height: Utils.width*.3}} resizeMode="contain"/>
@@ -118,6 +121,23 @@ export default class HomeSignScreen extends Component {
                   <TouchableWithoutFeedback onPress={() => this._setTipsVisible(false)}>
                     <Image source={require('../../../images/sign-close.png')} style={styles.sign.tipsClose}/>
                   </TouchableWithoutFeedback>
+                </View>
+              </Modal>
+              <Modal
+              animationType='fade'
+              transparent={true}
+              visible={this.state.signedVisible}
+              onRequestClose={() => {this._setSignedVisible(false)}}
+              >
+                <View style={[styles.modal.container, styles.common.flexCenterh]}>
+                  <View style={[styles.sign.tips, styles.sign.signed]}>
+                    <TouchableOpacity activeOpacity={.8} style={styles.sign.signCloseAbsolute} onPress={() => this._setSignedVisible(false)}>
+                      <Image source={require('../../../images/icon-close.png')} style={styles.sign.signedClose} />
+                    </TouchableOpacity>
+                    <Text style={styles.sign.signedTitle}>今日已签到</Text>
+                    <Image source={require('../../../images/signed.png')} style={[styles.sign.signedImg, {width: Utils.width - 120, height: (Utils.width - 120)/1.6}]} />
+                    <Text style={styles.sign.signedOkText}>欢迎明天再来~</Text>
+                  </View>
                 </View>
               </Modal>
               <Modal
@@ -191,6 +211,9 @@ export default class HomeSignScreen extends Component {
     }
     _setTicketVisible = (b) => {
       this.setState({ticketVisible: b});
+    }
+    _setSignedVisible = (b) => {
+      this.setState({signedVisible: b});
     }
     _signFunc = () => {
       fetch(Config.PHPAPI + `api/mapp/sign/signin?token=${token}`, {

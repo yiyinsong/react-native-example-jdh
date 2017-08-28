@@ -174,12 +174,12 @@ export default class BuyerHomeScreen extends Component {
            <View style={styles.common.flexDirectionRow}>
              {this.state.ad[3] ?
                <TouchableOpacity activeOpacity={.8} style={[styles.home.ad1, styles.home.ad3]}>
-                 <Image source={{uri: ad[3].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
+                 <Image source={{uri: this.state.ad[3].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
                </TouchableOpacity>
               : null}
               {this.state.ad[4] ?
                <TouchableOpacity activeOpacity={.8} style={styles.home.ad4}>
-                 <Image source={{uri: ad[4].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
+                 <Image source={{uri: this.state.ad[4].img}}  style={{width: Utils.width/2, height: Utils.width/4}}/>
                </TouchableOpacity>
               : null}
            </View>
