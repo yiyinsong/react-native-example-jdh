@@ -2361,8 +2361,7 @@ export default {
     },
     hotItem: {
       backgroundColor: COLOR_WHITE,
-      marginLeft: 10,
-      marginTop: 10,
+      marginTop: 5,
       paddingBottom: 10
     },
     hotGoodsName: {

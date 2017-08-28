@@ -3,12 +3,13 @@ import {
   Image,
   Text
   } from 'react-native';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 
 import BHomeScreen from './tab-home';
 import CategoryScreen from './tab-category';
 import CartScreen from './tab-cart';
-import UserScreen from './tab-user';
+import UserBuyerScreen from './tab-user';
+import UserSellerScreen from '../seller/tab-home';
 
 import styles from '../../../css/styles';
 
@@ -51,9 +52,16 @@ export default TabNavigator({
       }
     },
     'User': {
-      screen: UserScreen,
+      screen: StackNavigator({
+          UserBuyer: { screen: UserBuyerScreen },
+          UserSeller: { screen: UserSellerScreen },
+      }, {
+        navigationOptions: ({navigation}) => ({
+          header: null
+        })
+      }),
       navigationOptions: {
-        headerTitle: '我的',
+        header: null,
         tabBarLabel: '我的',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-user-active.png') : require('../../../images/icon-user.png')}

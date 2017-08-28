@@ -334,30 +334,30 @@ export default class BuyerHomeScreen extends Component {
     );
   }
   _init = () => {
-    fetch(Config.PHPAPI + 'api/mapp/ad/ad-imagelist?id=582,583,584,585,586,587,588,589,590,591,592,593',{
+    fetch(Config.PHPAPI + 'api/mapp/ad/ad-imagelist?id=587,588,589,590,591,592,593,594,595,596,597,598',{
       method: 'GET'
     })
     .then(response => response.json())
     .then((r) => {
       if(r.error_code === 0) {
         this.setState({
-          banner: r.data['582'],
-          newsList: r.data['583'],
-          ad: r.data['584'],
-          cate: r.data['593'],
+          banner: r.data['587'],
+          newsList: r.data['588'],
+          ad: r.data['589'],
+          cate: r.data['598'],
           floorBanner: [
-            r.data['585'],
-            r.data['586'],
-            r.data['587'],
-            r.data['588'],
-            r.data['589'],
             r.data['590'],
             r.data['591'],
-            r.data['592']
+            r.data['592'],
+            r.data['593'],
+            r.data['594'],
+            r.data['595'],
+            r.data['596'],
+            r.data['597']
           ],
           loadingVisible: false
         });
-        if(r.data['583'].length > 1) {
+        if(r.data['588'].length > 1) {
           this.newsTimer = setTimeout(() => {
             this._newsScroll();
           }, 3000);
@@ -507,8 +507,8 @@ export default class BuyerHomeScreen extends Component {
       <View style={[styles.common.flexDirectionRow, styles.home.hotList]}>
       {this.state.hotList[t].map((v, k) => {
         return(
-          <View style={[styles.home.hotItem, {width: (Utils.width - 30)/2}]}>
-            <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: (Utils.width - 30)/2, height: (Utils.width - 30)/2}} />
+          <View style={[styles.home.hotItem, {width: (Utils.width - 5)/2,marginRight: (k%2 == 0 ? 5 : 0)}]}>
+            <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: (Utils.width - 5)/2, height: (Utils.width - 5)/2}} />
             <Text numberOfLines={2} style={styles.home.hotGoodsName}>{v.goods_name || v.product.goods_name}</Text>
             <Text style={styles.home.hotGoodsPrice}>￥{v.showprice}</Text>
           </View>

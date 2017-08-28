@@ -425,6 +425,6 @@ export default class SellerHomeScreen extends Component {
       this.props.navigation.navigate('SellerOrder', {type, index});
     }
     _toBuyer = () => {
-      this.props.navigation.navigate('BuyerHome');
+      this.props.navigation.navigate('UserBuyer');
     }
 }
