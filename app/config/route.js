@@ -11,7 +11,8 @@ import HomeScreen from '../screens/index';
 import LoginScreen from '../screens/login';
 import FindPasswordScreen from '../screens/findPassword';
 
-// import SellerScreen from '../screens/containers/seller/index';
+import SellerGoodsScreen from '../screens/containers/seller/tab-goods';
+import SellerOrderScreen from '../screens/containers/seller/tab-order';
 import SellerStoreInfoScreen from '../screens/containers/seller/tab-home-store-info';
 import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-info';
 import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
@@ -93,6 +94,31 @@ export default {
   //       </TouchableOpacity> : null)
   //   })
   // },
+  SellerGoods: {
+    screen: SellerGoodsScreen,
+    navigationOptions: ({ navigation, screenProps }) => ({
+      title: '商品管理',
+      headerStyle: styles.common.blueHeader,
+      headerTitleStyle: styles.common.blueHeaderTitle,
+      headerLeft: (<TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={require('../images/icon-back-w.png')} style={styles.common.iconBackArrow} />
+        </TouchableOpacity>),
+    })
+  },
+  SellerOrder: {
+    screen: SellerOrderScreen,
+    navigationOptions: ({ navigation, screenProps }) => ({
+      title: '订单管理',
+      headerStyle: styles.common.blueHeader,
+      headerTitleStyle: styles.common.blueHeaderTitle,
+      headerLeft: (<TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={require('../images/icon-back-w.png')} style={styles.common.iconBackArrow} />
+        </TouchableOpacity>),
+      headerRight: (<TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.params.type}) }} style={styles.common.headerBtnRight}>
+         <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
+     </TouchableOpacity>)
+    })
+  },
   SellerStoreInfo: {
     screen: SellerStoreInfoScreen,
     navigationOptions: {

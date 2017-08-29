@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  TouchableHighlight,
   InteractionManager,
   Modal,
   DeviceEventEmitter
@@ -413,6 +414,28 @@ export default class SellerHomeScreen extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
+              <View style={ styles.shome.dl }>
+                <View style={ [styles.common.flex, styles.shome.dt] }>
+                  <View style={ [styles.common.flex, styles.common.flexCenterv] }>
+                    <Image source={require('../../../images/icon-overview-f4.png')} style={ styles.shome.dtlIcon }/>
+                    <Text style={ styles.shome.dtName }>商品管理</Text>
+                  </View>
+                </View>
+                <View style={ [styles.common.flex, styles.shome.dd, styles.shome.goodsMana] }>
+                  <TouchableHighlight underlayColor='#fafafa' style={[styles.common.flex, styles.shome.goodsBlock, styles.shome.gl]} onPress={() => this._toGoods(0)}>
+                    <View style={[styles.common.flexv, styles.common.flexCenterv]}>
+                      <Image source={require('../../../images/seller-goods-zj.png')} style={styles.shome.goodsIcon}/>
+                      <Text style={styles.shome.goodsText}>自建商品</Text>
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight underlayColor='#fafafa' style={[styles.common.flex, styles.shome.goodsBlock]} onPress={() => this._toGoods(1)}>
+                    <View style={[styles.common.flexv, styles.common.flexCenterv]}>
+                      <Image source={require('../../../images/seller-goods-jc.png')} style={styles.shome.goodsIcon}/>
+                      <Text style={styles.shome.goodsText}>即采商品</Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
+              </View>
             </ScrollView>
             <Loading visible={this.state.loadingVisible}></Loading>
             <Modal animationType={"fade"} visible={this.state.qrcodeVisible} transparent={true} onRequestClose={()=>this.setState({qrcodeVisible: false})}>
@@ -424,10 +447,14 @@ export default class SellerHomeScreen extends Component {
         );
     }
     _toOrder = (type, index) => {
-      DeviceEventEmitter.emit('orderTabModule', {type, index});
       this.props.navigation.navigate('SellerOrder', {type, index});
     }
     _toBuyer = () => {
       this.props.navigation.navigate('UserBuyer');
+    }
+    _toGoods = (t) => {
+      this.props.navigation.navigate('SellerGoods', {
+        type: t
+      });
     }
 }

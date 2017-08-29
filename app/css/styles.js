@@ -117,6 +117,22 @@ export default {
       paddingBottom: 10,
       textAlign: 'center'
     },
+    blueHeader: {
+      backgroundColor: '#0386fc',
+      color: '#fff',
+      height: 65,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomColor: '#0386fc',
+      borderBottomWidth: 1,
+      paddingTop: 20,
+    },
+    blueHeaderTitle: {
+      color: '#fff',
+      fontSize: 16,
+      alignSelf: 'center',
+      fontWeight: '100'
+    }
   },
   modal: {
     container: {
@@ -523,7 +539,7 @@ export default {
     },
     orderText: {
       fontSize: FONT_12,
-      color: COLOR_3,
+      color: COLOR_6,
       marginTop: 5
     },
     orderBadge: {
@@ -545,6 +561,24 @@ export default {
     },
     borderNone: {
       borderBottomWidth: 0
+    },
+    goodsMana: {
+      paddingTop: 15,
+      paddingBottom: 15
+    },
+    gl: {
+      borderRightWidth: 1,
+      borderRightColor: COLOR_GRAY
+    },
+    goodsIcon: {
+      width: 30,
+      height: 30,
+      resizeMode: 'contain'
+    },
+    goodsText: {
+      fontSize: FONT_12,
+      color: COLOR_6,
+      marginTop: 5
     }
   },
   //账户信息
@@ -2640,6 +2674,25 @@ export default {
       paddingRight: 3,
       marginTop: 5,
       marginRight: 5
+    },
+    ticket: {
+      paddingTop: 15,
+      paddingBottom: 15
+    },
+    tl: {
+      borderRightWidth: 1,
+      borderRightColor: COLOR_GRAY
+    },
+    ticketIcon: {
+      width: 24,
+      height: 17
+    },
+    ticketText: {
+      fontSize: FONT_13,
+      color: COLOR_3
+    },
+    ticketBottomText: {
+      marginTop: 5
     }
   }
 }

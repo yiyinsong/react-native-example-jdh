@@ -27,7 +27,7 @@ export default class SellerGoodsScreen extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        type: 0,
+        type: this.props.navigation.state.params && this.props.navigation.state.params.type || 0,
         switchIndex: 0,
         switchIndex2: 0,
         list1: [],
@@ -54,7 +54,11 @@ export default class SellerGoodsScreen extends Component {
       };
     }
     componentDidMount() {
+
       InteractionManager.runAfterInteractions(() => {
+        if(this.state.type == 1) {
+          this.refs.containerScrollView.scrollTo({x: Utils.width, y: 0, animated: false});
+        }
         this.setState({loadingVisible: true});
         ScreenInit.checkLogin(this);
         this._getData();

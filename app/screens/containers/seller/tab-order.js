@@ -95,13 +95,9 @@ export default class OrderListScreen extends Component {
           });
         }
       });
-      this.listener_tab_update = DeviceEventEmitter.addListener('orderTabModule', (result) => {
-        this._tabUpdate(result.type, result.index);
-      });
     }
     componentWillUnmount() {
       this.listener_deliver_success && this.listener_deliver_success.remove();
-      this.listener_tab_update && this.listener_tab_update.remove();
     }
     _init = () => {
         //获取店铺信息

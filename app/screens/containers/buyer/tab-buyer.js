@@ -6,6 +6,7 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
+  TouchableHighlight,
   InteractionManager
   } from 'react-native';
 
@@ -33,7 +34,8 @@ import {
         refundNumZc: 0,
         qrcodeVisible:  false,
         qrcodeSrc: Config.PHPAPI + `api/mapp/shop/qrcode?token=${token}`,
-        attentionList: []
+        ticketNum: 0,
+        attentionList: [],
       };
     }
     componentDidMount() {
@@ -227,12 +229,23 @@ import {
               <View style={ styles.shome.dl }>
                 <View style={ [styles.common.flex, styles.shome.dt] }>
                   <View style={ [styles.common.flex, styles.common.flexCenterv] }>
-                    <Image source={require('../../../images/icon-buyer-f4.png')} style={ styles.shome.dtlIcon }/>
+                    <Image source={require('../../../images/icon-buyer-f3.png')} style={ styles.shome.dtlIcon }/>
                     <Text style={ styles.shome.dtName }>我的优惠券</Text>
                   </View>
                 </View>
-                <View style={ [styles.common.flex, styles.shome.dd] }>
-
+                <View style={ [styles.common.flex, styles.shome.dd, styles.buyer.ticket] }>
+                  <TouchableHighlight underlayColor='#fafafa' style={[styles.common.flexv, styles.buyer.tl]}>
+                    <View style={[styles.common.flexv, styles.common.flexCenterv]}>
+                      <Text style={styles.buyer.ticketText}>{this.state.ticketNum}</Text>
+                      <Text style={[styles.buyer.ticketText, styles.buyer.ticketBottomText]}>可用优惠券</Text>
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight underlayColor='#fafafa' style={styles.common.flexv}>
+                    <View style={[styles.common.flexv, styles.common.flexCenterv]}>
+                      <Image source={require('../../../images/buyer-ticker-icon.png')} style={styles.buyer.ticketIcon}/>
+                      <Text style={[styles.buyer.ticketText, styles.buyer.ticketBottomText]}>领取优惠券</Text>
+                    </View>
+                  </TouchableHighlight>
                 </View>
               </View>
               <View style={ styles.shome.dl }>
@@ -287,6 +300,14 @@ import {
         if(data.error_code == 0) {
           this.setState({loadingVisible: false});
           this.setState({userInfo: data.data});
+          //获取用户可用优惠券数量
+          fetch(Config.JAVACOUPONAPI + `shop/member/coupon/myCoupon?memberId=${data.data.member_id}&page=1&size=0&status=1&token=${token}`, {
+            method: 'POST'
+          })
+          .then(response => response.json())
+          .then( r => {
+            this.setState({ticketNum: r.obj.total});
+          });
         }
       });
       //获取未读消息
