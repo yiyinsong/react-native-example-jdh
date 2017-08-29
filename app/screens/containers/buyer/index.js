@@ -58,7 +58,12 @@ export default TabNavigator({
       }, {
         navigationOptions: ({navigation}) => ({
           header: null
-        })
+        }),
+        transitionConfig: () => ({
+          transitionSpec: {
+            duration: 350
+          },
+       }),
       }),
       navigationOptions: {
         header: null,

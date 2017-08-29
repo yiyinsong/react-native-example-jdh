@@ -518,7 +518,8 @@ export default {
     },
     orderIcon: {
       width: 20,
-      height: 20
+      height: 20,
+      resizeMode: 'contain'
     },
     orderText: {
       fontSize: FONT_12,
@@ -2613,5 +2614,32 @@ export default {
     }
   },
   buyer: {
+    attention: {
+      paddingBottom: 10
+    },
+    attentionItem: {
+      marginLeft: 10,
+      marginRight: 10
+    },
+    attentionImg: {
+      resizeMode: 'contain'
+    },
+    attentionText: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      height: 36,
+      lineHeight: 18
+    },
+    attentionType: {
+      borderWidth: 1,
+      borderColor: COLOR_RED,
+      borderRadius: 3,
+      color: COLOR_RED,
+      fontSize: FONT_10,
+      paddingLeft: 3,
+      paddingRight: 3,
+      marginTop: 5,
+      marginRight: 5
+    }
   }
 }

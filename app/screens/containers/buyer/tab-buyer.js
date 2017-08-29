@@ -4,6 +4,7 @@ import {
   Text,
   View,
   ScrollView,
+  Modal,
   TouchableOpacity,
   InteractionManager
   } from 'react-native';
@@ -25,7 +26,14 @@ import {
           shop_logo: '',
           shopId: ''
         },
-        messageCount: 0
+        messageCount: 0,
+        orderNum: [],
+        refundNum: 0,
+        orderNumZc: [],
+        refundNumZc: 0,
+        qrcodeVisible:  false,
+        qrcodeSrc: Config.PHPAPI + `api/mapp/shop/qrcode?token=${token}`,
+        attentionList: []
       };
     }
     componentDidMount() {
@@ -89,8 +97,184 @@ import {
                     <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
                   </View>
                 </View>
+                <View style={ [styles.common.flex, styles.shome.dd] }>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 1)}>
+                     <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon6.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待付款</Text>
+                      { this.state.orderNum['10'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['10'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 3)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon3.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待发货</Text>
+                      { this.state.orderNum['20'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['20'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 4)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon4.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待收货</Text>
+                      { this.state.orderNum['30'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['30'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 8)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon5.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>退货退款</Text>
+                      { this.state.refundNum > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.refundNum }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={ styles.shome.dl }>
+                <View style={ [styles.common.flex, styles.shome.dt] }>
+                  <View style={ [styles.common.flex, styles.common.flexCenterv] }>
+                    <Image source={require('../../../images/icon-buyer-f2.png')} style={ styles.shome.dtlIcon }/>
+                    <Text style={ styles.shome.dtName }>众采订单</Text>
+                  </View>
+                  <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
+                    <TouchableOpacity activeOpacity={.8} onPress={() => {this._toOrder(0)}}>
+                      <Text style={ styles.shome.dtMore }>查看更多</Text>
+                    </TouchableOpacity>
+                    <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
+                  </View>
+                </View>
+                <View style={ [styles.common.flex, styles.shome.dd] }>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 1)}>
+                     <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon1.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待付定金</Text>
+                      { this.state.orderNumZc['5'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNumZc['5'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 3)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon2.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待付尾款</Text>
+                      { this.state.orderNumZc['10'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNumZc['10'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 4)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon3.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待发货</Text>
+                      { this.state.orderNumZc['20'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNumZc['20'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 8)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon4.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>待收货</Text>
+                      { this.state.orderNumZc['30'] > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNumZc['30'] }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 8)}>
+                    <View style={ styles.shome.orderContent }>
+                      <Image source={require('../../../images/buyer-order-icon5.png')} style={ styles.shome.orderIcon } />
+                      <Text style={ styles.shome.orderText }>退货退款</Text>
+                      { this.state.refundNumZc > 0
+                        ? <View style={ styles.shome.orderBadge }>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.refundNumZc }</Text>
+                          </View>
+                        : null
+                      }
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={ styles.shome.dl }>
+                <View style={ [styles.common.flex, styles.shome.dt] }>
+                  <View style={ [styles.common.flex, styles.common.flexCenterv] }>
+                    <Image source={require('../../../images/icon-buyer-f4.png')} style={ styles.shome.dtlIcon }/>
+                    <Text style={ styles.shome.dtName }>我的优惠券</Text>
+                  </View>
+                </View>
+                <View style={ [styles.common.flex, styles.shome.dd] }>
+
+                </View>
+              </View>
+              <View style={ styles.shome.dl }>
+                <View style={ [styles.common.flex, styles.shome.dt] }>
+                  <View style={ [styles.common.flex, styles.common.flexCenterv] }>
+                    <Image source={require('../../../images/icon-buyer-f4.png')} style={ styles.shome.dtlIcon }/>
+                    <Text style={ styles.shome.dtName }>商品关注</Text>
+                  </View>
+                  <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
+                    <TouchableOpacity activeOpacity={.8} onPress={() => {this._toOrder(0)}}>
+                      <Text style={ styles.shome.dtMore }>查看更多</Text>
+                    </TouchableOpacity>
+                    <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
+                  </View>
+                </View>
+                <View style={ [styles.common.flex, styles.shome.dd] }>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.buyer.attention}>
+                      {this.state.attentionList.map((v, k) => {
+                        return (
+                          <View style={styles.buyer.attentionItem}>
+                            <TouchableOpacity activeOpacity={.8} style={{width: Utils.width/4}}>
+                              <Image source={{uri: v.goods_img1}} style={[styles.buyer.attentionImg, {width: Utils.width/4,height: Utils.width/4}]}/>
+                              <Text numberOfLines={2} style={styles.buyer.attentionText}>
+                                {v.goods_name}
+                              </Text>
+                              <View style={styles.common.flexDirectionRow}>
+                                <Text style={styles.buyer.attentionType}>{v.source == 1 ? '自营' : '入驻商'}</Text>
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      })}
+                  </ScrollView>
+                </View>
               </View>
             </ScrollView>
+            <Loading visible={this.state.loadingVisible}></Loading>
+            <Modal animationType={"fade"} visible={this.state.qrcodeVisible} transparent={true} onRequestClose={()=>this.setState({qrcodeVisible: false})}>
+              <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({qrcodeVisible: false})}>
+                <Image source={{uri: this.state.qrcodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
+              </TouchableOpacity>
+            </Modal>
           </View>
       );
     }
@@ -119,6 +303,66 @@ import {
       })
       .catch((error) => {
         console.error(error);
+      });
+      //采购订单
+      fetch(Config.JAVAAPI + `shop/wap/order/shopOrderStatusSummary?token=${token}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then( r => {
+        if(r.code === 1) {
+          this.setState({orderNum: r.obj});
+        }
+      });
+      //采购订单退款数量
+      fetch(Config.JAVAAPI + `shop/mobile/refund/list`, {
+        method: 'POST',
+        body: JSON.stringify({
+          page: 1,
+          size: 0,
+          orderType: [10, 20]
+        })
+      })
+      .then(response => response.json())
+      .then( r => {
+        if(r.code === 1) {
+          this.setState({refundNum: r.page.total});
+        }
+      });
+      //众采订单
+      fetch(Config.JAVAAPI + `shop/wap/grouporder/status_count?token=${token}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then( r => {
+        if(r.code === 1) {
+          this.setState({orderNumZc: r.obj});
+        }
+      });
+      //众采退货退款
+      fetch(Config.JAVAAPI + `shop/mobile/refund/list`, {
+        method: 'POST',
+        body: JSON.stringify({
+          page: 1,
+          size: 0,
+          orderType: [12, 22]
+        })
+      })
+      .then(response => response.json())
+      .then( r => {
+        if(r.code === 1) {
+          this.setState({refundNumZc: r.page.total});
+        }
+      });
+      //我的关注
+      fetch(Config.PHPAPI + `api/mapp/member/follow?token=${token}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then( r => {
+        if(r.error_code === 0) {
+          this.setState({attentionList: r.data});
+        }
       });
     }
     _toUserInfo = () => {
