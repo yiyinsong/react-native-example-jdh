@@ -69,31 +69,6 @@ export default {
       title: '找回密码',
     }
   },
-  // Seller: {
-  //   screen: SellerScreen,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerStyle: {
-  //       backgroundColor: '#0386fc',
-  //       color: '#fff',
-  //       height: 65,
-  //       elevation: 0,
-  //       shadowOpacity: 0,
-  //       borderBottomColor: '#0386fc',
-  //       borderBottomWidth: 1,
-  //       paddingTop: 20,
-  //     },
-  //     headerTitleStyle : {
-  //         color: '#fff',
-  //         fontSize: 16,
-  //         alignSelf: 'center',
-  //         fontWeight: '100'
-  //     },
-  //     headerLeft: (navigation.state.index == 2 ? <TouchableOpacity style={styles.common.iconBackArrow}></TouchableOpacity> : null),
-  //     headerRight: (navigation.state.index == 2 ? <TouchableOpacity activeOpacity={.8} onPress={() => { navigation.navigate('SellerOrderSearch', {type: navigation.state.routes[2].params.type}) }} style={styles.common.headerBtnRight}>
-  //           <Image source={require('../images/icon-search-w.png')} style={styles.common.headerBtnRight}/>
-  //       </TouchableOpacity> : null)
-  //   })
-  // },
   SellerGoods: {
     screen: SellerGoodsScreen,
     navigationOptions: ({ navigation, screenProps }) => ({

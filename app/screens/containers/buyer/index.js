@@ -61,7 +61,7 @@ export default TabNavigator({
         }),
         transitionConfig: () => ({
           transitionSpec: {
-            duration: 350
+            duration: 250
           },
        }),
       }),
