@@ -5,11 +5,11 @@ import {
   } from 'react-native';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
-import BHomeScreen from './tab-home';
-import CategoryScreen from './tab-category';
-import CartScreen from './tab-cart';
-import UserBuyerScreen from './tab-buyer';
-import UserSellerScreen from '../seller/tab-seller';
+import BHomeScreen from './home';
+import CategoryScreen from './category';
+import CartScreen from './cart';
+import UserBuyerScreen from './buyer';
+import UserSellerScreen from '../seller/seller';
 
 import styles from '../../../css/styles';
 
@@ -61,7 +61,7 @@ export default TabNavigator({
         }),
         transitionConfig: () => ({
           transitionSpec: {
-            duration: 250
+            duration: 300
           },
        }),
       }),

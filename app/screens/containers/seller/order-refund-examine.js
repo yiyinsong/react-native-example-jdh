@@ -17,7 +17,7 @@ import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
-import OrderItem from '../../components/seller/tab-order-item';
+import OrderItem from '../../components/seller/order-item';
 
 export default class OrderDetailScreen extends Component{
   constructor(props){

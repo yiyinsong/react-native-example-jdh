@@ -16,8 +16,8 @@ import {
 
 import styles from '../../../css/styles';
 
-import OrderItem from '../../components/buyer/tab-order-item';
-import RefundItem from '../../components/seller/tab-refund-item';
+import OrderItem from '../../components/buyer/order-item';
+import RefundItem from '../../components/seller/refund-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import ModalConfirm from '../../common/modal-confirm';
@@ -65,56 +65,38 @@ export default class OrderListScreen extends Component {
         this.setState({ bodyShow: true });
 
       })
-      this.listener_tab_update = DeviceEventEmitter.addListener('orderTabModule', (result) => {
-        this._tabUpdate(result.index);
-      });
-    }
-    componentWillUnmount() {
-      this.listener_tab_update && this.listener_tab_update.remove();
     }
     _init = () => {
-        //获取店铺信息
-        fetch(Config.PHPAPI + 'api/mapp/shop/shop?type=seller&token=' + token, {
-          method: 'GET'
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          if(data.error_code == 0) {
-            this.state.shopId = data.data.shop_id;
-            //获取订单条数
-            fetch(Config.JAVAAPI + 'shop/wap/order/shopOrderStatusSummary',{
-                method: 'POST',
-                body: JSON.stringify({
-                  shopId: data.data.shop_id,
-                  token
-                })
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.code == 1) {
-                    this.setState({
-                      orderNum: Object.assign(this.state.orderNum, data.obj),
-                    });
-                }
-            });
-            //获取退款订单数目
-            fetch(Config.JAVAAPI + `/shop/mobile/refund/list?orderType[0]=10&orderType[1]=20&page=1&size=0&token=${token}`, {
-                method: 'POST',
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                if(data.page) {
-                  this.setState({
-                  orderNum: Object.assign(this.state.orderNum,{
-                    '-1': data.page.total
-                  })
-                });
-              }
-            });
+      //获取订单条数
+      fetch(Config.JAVAAPI + 'shop/wap/order/shopOrderStatusSummary',{
+          method: 'POST',
+          body: JSON.stringify({
+            // shopId: data.data.shop_id,
+            token
+          })
+      })
+      .then((response) => response.json())
+      .then((data) => {
+          if (data.code == 1) {
+              this.setState({
+                orderNum: Object.assign(this.state.orderNum, data.obj),
+              });
           }
-        })
-        .catch((error) => {
-        });
+      });
+      //获取退款订单数目
+      fetch(Config.JAVAAPI + `/shop/mobile/refund/list?orderType[0]=10&orderType[1]=20&page=1&size=0&token=${token}`, {
+          method: 'POST',
+      })
+      .then((response) => response.json())
+      .then((data) => {
+          if(data.page) {
+            this.setState({
+            orderNum: Object.assign(this.state.orderNum,{
+              '-1': data.page.total
+            })
+          });
+        }
+      });
     }
     _reset = () => {
       this.setState({
@@ -195,7 +177,7 @@ export default class OrderListScreen extends Component {
     }
     _getRefundData = (_type, i) => {
       let _tempIndex = i;
-      fetch(Config.JAVAAPI + `shop/mobile/refund/blist?orderType[0]= 40&status=&page=${this.state.page}&token=${token}`, {
+      fetch(Config.JAVAAPI + `shop/mobile/refund/list?orderType[0]= 10&orderType[1]=20&page=${this.state.page}&token=${token}`, {
          method: 'POST'
       })
       .then((response) => response.json())

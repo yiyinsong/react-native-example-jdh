@@ -29,11 +29,11 @@
    }),
    transitionConfig: () => ({
      transitionSpec: {
-       duration: 250
+       duration: 300
      },
     screenInterpolator: (sceneProps) => {
       if (sceneProps.scene.route.withoutAnimation) return null;
-      return CardStackStyleInterpolator.forHorizontal(sceneProps)
+      return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps)
     },
   }),
  });

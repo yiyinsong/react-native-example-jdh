@@ -9,6 +9,7 @@ const COLOR_GRAY = '#f1f1f1';
 const COLOR_ORANGE = '#ff9504';
 const COLOR_WHITE = '#fff';
 const COLOR_VIOLET = '#7079f2';
+const COLOR_GREEN = '#76d05e';
 const COLOR_A = '#aaa';
 const COLOR_D = '#ddd';
 const COLOR_3 = '#333';
@@ -378,7 +379,8 @@ export default {
     },
     userMessIcon: {
       width: 20,
-      height: 20
+      height: 20,
+      resizeMode: 'contain'
     },
     badge: {
       width: 14,
@@ -439,16 +441,18 @@ export default {
       height: 25
     },
     userShare: {
-      width: 16,
-      height: 16
+      width: 18,
+      height: 15,
     },
     userToOther: {
       flexDirection: 'row',
+      alignItems: 'flex-end'
     },
     userQrcode: {
       width: 16,
       height: 16,
-      marginLeft: 20
+      marginLeft: 20,
+      resizeMode: 'contain'
     },
     userInfo: {
       alignItems: 'flex-end',
@@ -930,11 +934,12 @@ export default {
       flex: 1
     },
     infoName: {
-      fontSize: FONT_14,
-      marginBottom: 5
+      fontSize: FONT_12,
+      marginBottom: 5,
+      color: COLOR_3
     },
     infoAttr: {
-      fontSize: FONT_14,
+      fontSize: FONT_12,
       color: COLOR_9,
       marginBottom: 5
     },
@@ -943,11 +948,13 @@ export default {
     },
     infoPrice: {
       color: COLOR_RED,
-      flex: 1
+      flex: 1,
+      fontSize: FONT_12
     },
     infoNum: {
       flex: 1,
-      textAlign: 'right'
+      textAlign: 'right',
+      fontSize: FONT_12
     },
     itemFooter: {
       marginTop: 10,
@@ -1078,6 +1085,27 @@ export default {
     primaryText: {
       color: COLOR_WHITE,
       fontSize: FONT_14,
+    }
+  },
+  btn3: {
+    defaults: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      paddingTop: 4,
+      paddingLeft: 10,
+      paddingBottom: 4,
+      paddingRight: 10,
+      borderRadius: 15
+    },
+    danger: {
+      color: COLOR_RED,
+      borderColor: COLOR_RED
+    },
+    green: {
+      color: COLOR_GREEN,
+      borderColor: COLOR_GREEN
     }
   },
   login: {
@@ -2693,6 +2721,26 @@ export default {
     },
     ticketBottomText: {
       marginTop: 5
+    }
+  },
+  orderItem: {
+    infoPrice: {
+      color: COLOR_RED,
+      fontSize: FONT_12
+    },
+    infoNum: {
+      color: COLOR_3,
+      fontSize: FONT_12,
+      marginLeft: 10
+    },
+    footer: {
+      paddingLeft: 10,
+      paddingTop: 10,
+      paddingRight: 10
+    },
+    account: {
+      fontSize: FONT_12,
+      color: COLOR_3
     }
   }
 }

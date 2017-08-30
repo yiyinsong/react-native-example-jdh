@@ -100,7 +100,7 @@ import {
                   </View>
                 </View>
                 <View style={ [styles.common.flex, styles.shome.dd] }>
-                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 1)}>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(1)}>
                      <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/buyer-order-icon6.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待付款</Text>
@@ -112,7 +112,7 @@ import {
                       }
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 3)}>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(2)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/buyer-order-icon3.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待发货</Text>
@@ -124,7 +124,7 @@ import {
                       }
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 4)}>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(3)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/buyer-order-icon4.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>待收货</Text>
@@ -136,7 +136,7 @@ import {
                       }
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(0, 8)}>
+                  <TouchableOpacity activeOpacity={.8} style={ styles.shome.order } onPress={() => this._toOrder(6)}>
                     <View style={ styles.shome.orderContent }>
                       <Image source={require('../../../images/buyer-order-icon5.png')} style={ styles.shome.orderIcon } />
                       <Text style={ styles.shome.orderText }>退货退款</Text>
@@ -392,6 +392,6 @@ import {
       this.props.navigation.navigate('UserSeller');
     }
     _toOrder = (i) => {
-
+      this.props.navigation.navigate('BuyerOrder', {index: i});
     }
   }

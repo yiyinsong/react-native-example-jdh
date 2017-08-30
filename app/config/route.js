@@ -11,26 +11,27 @@ import HomeScreen from '../screens/index';
 import LoginScreen from '../screens/login';
 import FindPasswordScreen from '../screens/findPassword';
 
-import SellerGoodsScreen from '../screens/containers/seller/tab-goods';
-import SellerOrderScreen from '../screens/containers/seller/tab-order';
-import SellerStoreInfoScreen from '../screens/containers/seller/tab-home-store-info';
-import SellerUserInfoScreen from '../screens/containers/seller/tab-home-user-info';
-import SellerAddrListScreen from '../screens/containers/seller/tab-home-address-list';
-import SellerAddrAddScreen from '../screens/containers/seller/tab-home-address-add';
+import SellerGoodsScreen from '../screens/containers/seller/goods';
+import SellerOrderScreen from '../screens/containers/seller/order';
+import SellerStoreInfoScreen from '../screens/containers/seller/home-store-info';
+import SellerUserInfoScreen from '../screens/containers/seller/home-user-info';
+import SellerAddrListScreen from '../screens/containers/seller/home-address-list';
+import SellerAddrAddScreen from '../screens/containers/seller/home-address-add';
 
-import SellerOrderSearchScreen from '../screens/containers/seller/tab-order-search';
-import SellerOrderDetailScreen from '../screens/containers/seller/tab-order-detail';
-import SellerOrderDeliverScreen from '../screens/containers/seller/tab-order-deliver';
-import SellerRefundDetailScreen from '../screens/containers/seller/tab-order-refund-detail';
-import SellerRefundExamineScreen from '../screens/containers/seller/tab-order-refund-examine';
-import SellerRefundRefuseScreen from '../screens/containers/seller/tab-order-refund-refuse';
+import SellerOrderSearchScreen from '../screens/containers/seller/order-search';
+import SellerOrderDetailScreen from '../screens/containers/seller/order-detail';
+import SellerOrderDeliverScreen from '../screens/containers/seller/order-deliver';
+import SellerRefundDetailScreen from '../screens/containers/seller/order-refund-detail';
+import SellerRefundExamineScreen from '../screens/containers/seller/order-refund-examine';
+import SellerRefundRefuseScreen from '../screens/containers/seller/order-refund-refuse';
 
-import SellerGoodsDetailScreen from '../screens/containers/seller/tab-goods-detail';
-import SellerGoodsEditScreen from '../screens/containers/seller/tab-goods-edit';
+import SellerGoodsDetailScreen from '../screens/containers/seller/goods-detail';
+import SellerGoodsEditScreen from '../screens/containers/seller/goods-edit';
 
 import BuyerScreen from '../screens/containers/buyer/index';
-import BuyserSearchScreen from '../screens/containers/buyer/home-search';
-import BuyserSignScreen from '../screens/containers/buyer/home-sign';
+import BuyerSearchScreen from '../screens/containers/buyer/home-search';
+import BuyerSignScreen from '../screens/containers/buyer/home-sign';
+import BuyerOrderScreen from '../screens/containers/buyer/order';
 
 import styles from '../css/styles';
 
@@ -203,16 +204,23 @@ export default {
   },
   //买家商品搜索
   BuyerSearch: {
-    screen: BuyserSearchScreen,
+    screen: BuyerSearchScreen,
     navigationOptions: {
       header: null
     }
   },
   //买家签到
   BuyerSign: {
-    screen: BuyserSignScreen,
+    screen: BuyerSignScreen,
     navigationOptions: {
       header: null
+    }
+  },
+  //买家订单
+  BuyerOrder: {
+    screen: BuyerOrderScreen,
+    navigationOptions: {
+      title: '采购订单'
     }
   },
 }

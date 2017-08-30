@@ -46,9 +46,9 @@ export default class OrderItem extends Component {
                       <View style={styles.sorderItem.info}>
                         <Text style={styles.sorderItem.infoName} numberOfLines={2}>{v.goodsName}</Text>
                         <Text style={styles.sorderItem.infoAttr}>{v.skuAttr}</Text>
-                        <View style={styles.sorderItem.infoData}>
-                          <Text style={styles.sorderItem.infoPrice}>￥{v.price}</Text>
-                          <Text style={styles.sorderItem.infoNum}>数量：{v.qty}</Text>
+                        <View style={[styles.common.flexEndv, styles.sorderItem.infoData]}>
+                          <Text style={styles.orderItem.infoPrice}>￥{v.price}</Text>
+                          <Text style={styles.orderItem.infoNum}>x{v.qty}</Text>
                         </View>
                       </View>
                     </View>
@@ -67,29 +67,40 @@ export default class OrderItem extends Component {
     _renderBtn = (_data) => {
       if(_data.status === 10) {
         return (
-          <View style={styles.common.flex}>
+          <View style={[styles.common.flex, styles.common.flexEndh]}>
             <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
-              <Text>取消支付</Text>
+              <Text style={styles.btn3.defaults}>取消订单</Text>
             </TouchableHighlight>
             <TouchableHighlight underlayColor='#fafafa'>
-              <Text>立即支付</Text>
+              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>立即支付</Text>
             </TouchableHighlight>
             <TouchableHighlight underlayColor='#fafafa'>
-              <Text>POS支付</Text>
+              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>POS支付</Text>
             </TouchableHighlight>
             {_data.supportWxPay ?
               <TouchableHighlight underlayColor='#fafafa'>
-                <Text>取消支付</Text>
+                <Text style={[styles.btn3.defaults, styles.btn3.green]}>微信支付</Text>
               </TouchableHighlight>
             : null}
           </View>
         );
       } else if(_data.isRefund === -1) {
-        if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
+        if(_data.status === 30) {
           return (
-            <View style={styles.common.flex}>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
-                <Text style={styles.btn.default}>退货退款</Text>
+            <View style={[styles.common.flex, styles.common.flexEndh]}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
+              </TouchableHighlight>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                <Text style={styles.btn3.defaults}>退货退款</Text>
+              </TouchableHighlight>
+            </View>
+          );
+        } else if(_data.status === 20 || _data.status === 31) {
+          return (
+            <View style={[styles.common.flex, styles.common.flexEndh]}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                <Text style={styles.btn3.defaults}>退货退款</Text>
               </TouchableHighlight>
             </View>
           );
@@ -99,9 +110,9 @@ export default class OrderItem extends Component {
       } else if(_data.isRefund === 1) {
         if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
           return (
-            <View style={styles.common.flex}>
+            <View style={[styles.common.flex, styles.common.flexEndh]}>
               <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
-                <Text style={styles.btn.default}>{_data.refundStatusName}</Text>
+                <Text style={styles.btn3.defaults}>{_data.refundStatusName}</Text>
               </TouchableHighlight>
             </View>
           );
@@ -124,5 +135,8 @@ export default class OrderItem extends Component {
     }
     _posPay = (sn) => {
       this.props.posPay && this.props.posPay.call(null, sn);
+    }
+    _toRefundDetail = () => {
+
     }
 }

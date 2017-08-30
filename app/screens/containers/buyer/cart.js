@@ -18,7 +18,7 @@ import Utils from '../../../js/utils';
 import UIToast from '../../common/ui-toast';
 import Loading from '../../common/ui-loading';
 
-import CartItem from '../../components/buyer/tab-cart-item';
+import CartItem from '../../components/buyer/cart-item';
 import ModalConfirm from '../../common/modal-confirm';
 
   export default class CartScreen extends Component {
@@ -42,7 +42,7 @@ import ModalConfirm from '../../common/modal-confirm';
       this.setState({loadingVisible: true});
       ScreenInit.checkLogin(this);
       this._init(true);
-      
+
       this.listener_edit = DeviceEventEmitter.addListener('cartEdit', () => {
         if(this.props.navigation.state.params.headerRight == '编辑') {
           this.props.navigation.setParams({headerRight: '完成'});
