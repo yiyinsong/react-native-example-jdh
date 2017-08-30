@@ -7,13 +7,11 @@ export default {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
         if(data.error_code != 0) {
           t.props.navigation.navigate('Login');
         }
     })
     .catch((error) => {
-        console.error(error);
     });
   }
 }

@@ -72,7 +72,6 @@ export default class SellerUserInfoScreen extends Component {
           }
         })
         .catch((error) => {
-          console.error(error);
         });
         //获取用户信息
         fetch(Config.PHPAPI + 'api/mapp/shop/shop?type=seller&token=' + token, {

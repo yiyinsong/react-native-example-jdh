@@ -94,8 +94,7 @@ export default class OrderItem extends Component {
       this.attr.navigation.navigate('SellerRefundDetail', {
         id: item.id,
         shopid: item.shopId,
-        ordersn: this.props.type == 1 ? (item.order.relationOrderSn || item.order.orderSn) : (item.order.mainOrderSn || item.order.orderSn),
-        orderid: item.orderId
+        ordersn: this.props.type == 1 ? (item.order.relationOrderSn || item.order.orderSn) : (item.order.mainOrderSn || item.order.orderSn)
       });
     }
     _toExamine = (item) => {
@@ -106,7 +105,6 @@ export default class OrderItem extends Component {
         type: this.props.type,
         refundtype: item.type,
         fromdetail: false,
-        orderid: item.orderId
       });
     }
 }

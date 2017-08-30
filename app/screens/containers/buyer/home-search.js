@@ -40,7 +40,7 @@ export default class HomeSearchScreen extends Component {
                   <Image source={require('../../../images/icon-search-b.png')} style={styles.search.icon} />
                   <TextInput onChangeText={(text) => {this.setState({keywords: text})}} value={this.state.keywords} underlineColorAndroid="transparent"
                   onSubmitEditing={this._submit} style={styles.search.input}
-                  placeholder="搜索店铺内商品名/品牌"
+                  placeholder="搜索商品名称"
                   ref="searchInput"/>
                 </View>
                 <TouchableOpacity activeOpacity={.8} onPress={this._submit}>

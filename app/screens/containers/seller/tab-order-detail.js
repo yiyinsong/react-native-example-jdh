@@ -217,7 +217,6 @@ export default class OrderDetailScreen extends Component{
             }
         })
         .catch((error) => {
-          console.error(error);
         });
     }
   }

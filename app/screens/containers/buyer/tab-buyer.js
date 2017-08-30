@@ -323,7 +323,6 @@ import {
         }
       })
       .catch((error) => {
-        console.error(error);
       });
       //采购订单
       fetch(Config.JAVAAPI + `shop/wap/order/shopOrderStatusSummary?token=${token}`, {

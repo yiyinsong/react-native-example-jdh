@@ -108,7 +108,6 @@ export default class SellerHomeScreen extends Component {
         })
         .catch((error) => {
           this.setState({loadingVisible: false});
-          console.error(error);
         });
         //获取未读消息
         fetch(Config.PHPAPI + 'api/mapp/letter/unread-num?token=' + token, {
@@ -123,7 +122,6 @@ export default class SellerHomeScreen extends Component {
           }
         })
         .catch((error) => {
-          console.error(error);
         });
         //获取店铺数据
         fetch(Config.PHPAPI + 'api/mapp/member/member-count', {
@@ -148,7 +146,6 @@ export default class SellerHomeScreen extends Component {
           }
         })
         .catch((error) => {
-          console.error(error);
         });
         //获取店铺数据（By Java）
         fetch(Config.JAVAAPI + 'shop/wap/client/order/shopDaysData', {
@@ -171,7 +168,6 @@ export default class SellerHomeScreen extends Component {
           }
         })
         .catch((error) => {
-          console.error(error);
         });
     }
     _logoError = () => {

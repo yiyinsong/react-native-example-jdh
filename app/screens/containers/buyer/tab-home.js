@@ -76,11 +76,11 @@ export default class BuyerHomeScreen extends Component {
           <TouchableWithoutFeedback onPress={this._toSearch}>
             <View style={[styles.common.flex, styles.common.flexCenterv, ]}>
               <Image source={require('../../../images/icon-search@30x30.png')} style={styles.home.searchIcon} />
-              <Text style={styles.home.searchText}>请输入商品名称</Text>
+              <Text style={styles.home.searchText}>搜索商品名称</Text>
             </View>
           </TouchableWithoutFeedback>
         </Animated.View>
-        <ScrollView onScroll={this._bodyScroll} ref="bodyScrollView" scrollEventThrottle={1} showsVerticalScrollIndicator={false}>
+        <ScrollView onScroll={this._bodyScroll} scrollEventThrottle={1} showsVerticalScrollIndicator={false}>
           <Swiper
           style={{height:Utils.width*.4, overflow: 'hidden'}}
           loop={true}
@@ -364,7 +364,7 @@ export default class BuyerHomeScreen extends Component {
         }
       }
     });
-    fetch(Config.PHPAPI + 'api/mapp/ad/ad-goodslist?id=1,4,7,10,13,16,19,22', {
+    fetch(Config.PHPAPI + 'api/mapp/ad/ad-goodslist?id=1,4,7,10,13,16,19,22&limit=8', {
       method: 'GET'
     })
     .then(response => response.json())
@@ -418,7 +418,7 @@ export default class BuyerHomeScreen extends Component {
     _temp[k] = i;
     this.setState({floorTab: _temp});
     if(this.state.glist[k][i].length === 0) {
-      fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${id}`, {
+      fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${id}&limit=8`, {
         method: 'GET'
       })
       .then(response => response.json())
@@ -481,7 +481,7 @@ export default class BuyerHomeScreen extends Component {
         ids = 26 + this.state.hotPage[1] * 2;
     }
     this.state.hotLoading = true;
-    fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${ids}`, {
+    fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${ids}&limit=6`, {
       method: 'GET'
     })
     .then(response => response.json())

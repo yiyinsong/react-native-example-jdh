@@ -121,7 +121,6 @@ export default class OrderSearchScreen extends Component {
         this.setState({list: _temp, tips: _tips, canload: _canload});
       }
     }).catch((error) => {
-      console.log(error);
     });
   }
   _search = (text) => {

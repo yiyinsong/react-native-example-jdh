@@ -69,7 +69,6 @@ export default class SellerHomeScreen extends Component {
         })
         .catch((error) => {
           this.setState({loadingVisible: false});
-          console.error(error);
         });
         //获取店铺数据（By Java）
         fetch(Config.JAVAAPI + 'shop/wap/client/order/shopDaysData', {
@@ -92,7 +91,6 @@ export default class SellerHomeScreen extends Component {
           }
         })
         .catch((error) => {
-          console.error(error);
         });
     }
     render() {

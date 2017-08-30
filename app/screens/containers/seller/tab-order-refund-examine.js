@@ -37,7 +37,6 @@ export default class OrderDetailScreen extends Component{
       id: _query.id,
       shopid: _query.shopid,
       ordersn: _query.ordersn,
-      orderid: _query.orderid,
       type: _query.type,
       fromdetail: _query.fromdetail || false,
       modalVisible: false,
@@ -256,7 +255,6 @@ export default class OrderDetailScreen extends Component{
   _refuseRefund = (data) => {
     this.props.navigation.navigate('SellerRefundRefuse', {
       ordersn: this.state.ordersn,
-      orderid: this.state.orderid,
       type: this.state.type,
       id: this.state.id,
       shopid: this.state.shopid,

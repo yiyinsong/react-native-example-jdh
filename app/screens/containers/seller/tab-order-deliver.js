@@ -63,7 +63,6 @@ export default class OrderSearchScreen extends Component {
           }
       })
       .catch((error) => {
-        console.log(error);
       });
     });
   }
@@ -275,7 +274,6 @@ export default class OrderSearchScreen extends Component {
             }
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       fetch(Config.JAVAAPI + `shop/wap/client/order/doDeliver?id=${this.state.orderid}&deliveryType=${this.state.deliverType}&token=${token}`,{
@@ -304,7 +302,6 @@ export default class OrderSearchScreen extends Component {
             UIToast(_res.message || '发货失败');
           }
       }).catch((error) => {
-        console.log(error);
       });
     }
   }

@@ -155,7 +155,6 @@ export default class OrderListScreen extends Component {
           }
         })
         .catch((error) => {
-          console.error(error);
         });
     }
     _reset = () => {
