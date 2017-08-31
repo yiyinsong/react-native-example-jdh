@@ -59,11 +59,24 @@ export default TabNavigator({
         navigationOptions: ({navigation}) => ({
           header: null
         }),
-      //   transitionConfig: () => ({
-      //     transitionSpec: {
-      //       duration: 300
-      //     },
-      //  }),
+        transitionConfig: () => ({
+          transitionSpec: {
+            duration: 300
+          },
+          screenInterpolator: (sceneProps) => {
+            const { layout, position, scene } = sceneProps;
+            const { index } = scene;
+            const scale = position.interpolate({
+              inputRange: [index - 1,  index, index + 0.99, index + 1],
+              outputRange: [0.9, 1, 1, 0.9]
+            });
+            const opacity = position.interpolate({
+              inputRange: [index-1, index, index+0.99, index+1],
+              outputRange: [0, 1, 1, 0]
+            })
+            return {opacity, transform: [{scale}]}
+          },
+       }),
       }),
       navigationOptions: {
         header: null,

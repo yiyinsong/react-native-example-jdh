@@ -429,7 +429,7 @@ export default class OrderListScreen extends Component {
                   }
                     onRefresh={false}
                     refreshing={false}
-                    onEndReachedThreshold={2}
+                    onEndReachedThreshold={.1}
                     onEndReached={() => this._loadingMore(this.state.activeIndex)}
                     ListFooterComponent={this._flatListFooter}
                     style={styles.common.init}/>

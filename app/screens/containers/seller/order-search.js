@@ -73,7 +73,7 @@ export default class OrderSearchScreen extends Component {
         }, params: id})}></OrderItem>}
         onRefresh={false}
         refreshing={false}
-        onEndReachedThreshold={2}
+        onEndReachedThreshold={.1}
         onEndReached={() => this._loadingMore()}
         ListFooterComponent={() => this._flatListFooter()}
         style={styles.common.init}/>

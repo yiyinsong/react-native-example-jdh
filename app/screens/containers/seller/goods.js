@@ -50,11 +50,10 @@ export default class SellerGoodsScreen extends Component {
         brandId: '',
         brand: [],
         brandIndex: [-1, -1],
-        filterTabIndex: 0
+        filterTabIndex: 0,
       };
     }
     componentDidMount() {
-
       InteractionManager.runAfterInteractions(() => {
         if(this.state.type == 1) {
           this.refs.containerScrollView.scrollTo({x: Utils.width, y: 0, animated: false});
@@ -132,7 +131,7 @@ export default class SellerGoodsScreen extends Component {
                   {length: 91, offset: 91 * index, index}
                 )}
                 ListFooterComponent={this._renderFlatListFooter1()}
-                onEndReached={this._getData}
+                onEndReached={() => {this.state.page[0] > 0 ? this._getData() : null}}
                 onEndReachedThreshold={.1}
                 />
                 <View style={[styles.sgoods.footer, styles.common.flexDirectionRow]}>
@@ -163,7 +162,7 @@ export default class SellerGoodsScreen extends Component {
                   {length: 91, offset: 91 * index, index}
                 )}
                 ListFooterComponent={this._renderFlatListFooter2()}
-                onEndReached={this._getData}
+                onEndReached={() => {this.state.page[1] > 0 ? this._getData() : null}}
                 onEndReachedThreshold={.1}
                 />
                 <View style={[styles.sgoods.footer, styles.common.flexDirectionRow]}>
@@ -187,7 +186,7 @@ export default class SellerGoodsScreen extends Component {
                   {length: 91, offset: 91 * index, index}
                 )}
                 ListFooterComponent={this._renderFlatListFooter3()}
-                onEndReached={this._getData}
+                onEndReached={() => {this.state.page[2] > 0 ? this._getData() : null}}
                 onEndReachedThreshold={.1}
                 />
               </View>
