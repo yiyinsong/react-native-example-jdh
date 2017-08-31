@@ -29,16 +29,18 @@ export default class OrderItem extends Component {
                     </View>
                     <Text style={[styles.common.flex, styles.orderItem.shopName]} numberOfLines={1}>{_data.shopName}</Text>
                   </View>
-                  <Text style={styles.sorderItem.orderStatus}>{_data.statusName}</Text>
+                  {!this.navgoods ? <Text style={styles.sorderItem.orderStatus}>{_data.statusName}</Text> : null}
                 </View>
+                {!this.navgoods ?
                 <View style={styles.sorderItem.row}>
                   <Text style={[styles.sorderItem.orderInfo, styles.common.flex]}>订单编号：{_data.orderSn}</Text>
                   <Text style={styles.sorderItem.orderInfo}>{_data.ctime}</Text>
                 </View>
+                : null}
               </View>
               {
                   _data.goods.map((v, k) => {
-                  return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => {this._toDetail(_data.status == 10 ? (_data.mainOrderSn || _data.orderSn) : _data.orderSn, v)}}>
+                  return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => {this._toDetail(_data.orderSn, v)}}>
                     <View style={styles.sorderItem.itemBody}>
                       <View style={styles.sorderItem.imgWrapper}>
                         <Image style={styles.sorderItem.img} source={{uri: v.imgUrlSmall}} />
@@ -55,12 +57,14 @@ export default class OrderItem extends Component {
                   </TouchableHighlight>)
                 })
               }
+              {!this.navgoods ?
               <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.orderItem.footer]}>
                 <Text style={styles.orderItem.account}>
                   共{_data.totalQty}件 合计:￥{_data.totalAmount}
                 </Text>
                 {this._renderBtn(_data)}
               </View>
+              : null}
            </View>
         );
     }
@@ -88,7 +92,7 @@ export default class OrderItem extends Component {
         if(_data.status === 30) {
           return (
             <View style={[styles.common.flex, styles.common.flexEndh]}>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods}>
                 <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
               </TouchableHighlight>
               <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
@@ -107,11 +111,11 @@ export default class OrderItem extends Component {
         } else {
           return null;
         }
-      } else if(_data.isRefund === 1) {
+      } else if(_data.isRefund !== -1) {
         if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
           return (
             <View style={[styles.common.flex, styles.common.flexEndh]}>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
                 <Text style={styles.btn3.defaults}>{_data.refundStatusName}</Text>
               </TouchableHighlight>
             </View>
@@ -127,14 +131,16 @@ export default class OrderItem extends Component {
       if(this.navgoods) {
 
       } else {
-        this.attr.navigation.navigate('SellerOrderDetail', {
-          ordersn: sn,
-          type: this.props.type
+        this.attr.navigation.navigate('BuyerOrderDetail', {
+          ordersn: sn
         });
       }
     }
     _posPay = (sn) => {
       this.props.posPay && this.props.posPay.call(null, sn);
+    }
+    _confirmReceiptGoods = () => {
+
     }
     _toRefundDetail = () => {
 

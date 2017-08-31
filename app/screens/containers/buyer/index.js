@@ -59,11 +59,11 @@ export default TabNavigator({
         navigationOptions: ({navigation}) => ({
           header: null
         }),
-        transitionConfig: () => ({
-          transitionSpec: {
-            duration: 300
-          },
-       }),
+      //   transitionConfig: () => ({
+      //     transitionSpec: {
+      //       duration: 300
+      //     },
+      //  }),
       }),
       navigationOptions: {
         header: null,

@@ -190,26 +190,26 @@ export default class BuyerHomeScreen extends Component {
              ids: [1,2,3],
            })}
            {this._renderFloor({
-             icon: require('../../../images/home-f2.png'),
-             title: '两季电器',
+             icon: require('../../../images/home-f3.png'),
+             title: '冰箱洗衣机',
              index: 1,
              ids: [4,5,6],
            })}
            {this._renderFloor({
-             icon: require('../../../images/home-f3.png'),
-             title: '冰箱洗衣机',
+             icon: require('../../../images/home-f5.png'),
+             title: '电视影音',
              index: 2,
              ids: [7,8,9],
            })}
            {this._renderFloor({
              icon: require('../../../images/home-f4.png'),
-             title: '厨房卫浴',
+             title: '厨卫电器',
              index: 3,
              ids: [10,11,12],
            })}
            {this._renderFloor({
-             icon: require('../../../images/home-f5.png'),
-             title: '电视影音',
+             icon: require('../../../images/home-f2.png'),
+             title: '两季电器',
              index: 4,
              ids: [13,14,15],
            })}

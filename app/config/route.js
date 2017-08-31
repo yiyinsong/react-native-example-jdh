@@ -32,6 +32,7 @@ import BuyerScreen from '../screens/containers/buyer/index';
 import BuyerSearchScreen from '../screens/containers/buyer/home-search';
 import BuyerSignScreen from '../screens/containers/buyer/home-sign';
 import BuyerOrderScreen from '../screens/containers/buyer/order';
+import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
 
 import styles from '../css/styles';
 
@@ -223,4 +224,11 @@ export default {
       title: '采购订单'
     }
   },
+  //买家订单详情
+  BuyerOrderDetail: {
+    screen: BuyerOrderDetailScreen,
+    navigationOptions: {
+      title: '订单详情'
+    }
+  }
 }

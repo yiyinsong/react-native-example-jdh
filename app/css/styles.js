@@ -408,13 +408,14 @@ export default {
       width: 54,
       height: 54,
       padding: 2,
-      backgroundColor: COLOR_WHITE
+      backgroundColor: COLOR_WHITE,
+      overflow: 'hidden'
     },
     userHeadIcon: {
       width: 50,
       height: 50,
       resizeMode: 'contain',
-      borderRadius: 30,
+      borderRadius: 100,
     },
     userData: {
       paddingLeft: 10
@@ -1090,7 +1091,7 @@ export default {
   btn3: {
     defaults: {
       fontSize: FONT_12,
-      color: COLOR_3,
+      color: COLOR_6,
       borderWidth: 1,
       borderColor: COLOR_D,
       paddingTop: 4,
@@ -2223,6 +2224,24 @@ export default {
     shopName: {
       fontSize: FONT_12,
       color: COLOR_3
+    },
+    infoPrice: {
+      color: COLOR_RED,
+      fontSize: FONT_12
+    },
+    infoNum: {
+      color: COLOR_3,
+      fontSize: FONT_12,
+      marginLeft: 10
+    },
+    footer: {
+      paddingLeft: 10,
+      paddingTop: 10,
+      paddingRight: 10
+    },
+    account: {
+      fontSize: FONT_12,
+      color: COLOR_3
     }
   },
   home: {
@@ -2723,24 +2742,111 @@ export default {
       marginTop: 5
     }
   },
-  orderItem: {
-    infoPrice: {
-      color: COLOR_RED,
-      fontSize: FONT_12
-    },
-    infoNum: {
-      color: COLOR_3,
+  refundItem: {
+    totalText: {
       fontSize: FONT_12,
-      marginLeft: 10
+      color: COLOR_3,
+      marginRight: 10
     },
-    footer: {
-      paddingLeft: 10,
-      paddingTop: 10,
-      paddingRight: 10
+    totalTextActive: {
+      color: COLOR_RED
+    }
+  },
+  orderDetail: {
+    top: {
+      backgroundColor: COLOR_WHITE,
+      padding: 10,
+      marginBottom: 10
+    },
+    orderInfoText:{
+      fontSize: FONT_12,
+      color: COLOR_3,
+    },
+    oitl: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      lineHeight: 20
+    },
+    oitr: {
+      fontSize: FONT_12,
+      color: COLOR_RED,
+      lineHeight: 20
+    },
+    log: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_GRAY,
+      paddingTop: 5,
+      marginTop: 10
+    },
+    car: {
+      width: 16,
+      height: 16,
+      resizeMode: 'contain'
+    },
+    carArrow: {
+      width: 14,
+      height: 14,
+      resizeMode: 'contain'
+    },
+    logInfo: {
+      marginLeft: 8,
+      marginRight: 8
+    },
+    logProgress: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    logTime: {
+      fontSize: FONT_12,
+      color: COLOR_9
+    },
+    addrIcon: {
+      width: 16,
+      height: 16
+    },
+    addrInfo: {
+      marginLeft: 8
+    },
+    addrUser: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+      lineHeight: 18
+    },
+    addrDetail: {
+      fontSize: FONT_12,
+      color: COLOR_9,
+      lineHeight: 18
     },
     account: {
-      fontSize: FONT_12,
-      color: COLOR_3
+      backgroundColor: COLOR_WHITE,
+      padding: 10
+    },
+    accountItem: {
+      marginTop: 5
+    },
+    ail: {
+      fontSize: FONT_14,
+      color: COLOR_9
+    },
+    air: {
+      fontSize: FONT_14,
+      color: COLOR_RED
+    },
+    accountFooter: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_GRAY,
+      marginTop: 8,
+      paddingTop: 8
+    },
+    bottom: {
+      marginTop: 10,
+      borderTopWidth: 0
+    },
+    btnArea: {
+      backgroundColor: COLOR_WHITE,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_E,
+      padding: 10,
     }
   }
 }

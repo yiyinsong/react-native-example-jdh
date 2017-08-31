@@ -148,7 +148,7 @@ export default class SellerHomeScreen extends Component {
         .catch((error) => {
         });
         //获取店铺数据（By Java）
-        fetch(Config.JAVAAPI + 'shop/wap/client/order/shopDaysData', {
+        fetch(Config.JAVAAPI + 'shop/wap/client/order/daysData', {
           method: 'POST',
           body: JSON.stringify({
             token
@@ -160,9 +160,9 @@ export default class SellerHomeScreen extends Component {
           if(data.code == 1) {
             this.setState({
               storeDataJava: {
-                todayOrderCount: _r.todayOrderCount[0] ? _r.todayOrderCount[0].amount : 0,
-                todayTotalAmount: _r.todayTotalAmount[0] ? _r.todayTotalAmount[0].cou : 0,
-                yesterdayOrderCount: _r.yesterdayOrderCount[0] ? _r.yesterdayOrderCount[0].cou : 0
+                todayOrderCount: _r.todayOrderCount,
+                todayTotalAmount: _r.todayTotalAmount,
+                yesterdayOrderCount: _r.yesterdayOrderCount
               }
             });
           }

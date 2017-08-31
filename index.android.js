@@ -28,9 +28,9 @@
      headerRight: <TouchableOpacity style={styles.common.headerBtnRight}></TouchableOpacity>
    }),
    transitionConfig: () => ({
-     transitionSpec: {
-       duration: 300
-     },
+    //  transitionSpec: {
+    //    duration: 300
+    //  },
     screenInterpolator: (sceneProps) => {
       if (sceneProps.scene.route.withoutAnimation) return null;
       return CardStackStyleInterpolator.forFadeFromBottomAndroid(sceneProps)

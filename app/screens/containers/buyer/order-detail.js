@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   InteractionManager,
   DeviceEventEmitter,
   Modal
@@ -15,7 +16,6 @@ import OrderItem from '../../components/buyer/order-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import ModalConfirm from '../../common/modal-confirm';
-import ModalPrompt from '../../common/modal-prompt';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
@@ -32,7 +32,6 @@ export default class OrderDetailScreen extends Component{
         actions: []
       },
       ordersn: _query.ordersn,
-      type: _query.type,
       posCodeVisible: false,
       posCodeSrc: ''
     };
@@ -43,14 +42,8 @@ export default class OrderDetailScreen extends Component{
       ScreenInit.checkLogin(this);
       this._init();
     });
-    //添加发货成功侦听事件
-    this.listener_deliver_success = DeviceEventEmitter.addListener('sellerOrderUpdate', (result) => {
-	  DeviceEventEmitter.emit('SellerHomeUpdate');
-      this._init();
-    });
   }
   componentWillUnmount() {
-    this.listener_deliver_success && this.listener_deliver_success.remove();
   }
   render() {
     let _data = this.state.data;
@@ -58,64 +51,98 @@ export default class OrderDetailScreen extends Component{
       <View style={[styles.common.flexv, styles.common.init]}>
         {this.state.bodyShow ?
         <ScrollView>
+          <View style={styles.orderDetail.top}>
+            <View style={styles.orderDetail.orderInfo}>
+              <View style={styles.common.flexDirectionRow}>
+                <Text style={[styles.common.flex, styles.orderDetail.oitl]} numberOfLines={1}>订单号：{_data.orderSn}</Text>
+                <Text style={styles.orderDetail.oitr}>{_data.statusName}</Text>
+              </View>
+              <View style={styles.common.flexDirectionRow}>
+                <Text style={[styles.common.flex, styles.orderDetail.oitl]} numberOfLines={1}>下单时间：{_data.ctime}</Text>
+              </View>
+            </View>
+            {_data.routes ?
+            <TouchableHighlight underlayColor='#fafafa' onPress={this._toLogi}>
+              <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.orderDetail.log]}>
+                <Image source={require('../../../images/icon-car.png')} style={styles.orderDetail.car}/>
+                <View style={[styles.common.flexv, styles.orderDetail.logInfo]}>
+                  <Text style={styles.orderDetail.logProgress} numberOfLines={1}>
+                    {_data.routes && _data.routes.steps[_data.routes.steps.length -1] && _data.routes.steps[_data.routes.steps.length -1].acceptAddress}
+                  </Text>
+                  <Text style={styles.orderDetail.logTime}>
+                    {_data.routes && _data.routes.steps[_data.routes.steps.length -1] && _data.routes.steps[_data.routes.steps.length -1].acceptTime}
+                  </Text>
+                </View>
+                <Image source={require('../../../images/icon-arb.png')} style={styles.orderDetail.carArrow}/>
+              </View>
+            </TouchableHighlight>
+            : null}
+          </View>
+          <View style={styles.orderDetail.top}>
+            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+              <Image source={require('../../../images/icon-addr.png')} style={styles.orderDetail.addrIcon} />
+              <View style={[styles.common.flexv, styles.orderDetail.addrInfo]}>
+                <Text style={styles.orderDetail.addrUser}>{_data.receiver + ' ' +_data.mobile}</Text>
+                <Text style={styles.orderDetail.addrDetail}>{_data.provinceName ? _data.provinceName + (_data.cityName || '') + (_data.districtName || '') + (_data.townName || '') + (_data.villageName || '') + _data.address : '&nbsp;'}</Text>
+              </View>
+            </View>
+          </View>
           <OrderItem
           data={_data}
-          type={this.state.type}
           props={this.props}
           navgoods={true}
-          refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
-          posPay={(sn) => this._posPay(sn)}
-          confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 3, data: {
-            text: '是否确认已收到货款？',
-            confirm: (arg) => {
-              this._confirmReceipt(arg);
-            }
-          },params: id})}
           ></OrderItem>
-          <View style={styles.sorderDetail.log}>
-          {_data.actions.map((v, k) => {
-            return (
-              <View style={styles.sorderDetail.logItem}>
-                <View style={styles.sorderDetail.logLeft}>
-                  <View style={[styles.common.flex, styles.sorderDetail.logLine, k == 0  ? styles.sorderDetail.logLineActive : '']}></View>
-                  <View style={[styles.sorderDetail.logCircle, k == 0 ? styles.sorderDetail.logCircleActive : '']}></View>
-                </View>
-                <View style={[styles.sorderDetail.logRight, k == 0 ? styles.sorderDetail.logRightActive : '']}>
-                  <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.actionNote}</Text>
-                  <Text style={[styles.sorderDetail.logText, k == 0 ? styles.sorderDetail.logTextActive : '']}>{v.ctime}</Text>
-                </View>
-              </View>
-            )
-          })}
+          <View style={styles.orderDetail.account}>
+            <View style={[styles.common.flexDirectionRow, styles.orderDetail.accountItem]}>
+              <Text style={[styles.common.flex, styles.orderDetail.ail]}>
+                共{_data.totalQty}件商品 商品总额
+              </Text>
+              <Text style={styles.orderDetail.air}>
+                ￥{_data.totalGoodsAmount}
+              </Text>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.orderDetail.accountItem]}>
+              <Text style={[styles.common.flex, styles.orderDetail.ail]}>
+                运费
+              </Text>
+              <Text style={styles.orderDetail.air}>
+              {
+                _data.predictFreight && _data.predictFreight > 0 ? _data.predictFreight : '请与卖家确认发货物流公司及费用信息'
+              }
+              </Text>
+            </View>
+            {
+              _data.adjustmentAmount ?
+              <View style={[styles.common.flexDirectionRow, styles.orderDetail.accountItem]}>
+                <Text style={[styles.common.flex, styles.orderDetail.ail]}>
+                  调整金额
+                </Text>
+                <Text style={styles.orderDetail.air}>
+                  ￥{_data.adjustmentAmount}
+                </Text>
+              </View> : null
+            }
+            {
+              _data.totalDiscount > 0 ?
+              <View style={[styles.common.flexDirectionRow, styles.orderDetail.accountItem]}>
+                <Text style={[styles.common.flex, styles.orderDetail.ail]}>
+                  优惠金额
+                </Text>
+                <Text style={styles.orderDetail.air}>
+                  ￥{_data.totalDiscount}
+                </Text>
+              </View> : null
+            }
+            <View style={[styles.common.flexDirectionRow, styles.orderDetail.accountItem, styles.orderDetail.accountFooter]}>
+              <Text style={[styles.common.flex, styles.orderDetail.ail]}>
+                实付金额
+              </Text>
+              <Text style={styles.orderDetail.air}>
+                ￥{_data.totalAmount}
+              </Text>
+            </View>
           </View>
-          <View style={styles.sorderDetail.block}>
-            <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
-              <Text style={styles.sorderDetail.userText}>收货人：</Text>
-              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.receiver}</Text>
-            </View>
-            <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
-              <Text style={styles.sorderDetail.userText}>收货地址：</Text>
-              {_data.provinceName ? <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{(_data.provinceName || '') + (_data.cityName || '') + (_data.districtName || '') + (_data.townName || '') + (_data.villageName || '') + _data.address}</Text> : null }
-            </View>
-            <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
-              <Text style={styles.sorderDetail.userText}>收货人手机号：</Text>
-              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.mobile}</Text>
-            </View>
-            { _data.logisticsCompany ?
-            <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
-              <Text style={styles.sorderDetail.userText}>物流公司：</Text>
-              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.logisticsCompany}</Text>
-            </View>
-            : null }
-            { _data.logisticsSn ?
-            <View style={[styles.common.flexDirectionRow, styles.sorderDetail.userItem]}>
-              <Text style={styles.sorderDetail.userText}>物流单号：</Text>
-              <Text style={[styles.common.flex, styles.sorderDetail.userText]}>{_data.logisticsSn}</Text>
-            </View>
-            : null }
-          </View>
-          <View style={styles.sorderDetail.block}>
-            {this.state.type == 1 && _data.relationOrderSn ? <View><Text style={styles.sorderDetail.orderInfoText}>销售订单编号：{_data.relationOrderSn}</Text></View> : null }
+          <View style={[styles.sorderDetail.block, styles.orderDetail.bottom]}>
             <View><Text style={styles.sorderDetail.orderInfoText}>订单编号：{_data.orderSn}</Text></View>
             {_data.paymentLogs && _data.paymentLogs[0] && _data.paymentLogs[0].payCode ? <View><Text style={styles.sorderDetail.orderInfoText}>交易流水：{_data.paymentLogs && _data.paymentLogs[0] && _data.paymentLogs[0].payCode}</Text></View> : null }
             <View><Text style={styles.sorderDetail.orderInfoText}>创建时间：{_data.ctime}</Text></View>
@@ -125,6 +152,7 @@ export default class OrderDetailScreen extends Component{
           </View>
         </ScrollView>
         : null}
+        {this._renderBtn(_data)}
         <Loading visible={this.state.loadingVisible}></Loading>
         <ModalConfirm keys={3}></ModalConfirm>
         <Modal
@@ -137,17 +165,11 @@ export default class OrderDetailScreen extends Component{
         <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
       </TouchableOpacity>
       </Modal>
-      <ModalPrompt data={{
-        text: '请输入新的价格',
-        confirm: (r, p) => {
-          this._modifyPrice(r, p);
-        }
-      }} keys={0} notClose={true}/>
       </View>
     );
   }
   _init = () => {
-    fetch(Config.JAVAAPI + `shop/wap/client/order/detail?orderSn=${this.state.ordersn}&token=${token}`, {
+    fetch(Config.JAVAAPI + `shop/wap/order/detail?orderSn=${this.state.ordersn}&token=${token}`, {
         method: 'POST'
     })
     .then(response => response.json())
@@ -160,77 +182,80 @@ export default class OrderDetailScreen extends Component{
         }
     });
   }
-  /**不发货**/
-  _openRefuseDeliverModal = (id) => {
-    DeviceEventEmitter.emit('confirmShow', {
-      keys: 3,
-      data: {
-        text: '是否不发货？',
-        confirm: (arg) => {
-          this._refuseDeliver(arg);
-        }
-      },
-      params: {
-        id
-      }
-    });
-  }
-  _refuseDeliver = (arg) => {
-    fetch(Config.JAVAAPI+`shop/wap/client/order/noDeliver?id=${arg.id}&token=${token}`,{
-      method: 'POST'
-    })
-    .then(response => response.json())
-    .then((_res)=>{
-          if (_res.code==1) {
-              UIToast( '操作成功');
-              DeviceEventEmitter.emit('sellerOrderUpdate');
-          }else{
-              UIToast(_res.message || '操作失败');
-          }
-      })
-  }
   _posPay = (sn) => {
     this.setState({
       posCodeVisible: true,
       posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
     });
   }
-  _modifyPrice = (newPrice, params) => {
-    if(newPrice == '') {
-      DeviceEventEmitter.emit('promptTips', {keys: 0, error: '请输入新价格'});
-    } else if (!/(^[1-9]\d*(\.\d{1,2})?$)|(^0\.\d{1,2}$)/.test(newPrice)) {
-      DeviceEventEmitter.emit('promptTips', {keys: 0, error: '格式错误或最多只能小数点后两位'});
-    } else if(newPrice > 1000000000) {
-      DeviceEventEmitter.emit('promptTips', {keys: 0, error: '最多不能大于1000000000'});
-    } else {
-      DeviceEventEmitter.emit('promptTips', {keys: 0, error: ''});
-      DeviceEventEmitter.emit('promptHide',{keys: 0});
-      fetch(Config.JAVAAPI+`shop/wap/client/order/adjustPrice?orderSn=${params.sn}&adjustmentAmount=${newPrice}&token=${token}`, {
-          method: 'POST'
-        })
-        .then(response => response.json())
-        .then((result) => {
-            if(result.code == 1) {
-                this._init();
-            } else {
-                UIToast(result.message || '修改失败');
-            }
-        })
-        .catch((error) => {
-        });
-    }
+  _toLogi = () => {
+
   }
-  _confirmReceipt = (id) => {
-    fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
-      method: 'POST'
-    })
-    .then(response => response.json())
-    .then((_res)=>{
-        if (_res.code==1) {
-          DeviceEventEmitter.emit('sellerOrderUpdate');
-        } else {
-          UIToast('确认收款失败');
-        }
-    })
+  _renderBtn = (_data) => {
+    if(_data.status === 10) {
+      return (
+        <View style={styles.orderDetail.btnArea}>
+          <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+              <Text style={styles.btn3.defaults}>取消订单</Text>
+            </TouchableHighlight>
+            <TouchableHighlight underlayColor='#fafafa'>
+              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>立即支付</Text>
+            </TouchableHighlight>
+            <TouchableHighlight underlayColor='#fafafa'>
+              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>POS支付</Text>
+            </TouchableHighlight>
+            {_data.supportWxPay ?
+              <TouchableHighlight underlayColor='#fafafa'>
+                <Text style={[styles.btn3.defaults, styles.btn3.green]}>微信支付</Text>
+              </TouchableHighlight>
+            : null}
+          </View>
+        </View>
+      );
+    } else if(_data.isRefund === -1) {
+      if(_data.status === 30) {
+        return (
+          <View style={styles.orderDetail.btnArea}>
+            <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods}>
+                <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
+              </TouchableHighlight>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                <Text style={styles.btn3.defaults}>退货退款</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        );
+      } else if(_data.status === 20 || _data.status === 31) {
+        return (
+          <View style={styles.orderDetail.btnArea}>
+            <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                <Text style={styles.btn3.defaults}>退货退款</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        );
+      } else {
+        return null;
+      }
+    } else if(_data.isRefund !== -1) {
+      if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
+        return (
+          <View style={styles.orderDetail.btnArea}>
+            <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                <Text style={styles.btn3.defaults}>{_data.refundStatusName}</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        );
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 }

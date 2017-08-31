@@ -17,7 +17,7 @@ import {
 import styles from '../../../css/styles';
 
 import OrderItem from '../../components/buyer/order-item';
-import RefundItem from '../../components/seller/refund-item';
+import RefundItem from '../../components/buyer/refund-item';
 import Loading from '../../common/ui-loading';
 import UIToast from '../../common/ui-toast';
 import ModalConfirm from '../../common/modal-confirm';
@@ -283,16 +283,10 @@ export default class OrderListScreen extends Component {
                   </View>
                   <FlatList
                     data={this.state.list}
-                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} props={this.props}></RefundItem> : <OrderItem
+                    renderItem={({item}) => this.state.activeIndex == 6 ? <RefundItem data={item} props={this.props}></RefundItem> : <OrderItem
                     data={item}
                     props={this.props}
-                    refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
-                    confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
-                        text: '是否确认已收到货款？',
-                        confirm: (arg) => {
-                          this._confirmReceipt(arg);
-                        }
-                    }, params: id})}
+                    confirmReceiptGoods={(id) => {}}
                     ></OrderItem>
                   }
                     onRefresh={false}
