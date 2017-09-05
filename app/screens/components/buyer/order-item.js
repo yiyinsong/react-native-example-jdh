@@ -4,6 +4,7 @@ import {
     View,
     Image,
     StyleSheet,
+    TouchableOpacity,
     TouchableHighlight,
     DeviceEventEmitter
 } from 'react-native';
@@ -16,6 +17,7 @@ export default class OrderItem extends Component {
       this.attr = this.props.props;
       this.navgoods = this.props.navgoods || false;
       this.refundExamine = this.props.refundExamine || false;
+      this.index = this.props.index || 0;
     }
     render() {
         let _data = this.props.data;
@@ -46,12 +48,34 @@ export default class OrderItem extends Component {
                         <Image style={styles.sorderItem.img} source={{uri: v.imgUrlSmall}} />
                       </View>
                       <View style={styles.sorderItem.info}>
-                        <Text style={styles.sorderItem.infoName} numberOfLines={2}>{v.goodsName}</Text>
-                        <Text style={styles.sorderItem.infoAttr}>{v.skuAttr}</Text>
-                        <View style={[styles.common.flexEndv, styles.sorderItem.infoData]}>
-                          <Text style={styles.orderItem.infoPrice}>￥{v.price}</Text>
-                          <Text style={styles.orderItem.infoNum}>x{v.qty}</Text>
+                        <View style={styles.common.flexDirectionRow}>
+                          <View style={styles.common.flexv}>
+                            <Text style={styles.sorderItem.infoName} numberOfLines={2}>{v.goodsName}</Text>
+                            <Text style={styles.sorderItem.infoAttr}>{v.skuAttr}</Text>
+                          </View>
+                          <View style={styles.common.flexEndv}>
+                            <Text style={styles.orderItem.infoPrice}>￥{v.price}</Text>
+                            <Text style={styles.orderItem.infoNum}>x{v.qty}</Text>
+                          </View>
                         </View>
+                        {v.refundGoods ?
+                        <View style={styles.common.flexDirectionRow}>
+                          {
+                            v.refundGoods.ingCount > 0 ?
+                            <TouchableOpacity activeOpacity={.8} onPress={() => this._openRefundStatusList('退款中', v.refundGoods.ingRefunds)}>
+                              <Text style={styles.orderItem.refundStatus}>退款中 x{v.refundGoods.ingCount}</Text>
+                            </TouchableOpacity>
+                            : null
+                          }
+                          {
+                            v.refundGoods.successCount > 0 ?
+                            <TouchableOpacity activeOpacity={.8} onPress={() => this._openRefundStatusList('退款成功', v.refundGoods.successRefunds)}>
+                              <Text style={styles.orderItem.refundStatus}>退款成功 x{v.refundGoods.successCount}</Text>
+                            </TouchableOpacity>
+                            : null
+                          }
+                        </View>
+                        : null}
                       </View>
                     </View>
                   </TouchableHighlight>)
@@ -75,17 +99,9 @@ export default class OrderItem extends Component {
             <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
               <Text style={styles.btn3.defaults}>取消订单</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor='#fafafa'>
-              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>立即支付</Text>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={ () => this._toPayPage(_data.orderSn) }>
+              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>去支付</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor='#fafafa'>
-              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>POS支付</Text>
-            </TouchableHighlight>
-            {_data.supportWxPay ?
-              <TouchableHighlight underlayColor='#fafafa'>
-                <Text style={[styles.btn3.defaults, styles.btn3.green]}>微信支付</Text>
-              </TouchableHighlight>
-            : null}
           </View>
         );
       } else if(_data.isRefund === -1) {
@@ -111,18 +127,6 @@ export default class OrderItem extends Component {
         } else {
           return null;
         }
-      } else if(_data.isRefund !== -1) {
-        if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
-          return (
-            <View style={[styles.common.flex, styles.common.flexEndh]}>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
-                <Text style={styles.btn3.defaults}>{_data.refundStatusName}</Text>
-              </TouchableHighlight>
-            </View>
-          );
-        } else {
-          return null;
-        }
       } else {
         return null;
       }
@@ -136,13 +140,18 @@ export default class OrderItem extends Component {
         });
       }
     }
-    _posPay = (sn) => {
-      this.props.posPay && this.props.posPay.call(null, sn);
+    _toPayPage = (sn) => {
+      this.attr.navigation.navigate('Pay', {
+        ordersn: sn
+      });
     }
     _confirmReceiptGoods = () => {
 
     }
     _toRefundDetail = () => {
 
+    }
+    _openRefundStatusList = (title, list) => {
+      DeviceEventEmitter.emit('orderRefundStatusShow', {title, list, index: this.index});
     }
 }

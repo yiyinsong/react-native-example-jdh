@@ -35,7 +35,6 @@ export default class OrderDetailScreen extends Component{
         trace: []
       },
       id: _query.id,
-      shopid: _query.shopid,
       ordersn: _query.ordersn,
       modalVisible: false,
       urlType: ''
@@ -194,7 +193,7 @@ export default class OrderDetailScreen extends Component{
     );
   }
   _init = () => {
-    fetch(Config.JAVAAPI + `shop/mobile/refund/bgetInfo?id=${this.state.id}&shopId=${this.state.shopid}&token=${token}`, {
+    fetch(Config.JAVAAPI + `shop/mobile/refund/bgetInfo?id=${this.state.id}&token=${token}`, {
         method: 'GET'
     })
     .then(response => response.json())
@@ -287,7 +286,6 @@ export default class OrderDetailScreen extends Component{
   _examine = () => {
     this.props.navigation.navigate('SellerRefundExamine', {
       id: this.state.id,
-      shopid: this.state.shopid,
       ordersn: this.state.ordersn,
       type: this.state.data.refund.orderType == 40 ? 0 : 1,
       fromdetail: true,

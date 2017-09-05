@@ -7,7 +7,8 @@ import {
   Modal,
   TouchableOpacity,
   TouchableHighlight,
-  InteractionManager
+  InteractionManager,
+  DeviceEventEmitter
   } from 'react-native';
 
   import styles from '../../../css/styles';
@@ -44,6 +45,12 @@ import {
         ScreenInit.checkLogin(this);
         this._init();
       })
+      this.listener_update = DeviceEventEmitter.addListener('BuyerHomeUpdate', () => {
+        this._init();
+      });
+    }
+    componentWillUnmount() {
+      this.listener_update && this.listener_update.remove();
     }
     render() {
       return(

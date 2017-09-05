@@ -26,7 +26,6 @@ export default class OrderDetailScreen extends Component{
       id: _query.id,
       refundtype: _query.refundtype || 1,
       fromdetail: _query.fromdetail || false,
-      shopid: _query.shopid,
       selectReason: {
         id: '',
         name: '请选择'
@@ -141,7 +140,6 @@ export default class OrderDetailScreen extends Component{
           routeName: 'SellerRefundDetail',
           params: {
             id: this.state.id,
-            shopid: this.state.shopid,
             ordersn: this.state.ordersn,
             type: this.state.type,
           },

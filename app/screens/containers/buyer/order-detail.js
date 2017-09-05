@@ -20,6 +20,9 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
+import RefundStatusList from '../../components/buyer/order-refund-status';
+
+
 export default class OrderDetailScreen extends Component{
   constructor(props){
   	super(props);
@@ -32,8 +35,6 @@ export default class OrderDetailScreen extends Component{
         actions: []
       },
       ordersn: _query.ordersn,
-      posCodeVisible: false,
-      posCodeSrc: ''
     };
   }
   componentWillMount() {
@@ -42,8 +43,6 @@ export default class OrderDetailScreen extends Component{
       ScreenInit.checkLogin(this);
       this._init();
     });
-  }
-  componentWillUnmount() {
   }
   render() {
     let _data = this.state.data;
@@ -88,6 +87,7 @@ export default class OrderDetailScreen extends Component{
             </View>
           </View>
           <OrderItem
+          index={1}
           data={_data}
           props={this.props}
           navgoods={true}
@@ -155,16 +155,7 @@ export default class OrderDetailScreen extends Component{
         {this._renderBtn(_data)}
         <Loading visible={this.state.loadingVisible}></Loading>
         <ModalConfirm keys={3}></ModalConfirm>
-        <Modal
-          visible={this.state.posCodeVisible}
-          animationType={'fade'}
-          transparent = {true}
-          onRequestClose={()=> this.setState({posCodeVisible: false})}
-      >
-      <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
-        <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
-      </TouchableOpacity>
-      </Modal>
+      <RefundStatusList index={1}/>
       </View>
     );
   }
@@ -182,12 +173,6 @@ export default class OrderDetailScreen extends Component{
         }
     });
   }
-  _posPay = (sn) => {
-    this.setState({
-      posCodeVisible: true,
-      posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
-    });
-  }
   _toLogi = () => {
 
   }
@@ -199,17 +184,9 @@ export default class OrderDetailScreen extends Component{
             <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
               <Text style={styles.btn3.defaults}>取消订单</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor='#fafafa'>
-              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>立即支付</Text>
+            <TouchableHighlight underlayColor='#fafafa' onPress={ () => this._toPayPage(_data.orderSn) }>
+              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>去支付</Text>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor='#fafafa'>
-              <Text style={[styles.btn3.defaults, styles.btn3.danger]}>POS支付</Text>
-            </TouchableHighlight>
-            {_data.supportWxPay ?
-              <TouchableHighlight underlayColor='#fafafa'>
-                <Text style={[styles.btn3.defaults, styles.btn3.green]}>微信支付</Text>
-              </TouchableHighlight>
-            : null}
           </View>
         </View>
       );
@@ -240,22 +217,13 @@ export default class OrderDetailScreen extends Component{
       } else {
         return null;
       }
-    } else if(_data.isRefund !== -1) {
-      if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
-        return (
-          <View style={styles.orderDetail.btnArea}>
-            <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
-                <Text style={styles.btn3.defaults}>{_data.refundStatusName}</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        );
-      } else {
-        return null;
-      }
     } else {
       return null;
     }
+  }
+  _toPayPage = (sn) => {
+    this.props.navigation.navigate('Pay', {
+      ordersn: sn
+    });
   }
 }

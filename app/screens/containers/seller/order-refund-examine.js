@@ -35,7 +35,6 @@ export default class OrderDetailScreen extends Component{
         jxOrder: {}
       },
       id: _query.id,
-      shopid: _query.shopid,
       ordersn: _query.ordersn,
       type: _query.type,
       fromdetail: _query.fromdetail || false,
@@ -190,7 +189,7 @@ export default class OrderDetailScreen extends Component{
     );
   }
   _init = () => {
-    fetch(Config.JAVAAPI + `shop/mobile/refund/bgetInfo?id=${this.state.id}&shopId=${this.state.shopid}&token=${token}`, {
+    fetch(Config.JAVAAPI + `shop/mobile/refund/bgetInfo?id=${this.state.id}&token=${token}`, {
         method: 'GET'
     })
     .then(response => response.json())
@@ -257,7 +256,6 @@ export default class OrderDetailScreen extends Component{
       ordersn: this.state.ordersn,
       type: this.state.type,
       id: this.state.id,
-      shopid: this.state.shopid,
       refundtype: data.refund.type,
       fromdetail: this.state.fromdetail,
     });
@@ -313,7 +311,6 @@ export default class OrderDetailScreen extends Component{
               routeName: 'SellerRefundDetail',
               params: {
                 id: this.state.id,
-                shopid: this.state.shopId,
                 ordersn: this.state.ordersn,
               },
             });

@@ -285,10 +285,9 @@ export default class BuyerHomeScreen extends Component {
            <Text style={[styles.home.floorTabText, this.state.floorTab[o.index] === 2 ? styles.home.floorTabTextActive : '']}>精选优品</Text>
          </TouchableHighlight>
        </View>
-       {this.state.floorTab[o.index] === 0 ?
        <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
          <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-         {this.state.glist[o.index][0].map((v, k) => {
+         {this.state.glist[o.index][this.state.floorTab[o.index]].map((v, k) => {
            return(
              <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
                <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
@@ -299,37 +298,6 @@ export default class BuyerHomeScreen extends Component {
          })}
          </View>
        </ScrollView>
-       : null}
-       {this.state.floorTab[o.index] === 1 ?
-       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-       <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-       {this.state.glist[o.index][1].map((v, k) => {
-         return(
-           <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-             <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-             <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-             <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-           </TouchableOpacity>
-         );
-       })}
-       </View>
-       </ScrollView>
-       : null}
-       {this.state.floorTab[o.index] === 2 ?
-       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
-       <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
-       {this.state.glist[o.index][2].map((v, k) => {
-         return(
-           <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
-             <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
-             <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
-             <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
-           </TouchableOpacity>
-         );
-       })}
-       </View>
-       </ScrollView>
-       : null}
       </View>
     );
   }
@@ -384,7 +352,6 @@ export default class BuyerHomeScreen extends Component {
           });
        }
    });
-   this._getHotFunc(0);
   }
   _newsScroll = (i) => {
     Animated.timing(

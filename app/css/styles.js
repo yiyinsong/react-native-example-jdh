@@ -932,20 +932,20 @@ export default {
       height: 80
     },
     info: {
-      flex: 1
+      flex: 1,
+      flexWrap: 'wrap'
     },
     infoName: {
       fontSize: FONT_12,
       marginBottom: 5,
-      color: COLOR_3
+      color: COLOR_3,
+      lineHeight: 18,
+      height: 30
     },
     infoAttr: {
       fontSize: FONT_12,
       color: COLOR_9,
       marginBottom: 5
-    },
-    infoData: {
-      flexDirection: 'row'
     },
     infoPrice: {
       color: COLOR_RED,
@@ -1021,6 +1021,11 @@ export default {
     },
     primarySolid: {
       backgroundColor: COLOR_BLUE,
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    orangeSolid: {
+      backgroundColor: COLOR_ORANGE,
       paddingTop: 10,
       paddingBottom: 10
     },
@@ -2192,6 +2197,59 @@ export default {
     tabActiveText: {
       color: COLOR_RED
     },
+    refundList: {
+      backgroundColor: COLOR_WHITE,
+      height: 400
+    },
+    refundHeader: {
+      backgroundColor: COLOR_GRAY,
+      alignItems: 'center',
+      paddingTop: 5,
+      paddingLeft: 10,
+      paddingBottom: 5,
+      paddingRight: 10
+    },
+    refundTitle: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    refundClose: {
+      width: 32,
+      height: 32
+    },
+    refundBody: {
+      padding: 10,
+      flex: 1
+    },
+    refundDt: {
+      backgroundColor: COLOR_GRAY,
+      paddingTop: 8,
+      paddingBottom: 8
+    },
+    refundDtText: {
+      textAlign: 'center',
+      fontSize: FONT_12
+    },
+    refundLastItem: {
+      width: 20
+    },
+    refundDd: {
+      paddingTop: 8,
+      paddingBottom: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
+    },
+    refundDdText: {
+      textAlign: 'center',
+      fontSize: FONT_12,
+      color: COLOR_3
+    },
+    refundGoIcon: {
+      width: 20,
+      height: 20,
+      resizeMode: 'contain',
+      transform: [{rotateZ: ('180deg')}]
+    }
   },
   orderItem: {
     footer: {
@@ -2242,6 +2300,19 @@ export default {
     account: {
       fontSize: FONT_12,
       color: COLOR_3
+    },
+    refundStatus: {
+      color: COLOR_RED,
+      fontSize: FONT_12,
+      borderWidth: 1,
+      borderColor: COLOR_RED,
+      paddingLeft: 5,
+      paddingRight: 5,
+      marginRight: 8,
+      marginTop: 4,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 10
     }
   },
   home: {
@@ -2847,6 +2918,151 @@ export default {
       borderTopWidth: 1,
       borderTopColor: COLOR_E,
       padding: 10,
+    },
+  },
+  refundDetail: {
+    dl: {
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 10,
+      borderBottomWidth: 8,
+      borderBottomColor: COLOR_GRAY
+    },
+    dt: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
+    },
+    dd: {
+      marginTop: 10
+    },
+    text1: {
+      fontSize: FONT_12,
+      color: COLOR_9,
+    },
+    text2: {
+      fontSize: FONT_12,
+      color: COLOR_6,
+      marginLeft: 10
+    },
+    imgGroup: {
+      flexWrap: 'wrap'
+    },
+    img: {
+      width: 60,
+      height: 60,
+      marginTop: 5,
+      marginRight: 5
+    },
+    progress: {
+
+    },
+    circle: {
+      width: 10,
+      height: 10,
+      backgroundColor: COLOR_E,
+      borderRadius: 10
+    },
+    circleActive: {
+      backgroundColor: COLOR_RED
+    },
+    line: {
+      width: 1,
+      flex: 1,
+      backgroundColor: COLOR_E
+    },
+    time: {
+      marginLeft: 10,
+      fontSize: FONT_12,
+      color: COLOR_9
+    },
+    timeActive: {
+      color: COLOR_RED
+    },
+    detail: {
+      fontSize: FONT_12,
+      color: COLOR_9,
+      marginLeft: 20,
+      paddingBottom: 10
+    },
+    detailActive: {
+      color: COLOR_RED
+    },
+    viewGoodsBtnText: {
+      fontSize: FONT_12,
+      color: COLOR_BLUE
+    },
+    viewGoodsBtnImg: {
+      width: 13,
+      height: 12,
+      resizeMode: 'contain'
+    }
+  },
+  pay: {
+    block: {
+      backgroundColor: COLOR_WHITE,
+      marginBottom: 10,
+      paddingBottom: 10
+    },
+    orderItem: {
+      paddingTop: 10,
+      paddingLeft: 10,
+      paddingRight: 10
+    },
+    ol: {
+      fontSize: FONT_14,
+      color: COLOR_9,
+      marginRight: 10
+    },
+    or: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+    },
+    redText: {
+      fontSize: FONT_14,
+      color: COLOR_RED
+    },
+    money: {
+      padding: 10
+    },
+    item: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_GRAY,
+      padding: 10,
+    },
+    text: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    radio: {
+      width: 20,
+      height: 20,
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      borderRadius: 22
+    },
+    radioActive: {
+      borderColor: COLOR_BLUE
+    },
+    radioImg: {
+      width: 18,
+      height: 18,
+      resizeMode: 'contain'
+    },
+    submit: {
+      backgroundColor: COLOR_ORANGE,
+      flex: 1,
+      margin: 10,
+      borderRadius: 3
+    },
+    submitText: {
+      color: COLOR_WHITE,
+      paddingTop: 10,
+      paddingBottom: 10,
+      textAlign: 'center'
     }
   }
 }

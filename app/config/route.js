@@ -33,6 +33,8 @@ import BuyerSearchScreen from '../screens/containers/buyer/home-search';
 import BuyerSignScreen from '../screens/containers/buyer/home-sign';
 import BuyerOrderScreen from '../screens/containers/buyer/order';
 import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
+import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-detail';
+import BuyerPayScreen from '../screens/containers/buyer/pay';
 
 import styles from '../css/styles';
 
@@ -229,6 +231,17 @@ export default {
     screen: BuyerOrderDetailScreen,
     navigationOptions: {
       title: '订单详情'
+    }
+  },
+  //买家退款详情
+  BuyerRefundDetail: {
+    screen: BuyerRefundDetailScreen,
+  },
+  //支付选择界面
+  Pay: {
+    screen: BuyerPayScreen,
+    navigationOptions: {
+      title: '支付订单'
     }
   }
 }

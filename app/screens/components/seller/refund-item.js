@@ -93,14 +93,12 @@ export default class RefundItem extends Component {
     _toRefundDetail = (item) => {
       this.attr.navigation.navigate('SellerRefundDetail', {
         id: item.id,
-        shopid: item.shopId,
         ordersn: this.props.type == 1 ? (item.order.relationOrderSn || item.order.orderSn) : (item.order.mainOrderSn || item.order.orderSn)
       });
     }
     _toExamine = (item) => {
       this.attr.navigation.navigate('SellerRefundExamine', {
         id: item.id,
-        shopid: item.shopId,
         ordersn: this.props.type == 1 ? (item.order.relationOrderSn || item.order.orderSn) : (item.order.mainOrderSn || item.order.orderSn),
         type: this.props.type,
         refundtype: item.type,

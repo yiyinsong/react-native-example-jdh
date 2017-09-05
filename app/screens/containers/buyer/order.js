@@ -8,6 +8,7 @@ import {
     ScrollView,
     FlatList,
     TouchableOpacity,
+    TouchableHighlight,
     Image,
     InteractionManager,
     DeviceEventEmitter,
@@ -24,6 +25,8 @@ import ModalConfirm from '../../common/modal-confirm';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
+
+import RefundStatusList from '../../components/buyer/order-refund-status';
 
 export default class OrderListScreen extends Component {
     constructor(props){
@@ -43,12 +46,12 @@ export default class OrderListScreen extends Component {
         canload: false,
         tips: '',
 
-        loadingVisible: true,
+        loadingVisible: false,
         activeIndex: 0,
 
-        posCodeVisible: false,
-        posCodeSrc: '',
-        bodyShow: false
+        bodyShow: false,
+        refundStatus: '',
+        refundStatusList: [],
       };
     }
     componentWillMount() {
@@ -63,8 +66,18 @@ export default class OrderListScreen extends Component {
           this._getData(_initIndex);
         }
         this.setState({ bodyShow: true });
-
-      })
+      });
+      this.listener_update = DeviceEventEmitter.addListener('BuyerOrderUpdate', result => {
+        this._reset(true);
+        this._init();
+        DeviceEventEmitter.emit('BuyerHomeUpdate');
+        requestAnimationFrame(()=>{
+          this._getData(this.state.activeIndex, true);
+        });
+      });
+    }
+    componentWillUnmount() {
+      this.listener_update && this.listener_update.remove();
     }
     _init = () => {
       //获取订单条数
@@ -98,16 +111,16 @@ export default class OrderListScreen extends Component {
         }
       });
     }
-    _reset = () => {
+    _reset = (notEmptyList) => {
       this.setState({
         page: 0,
-        list: [],
+        list: notEmptyList ? this.state.list :[],
         canload: false,
         tips: '',
         loadingVisible: true,
       });
     }
-    _getData = (i) => {
+    _getData = (i, notEmptyList) => {
       let _status = '';
       let payOfflineStatus = '';
       let _tp = this.state.page;
@@ -160,7 +173,11 @@ export default class OrderListScreen extends Component {
             } else {
               _temp = this.state.list;
             }
-            _temp = _temp.concat(_data.results);
+            if(notEmptyList) {
+              _temp = _data.results;
+            } else {
+              _temp = _temp.concat(_data.results);
+            }
             let _canload = '';
             let _tips = '';
             if(_data.pageIndex < _data.totalPage) {
@@ -255,6 +272,8 @@ export default class OrderListScreen extends Component {
           _tips = '没有更多数据！';
         }
         this.setState({list: _temp, canload: _canload, tips: _tips});
+    })
+    .catch( err => {
     });
     }
 
@@ -284,9 +303,11 @@ export default class OrderListScreen extends Component {
                   <FlatList
                     data={this.state.list}
                     renderItem={({item}) => this.state.activeIndex == 6 ? <RefundItem data={item} props={this.props}></RefundItem> : <OrderItem
+                    index={0}
                     data={item}
                     props={this.props}
                     confirmReceiptGoods={(id) => {}}
+                    getItemLayout={(data, index) => ( {length: 208, offset: 208 * index, index} )}
                     ></OrderItem>
                   }
                     onRefresh={false}
@@ -298,18 +319,9 @@ export default class OrderListScreen extends Component {
                 </View>
                 <Loading visible={this.state.loadingVisible}></Loading>
                 <ModalConfirm keys={1}></ModalConfirm>
-                <Modal
-                  visible={this.state.posCodeVisible}
-                  animationType={'fade'}
-                  transparent = {true}
-                  onRequestClose={()=> this.setState({posCodeVisible: false})}
-              >
-              <TouchableOpacity activeOpacity={1} style={[styles.common.flex, styles.common.flexCenterv, styles.common.flexCenterh, styles.ewm.container]} onPress={()=>this.setState({posCodeVisible: false})}>
-                <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
-              </TouchableOpacity>
-              </Modal>
-            </View>
-            : null}
+                <RefundStatusList index={0}/>
+              </View>
+              : null}
           </View>
         );
     }
@@ -347,12 +359,5 @@ export default class OrderListScreen extends Component {
           </View>
         </TouchableOpacity>
       )
-    }
-
-    _posPay = (sn) => {
-      this.setState({
-        posCodeVisible: true,
-        posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
-      });
     }
 }

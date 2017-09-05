@@ -11,7 +11,7 @@ import {
   ScrollView,
   DeviceEventEmitter
 } from 'react-native';
-import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button';
 
 import styles from '../../../css/styles';
 import UIToast from '../../common/ui-toast';

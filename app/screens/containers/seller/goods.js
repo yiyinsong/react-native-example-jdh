@@ -111,7 +111,7 @@ export default class SellerGoodsScreen extends Component {
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={styles.common.initWhite} horizontal={true} pagingEnabled={true} onMomentumScrollEnd={(e) => this._onScrollOver(e)} ref="containerScrollView" showsHorizontalScrollIndicator={false}>
+            <ScrollView style={styles.common.initWhite} horizontal={true} ref="containerScrollView" showsHorizontalScrollIndicator={false} scrollEnabled={false}>
               <View style={{width: Utils.width}}>
                 <View style={[styles.common.flexDirectionRow, styles.sgoods.switchTitle]}>
                   <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sgoods.switchItem]} onPress={() => this._switch(0, 0)}>
@@ -194,7 +194,7 @@ export default class SellerGoodsScreen extends Component {
             <Loading visible={this.state.loadingVisible}></Loading>
             <ModalConfirm keys={4}></ModalConfirm>
             <Modal
-                animationType='slide'
+                animationType='fade'
                 onRequestClose={() => this._close()}
                 visible={this.state.visible}
                 transparent={true}
