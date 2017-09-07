@@ -154,8 +154,8 @@ export default class OrderDetailScreen extends Component{
         : null}
         {this._renderBtn(_data)}
         <Loading visible={this.state.loadingVisible}></Loading>
-        <ModalConfirm keys={3}></ModalConfirm>
-      <RefundStatusList index={1}/>
+        <ModalConfirm keys={7}></ModalConfirm>
+        <RefundStatusList index={1}/>
       </View>
     );
   }
@@ -181,7 +181,7 @@ export default class OrderDetailScreen extends Component{
       return (
         <View style={styles.orderDetail.btnArea}>
           <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._cancel(_data.mainOrderSn || _data.orderSn)}>
               <Text style={styles.btn3.defaults}>取消订单</Text>
             </TouchableHighlight>
             <TouchableHighlight underlayColor='#fafafa' onPress={ () => this._toPayPage(_data.orderSn) }>
@@ -224,6 +224,32 @@ export default class OrderDetailScreen extends Component{
   _toPayPage = (sn) => {
     this.props.navigation.navigate('Pay', {
       ordersn: sn
+    });
+  }
+  _cancel = (sn) => {
+    DeviceEventEmitter.emit('confirmShow', {
+      keys: 7,
+      data: {
+        text: '是否确认取消订单？',
+        confirm: (arg) => {
+          this._deleteConfirm(arg);
+        }
+      },
+      params: {
+        sn,
+      }
+    });
+  }
+  _deleteConfirm = (arg) => {
+    fetch(Config.JAVAAPI + `shop/wap/order/cancel?orderSn=${arg.sn}&token=${token}`, {
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then( r => {
+      if(r.code == 1) {
+        DeviceEventEmitter.emit('BuyerOrderUpdate');
+        this._init();
+      }
     });
   }
 }

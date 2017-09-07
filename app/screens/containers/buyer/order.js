@@ -32,7 +32,6 @@ export default class OrderListScreen extends Component {
     constructor(props){
     	super(props);
     	this.state = {
-        shopId: '',
         orderNum: {
           '10': 0,
           '20': 0,
@@ -84,7 +83,6 @@ export default class OrderListScreen extends Component {
       fetch(Config.JAVAAPI + 'shop/wap/order/shopOrderStatusSummary',{
           method: 'POST',
           body: JSON.stringify({
-            // shopId: data.data.shop_id,
             token
           })
       })
@@ -306,7 +304,8 @@ export default class OrderListScreen extends Component {
                     index={0}
                     data={item}
                     props={this.props}
-                    confirmReceiptGoods={(id) => {}}
+                    confirmReceiptGoods={() => {}}
+                    cancel={() => {this._cancel(item.mainOrderSn || item.orderSn)}}
                     getItemLayout={(data, index) => ( {length: 208, offset: 208 * index, index} )}
                     ></OrderItem>
                   }
@@ -318,7 +317,7 @@ export default class OrderListScreen extends Component {
                     style={styles.common.init}/>
                 </View>
                 <Loading visible={this.state.loadingVisible}></Loading>
-                <ModalConfirm keys={1}></ModalConfirm>
+                <ModalConfirm keys={8}></ModalConfirm>
                 <RefundStatusList index={0}/>
               </View>
               : null}
@@ -359,5 +358,30 @@ export default class OrderListScreen extends Component {
           </View>
         </TouchableOpacity>
       )
+    }
+    _cancel = (sn) => {
+      DeviceEventEmitter.emit('confirmShow', {
+        keys: 8,
+        data: {
+          text: '是否确认取消订单？',
+          confirm: (arg) => {
+            this._deleteConfirm(arg);
+          }
+        },
+        params: {
+          sn,
+        }
+      });
+    }
+    _deleteConfirm = (arg) => {
+      fetch(Config.JAVAAPI + `shop/wap/order/cancel?orderSn=${arg.sn}&token=${token}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then( r => {
+        if(r.code == 1) {
+          DeviceEventEmitter.emit('BuyerOrderUpdate');
+        }
+      });
     }
 }

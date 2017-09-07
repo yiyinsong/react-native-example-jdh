@@ -96,7 +96,7 @@ export default class OrderItem extends Component {
       if(_data.status === 10) {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
-            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container}>
+            <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={this._cancel}>
               <Text style={styles.btn3.defaults}>取消订单</Text>
             </TouchableHighlight>
             <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={ () => this._toPayPage(_data.orderSn) }>
@@ -145,8 +145,11 @@ export default class OrderItem extends Component {
         ordersn: sn
       });
     }
+    _cancel = () => {
+      this.props.cancel && this.props.cancel();
+    }
     _confirmReceiptGoods = () => {
-
+      this.props.confirmReceiptGoods && this.props.confirmReceiptGoods();
     }
     _toRefundDetail = () => {
 
