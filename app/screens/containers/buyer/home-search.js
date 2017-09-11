@@ -59,7 +59,7 @@ export default class HomeSearchScreen extends Component {
                     <View style={styles.search.history}>
                       {this.state.history.map((v, k) => {
                         return (
-                          <TouchableOpacity activeOpacity={.8} onPress={() => this._historySearch(v.keywords)}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => this._historySearch(v.keywords)} key={v.id}>
                             <Text style={styles.search.historyText} numberOfLines={1}>{v.keywords}</Text>
                           </TouchableOpacity>
                         );

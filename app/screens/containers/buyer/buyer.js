@@ -18,6 +18,7 @@ import {
   import Utils from '../../../js/utils';
 
   import Loading from '../../common/ui-loading';
+  import UIToast from '../../common/ui-toast';
 
   export default class ShoppingScreen extends Component {
     constructor(props){
@@ -44,7 +45,7 @@ import {
         this.setState({loadingVisible: true});
         ScreenInit.checkLogin(this);
         this._init();
-      })
+      });
       this.listener_update = DeviceEventEmitter.addListener('BuyerHomeUpdate', () => {
         this._init();
       });
@@ -262,7 +263,7 @@ import {
                     <Text style={ styles.shome.dtName }>商品关注</Text>
                   </View>
                   <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
-                    <TouchableOpacity activeOpacity={.8} onPress={() => {this._toOrder(0)}}>
+                    <TouchableOpacity activeOpacity={.8} onPress={this._toAttention}>
                       <Text style={ styles.shome.dtMore }>查看更多</Text>
                     </TouchableOpacity>
                     <Image source={require('../../../images/icon-arb.png')} style={ styles.shome.arrowRightBlack }/>
@@ -272,9 +273,14 @@ import {
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.buyer.attention}>
                       {this.state.attentionList.map((v, k) => {
                         return (
-                          <View style={styles.buyer.attentionItem}>
-                            <TouchableOpacity activeOpacity={.8} style={{width: Utils.width/4}}>
-                              <Image source={{uri: v.goods_img1}} style={[styles.buyer.attentionImg, {width: Utils.width/4,height: Utils.width/4}]}/>
+                          <View style={styles.buyer.attentionItem} key={v.goods_id}>
+                            <TouchableOpacity activeOpacity={.8} style={{width: Utils.width/4}} onPress={() => this._toGoodsDetail(v.on_sale)}>
+                              <Image source={{uri: v.goods_img1}} style={[styles.buyer.attentionImg, {width: Utils.width/4,height: Utils.width/4}]}>
+                                { v.on_sale == 0 ?
+                                  <Text style={[styles.common.flex, styles.buyer.attentionUnderSale]}>已下架</Text>
+                                  : null
+                                }
+                              </Image>
                               <Text numberOfLines={2} style={styles.buyer.attentionText}>
                                 {v.goods_name}
                               </Text>
@@ -400,5 +406,15 @@ import {
     }
     _toOrder = (i) => {
       this.props.navigation.navigate('BuyerOrder', {index: i});
+    }
+    _toAttention = () => {
+      this.props.navigation.navigate('Attention');
+    }
+    _toGoodsDetail = (onSale) => {
+      if(onSale == 0) {
+        UIToast('该商品已下架');
+      } else {
+
+      }
     }
   }

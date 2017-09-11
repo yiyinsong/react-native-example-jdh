@@ -42,7 +42,7 @@ export default class RefundItem extends Component {
                       <View style={styles.sorderItem.info}>
                         <Text style={styles.sorderItem.infoName} numberOfLines={2}>{v.goodsName}</Text>
                         <Text style={styles.sorderItem.infoAttr}>{v.skuAttr}</Text>
-                        <View style={styles.sorderItem.infoData}>
+                        <View style={styles.common.flex}>
                           <Text style={styles.sorderItem.infoPrice}>￥{v.price}</Text>
                           <Text style={styles.sorderItem.infoNum}>数量：{v.qty}</Text>
                         </View>

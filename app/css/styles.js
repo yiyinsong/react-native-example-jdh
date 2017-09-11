@@ -320,7 +320,7 @@ export default {
       position: 'absolute',
     },
     content: {
-      border: 0,
+      borderWidth: 0,
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
       borderRadius: 4,
       padding: 4
@@ -929,7 +929,8 @@ export default {
     },
     img: {
       width: 80,
-      height: 80
+      height: 80,
+      resizeMode: 'contain'
     },
     info: {
       flex: 1,
@@ -986,9 +987,6 @@ export default {
     },
     totalBig: {
       fontSize: FONT_16
-    },
-    refundCount: {
-      paddingBottom: 10
     },
     refundCountText: {
       textAlign: 'right',
@@ -2322,7 +2320,6 @@ export default {
       left: 0,
       right: 0,
       height: 73,
-      backgroundColor: 'rgba(249, 59, 49, 1)'
     },
     search: {
       borderRadius: 24,
@@ -2392,8 +2389,7 @@ export default {
     newsAni: {
       marginLeft: 20,
       height: 16,
-      textAlignVertical: 'center',
-      overflow: 'hidden'
+      overflow: 'hidden',
     },
     newsMore: {
       paddingLeft: 10,
@@ -2405,7 +2401,8 @@ export default {
     },
     newsText: {
       fontSize: FONT_12,
-      color: COLOR_3
+      color: COLOR_3,
+      height: 24
     },
     ad: {
       overflow: 'hidden'
@@ -2478,7 +2475,8 @@ export default {
     },
     goods: {
       backgroundColor: COLOR_WHITE,
-      marginRight: 5
+      marginRight: 5,
+      overflow: 'hidden'
     },
     goodsName: {
       padding: 5,
@@ -2492,6 +2490,12 @@ export default {
       paddingLeft: 5,
       paddingBottom: 10,
       paddingRight: 5
+    },
+    hotHeader: {
+      backgroundColor: COLOR_WHITE
+    },
+    hotTabContainer: {
+      backgroundColor: COLOR_WHITE
     },
     hot1: {
       borderTopWidth: 1,
@@ -2771,7 +2775,8 @@ export default {
     },
     attentionItem: {
       marginLeft: 10,
-      marginRight: 10
+      marginRight: 10,
+      overflow: 'hidden'
     },
     attentionImg: {
       resizeMode: 'contain'
@@ -2792,6 +2797,13 @@ export default {
       paddingRight: 3,
       marginTop: 5,
       marginRight: 5
+    },
+    attentionUnderSale: {
+      backgroundColor: 'rgba(0, 0, 0, .6)',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      fontSize: FONT_12,
+      color: COLOR_WHITE
     },
     ticket: {
       paddingTop: 15,
@@ -3063,6 +3075,41 @@ export default {
       paddingTop: 10,
       paddingBottom: 10,
       textAlign: 'center'
+    }
+  },
+  attention: {
+    filter: {
+      backgroundColor: COLOR_WHITE
+    },
+    filterText: {
+      fontSize: FONT_12,
+      paddingTop: 10,
+      paddingBottom: 10,
+      color: COLOR_3,
+      marginRight: 5
+    }
+  },
+  icon: {
+    arrowUp: {
+      borderLeftWidth: 4,
+      borderRightWidth: 4,
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+      borderBottomWidth: 4,
+      borderBottomColor: COLOR_3
+    },
+    arrowDown: {
+      borderLeftWidth: 4,
+      borderRightWidth: 4,
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+      borderTopWidth: 4,
+      borderTopColor: COLOR_3
+    },
+  },
+  attentionItem: {
+    container: {
+
     }
   }
 }

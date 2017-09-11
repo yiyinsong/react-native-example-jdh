@@ -105,20 +105,16 @@ export default class OrderItem extends Component {
           </View>
         );
       } else if(_data.isRefund === -1) {
-        if(_data.status === 30) {
+        if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
           return (
             <View style={[styles.common.flex, styles.common.flexEndh]}>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods}>
-                <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
-                <Text style={styles.btn3.defaults}>退货退款</Text>
-              </TouchableHighlight>
-            </View>
-          );
-        } else if(_data.status === 20 || _data.status === 31) {
-          return (
-            <View style={[styles.common.flex, styles.common.flexEndh]}>
+              {
+                _data.status === 30 ?
+                <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods}>
+                  <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
+                </TouchableHighlight>
+                : null
+              }
               <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
                 <Text style={styles.btn3.defaults}>退货退款</Text>
               </TouchableHighlight>

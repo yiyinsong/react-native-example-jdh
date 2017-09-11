@@ -29,7 +29,7 @@
    }),
    transitionConfig: () => ({
      transitionSpec: {
-       duration: 500
+       duration: 350
      },
     screenInterpolator: (sceneProps) => {
       if (sceneProps.scene.route.withoutAnimation) return null;

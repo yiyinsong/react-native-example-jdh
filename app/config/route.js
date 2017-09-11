@@ -35,6 +35,7 @@ import BuyerOrderScreen from '../screens/containers/buyer/order';
 import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
 import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-detail';
 import BuyerPayScreen from '../screens/containers/buyer/pay';
+import BuyerAttentionScreen from '../screens/containers/buyer/attention';
 
 import styles from '../css/styles';
 
@@ -242,6 +243,13 @@ export default {
     screen: BuyerPayScreen,
     navigationOptions: {
       title: '支付订单'
+    }
+  },
+  //关注中心
+  Attention: {
+    screen: BuyerAttentionScreen,
+    navigationOptions: {
+      title: '关注中心'
     }
   }
 }

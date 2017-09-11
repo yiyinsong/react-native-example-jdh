@@ -79,13 +79,13 @@ export default class HomeSignScreen extends Component {
                     <View style={[styles.common.flexDirectionRow, styles.sign.tbody, {width: Math.floor((Utils.width-21)/7)*7+1}]}>
                       {this.state.start.map((v, k) => {
                         return (
-                          <View style={[styles.common.flexCenterh, styles.sign.day, {width: Math.floor((Utils.width-21)/7)}]}>
+                          <View style={[styles.common.flexCenterh, styles.sign.day, {width: Math.floor((Utils.width-21)/7)}]} key={k}>
                           </View>
                         );
                       })}
                       {this.state.list.map((v, k) => {
                         return (
-                          <View style={[styles.common.flexCenterh, styles.sign.day, {width: Math.floor((Utils.width-21)/7)}, v.isSign ? styles.sign.dayActive : '']}>
+                          <View style={[styles.common.flexCenterh, styles.sign.day, {width: Math.floor((Utils.width-21)/7)}, v.isSign ? styles.sign.dayActive : '']} key={k}>
                             <Text style={styles.sign.dayText}>{v.date}</Text>
                             {v.isSign ? <Image source={require('../../../images/sign-signed.png')} style={styles.sign.daySignIcon}/> : null}
                           </View>
@@ -93,7 +93,7 @@ export default class HomeSignScreen extends Component {
                       })}
                       {this.state.end.map((v, k) => {
                         return (
-                          <View style={[styles.common.flexCenterh, styles.sign.day, {width: Math.floor((Utils.width-21)/7)}]}>
+                          <View style={[styles.common.flexCenterh, styles.sign.day, {width: Math.floor((Utils.width-21)/7)}]} key={k}>
                           </View>
                         );
                       })}

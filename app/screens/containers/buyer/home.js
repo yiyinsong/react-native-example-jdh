@@ -25,8 +25,8 @@ export default class BuyerHomeScreen extends Component {
   	super(props);
   	this.state = {
       loadingVisible: false,
-      headerBgOpacity: new Animated.Value(0),
-      searchOpacity: new Animated.Value(0.8),
+      headerBgOpacity: 0,
+      searchOpacity: 0.8,
       banner: [],
       cate: [
         {link: '',name: '',img: ''},
@@ -71,16 +71,17 @@ export default class BuyerHomeScreen extends Component {
   render() {
     return(
       <View style={[styles.common.flexv, styles.common.initWhite]}>
-        <Animated.View style={[styles.home.header, {opacity: this.state.headerBgOpacity}]}></Animated.View>
-        <Animated.View style={[styles.home.search, {opacity: this.state.searchOpacity}]}>
-          <TouchableWithoutFeedback onPress={this._toSearch}>
-            <View style={[styles.common.flex, styles.common.flexCenterv, ]}>
-              <Image source={require('../../../images/icon-search@30x30.png')} style={styles.home.searchIcon} />
-              <Text style={styles.home.searchText}>搜索商品名称</Text>
+        <ScrollView onScroll={this._bodyScroll} scrollEventThrottle={1} onMomentumScrollEnd={this._headerUpdate} showsVerticalScrollIndicator={false} stickyHeaderIndices={[0, 13]}>
+          <View style={[styles.home.header, {backgroundColor: 'rgba(249, 59, 49, ' + this.state.headerBgOpacity + ')'}]}>
+            <View style={[styles.home.search, {opacity: this.state.searchOpacity}]}>
+              <TouchableWithoutFeedback onPress={this._toSearch}>
+                <View style={[styles.common.flex, styles.common.flexCenterv, ]}>
+                  <Image source={require('../../../images/icon-search@30x30.png')} style={styles.home.searchIcon} />
+                  <Text style={styles.home.searchText}>搜索商品名称</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-          </TouchableWithoutFeedback>
-        </Animated.View>
-        <ScrollView onScroll={this._bodyScroll} scrollEventThrottle={1} showsVerticalScrollIndicator={false}>
+          </View>
           <Swiper
           style={{height:Utils.width*.4, overflow: 'hidden'}}
           loop={true}
@@ -90,7 +91,7 @@ export default class BuyerHomeScreen extends Component {
           autoplayTimeout={4}>
               {this.state.banner.map( (v, k) => {
                 return (
-                  <TouchableOpacity activeOpacity={1}>
+                  <TouchableOpacity activeOpacity={1} key={v.id}>
                     <Image
                       source={{uri: v.img}}
                       style={{width: Utils.width, height: Utils.width*.4}} />
@@ -100,32 +101,20 @@ export default class BuyerHomeScreen extends Component {
            </Swiper>
            <View style={styles.home.cateContainer}>
              <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
-               {
-                 this.state.cate.slice(0, 4).map((v, k) => {
-                   return (
-                     <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
-                       <Image source={{uri: v.img}} style={styles.home.cateIcon} />
-                       <Text style={styles.home.cateText}>{v.name}</Text>
-                     </TouchableOpacity>
-                   );
-                 })
-               }
+               {this._renderCate(this.state.cate[0])}
+               {this._renderCate(this.state.cate[1])}
+               {this._renderCate(this.state.cate[2])}
+               {this._renderCate(this.state.cate[3])}
                <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={() => this._toCateHandle(4)}>
                  <Image source={require('../../../images/icon-home-cate5.png')} style={styles.home.cateIcon} />
                  <Text style={styles.home.cateText}>众采</Text>
                </TouchableOpacity>
              </View>
              <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
-               {
-                 this.state.cate.slice(4, 8).map((v, k) => {
-                   return (
-                     <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
-                       <Image source={{uri: v.img}} style={styles.home.cateIcon} />
-                       <Text style={styles.home.cateText}>{v.name}</Text>
-                     </TouchableOpacity>
-                   );
-                 })
-               }
+               {this._renderCate(this.state.cate[4])}
+               {this._renderCate(this.state.cate[5])}
+               {this._renderCate(this.state.cate[6])}
+               {this._renderCate(this.state.cate[7])}
                <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={this._toSign}>
                  <Image source={require('../../../images/icon-home-cate10.png')} style={styles.home.cateIcon} />
                  <Text style={styles.home.cateText}>签到</Text>
@@ -137,7 +126,7 @@ export default class BuyerHomeScreen extends Component {
                 <Animated.View style={{transform: [{translateY: this.state.newsAniVal }]}}>
                   {this.state.newsList.map((v, k) => {
                     return (
-                      <Text numberOfLines={1} style={styles.home.newsText}>{v.name}</Text>
+                      <Text numberOfLines={1} style={styles.home.newsText} key={v.id}>{v.name}</Text>
                     )
                   })}
                   {
@@ -232,20 +221,20 @@ export default class BuyerHomeScreen extends Component {
              ids: [22,23,24],
            })}
            <View style={styles.home.floor}>
-            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh, styles.home.floorHeader]}>
+            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh, styles.home.floorHeader, styles.home.hotHeader]}>
               <View style={styles.home.floorLine}></View>
               <Image source={require('../../../images/home-hot.png')} style={styles.home.floorIcon}/>
               <Text style={styles.home.floorText}>热销推荐</Text>
               <View style={styles.home.floorLine}></View>
             </View>
-            <View style={styles.common.flexDirectionRow}>
-              <TouchableHighlight underlayColor='fafafa' onPress={() => this._tabHotFunc(0)} style={styles.common.flex}>
+            <View style={[styles.common.flexDirectionRow, styles.home.hotTabContainer]}>
+              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._tabHotFunc(0)} style={styles.common.flex}>
                 <View style={[styles.common.flexv, styles.common.flexCenterv, styles.home.hot1]}>
                   <Text style={[styles.home.hotText, this.state.hotTab === 0 ? styles.home.hotTextActive : '']}>爆款</Text>
                   {this.state.hotTab === 0 ? <View style={styles.home.triangle}></View> : null}
                 </View>
               </TouchableHighlight>
-              <TouchableHighlight underlayColor='fafafa' onPress={() => this._tabHotFunc(1)} style={styles.common.flex}>
+              <TouchableHighlight underlayColor='#fafafa' onPress={() => this._tabHotFunc(1)} style={styles.common.flex}>
                 <View style={[styles.common.flexv, styles.common.flexCenterv, styles.home.hot1]}>
                   <Text style={[styles.home.hotText, this.state.hotTab === 1 ? styles.home.hotTextActive : '']}>毛利王</Text>
                   {this.state.hotTab === 1 ? <View style={styles.home.triangle}></View> : null}
@@ -289,7 +278,7 @@ export default class BuyerHomeScreen extends Component {
          <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
          {this.state.glist[o.index][this.state.floorTab[o.index]].map((v, k) => {
            return(
-             <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]}>
+             <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]} key={v.id}>
                <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
                <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
                <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
@@ -357,7 +346,7 @@ export default class BuyerHomeScreen extends Component {
     Animated.timing(
       this.state.newsAniVal,
       {
-        toValue: - 16 * this.state.newsIndex,
+        toValue: - 24 * this.state.newsIndex,
         useNativeDriver: true,
       }
     ).start(() => {
@@ -413,20 +402,10 @@ export default class BuyerHomeScreen extends Component {
 
     this.bodyScrollTimer && clearTimeout(this.bodyScrollTimer);
     this.bodyScrollTimer = setTimeout(() => {
-      Animated.timing(
-        this.state.headerBgOpacity,
-        {
-          toValue: _y/100 < .1 ? 0 : _y/100,
-          useNativeDriver: true
-        }
-      ).start();
-      Animated.timing(
-        this.state.searchOpacity,
-        {
-          toValue: _y/500 + .8,
-          useNativeDriver: true
-        }
-      ).start();
+      this.setState({
+        headerBgOpacity: _y/100 < .1 ? 0 : _y/100,
+        searchOpacity: _y/500 + .8
+      });
     }, 100);
   }
   _tabHotFunc = (t) => {
@@ -469,12 +448,22 @@ export default class BuyerHomeScreen extends Component {
        }
    });
   }
+  _renderCate = (v) => {
+    if(v) {
+      return (<TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]}>
+        <Image source={{uri: v.img}} style={styles.home.cateIcon} />
+        <Text style={styles.home.cateText}>{v.name}</Text>
+      </TouchableOpacity>);
+    } else {
+      return null;
+    }
+  }
   _renderHotList = (t) => {
     return (
       <View style={[styles.common.flexDirectionRow, styles.home.hotList]}>
       {this.state.hotList[t].map((v, k) => {
         return(
-          <View style={[styles.home.hotItem, {width: (Utils.width - 5)/2,marginRight: (k%2 == 0 ? 5 : 0)}]}>
+          <View style={[styles.home.hotItem, {width: (Utils.width - 5)/2,marginRight: (k%2 == 0 ? 5 : 0)}]} key={v.id}>
             <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: (Utils.width - 5)/2, height: (Utils.width - 5)/2}} />
             <Text numberOfLines={2} style={styles.home.hotGoodsName}>{v.goods_name || v.product.goods_name}</Text>
             <Text style={styles.home.hotGoodsPrice}>￥{v.showprice}</Text>
