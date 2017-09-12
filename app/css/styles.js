@@ -2553,6 +2553,11 @@ export default {
     },
     hotLoadTips: {
       backgroundColor: BACKGROUNDCOLOR_GRAY
+    },
+    newsImgContainer: {
+      backgroundColor: COLOR_WHITE,
+      padding: 10,
+      borderRadius: 8
     }
   },
   search: {

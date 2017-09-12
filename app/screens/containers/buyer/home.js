@@ -9,7 +9,8 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Animated,
-  InteractionManager
+  InteractionManager,
+  Modal,
   } from 'react-native';
 import Swiper from 'react-native-swiper';
 
@@ -54,10 +55,22 @@ export default class BuyerHomeScreen extends Component {
         [[], [], []],
         [[], [], []],
       ],
+      glistLoadAll: [
+        [false ,false ,false],
+        [false ,false ,false],
+        [false ,false ,false],
+        [false ,false ,false],
+        [false ,false ,false],
+        [false ,false ,false],
+        [false ,false ,false],
+        [false ,false ,false]
+      ],
       hotList: [[], []],
       hotPage: [0, 0],
       hotTab: 0,
-      hotLoading: false
+      hotLoading: false,
+      newsModalVisible: false,
+      newsMoreImg: ''
     };
   }
   componentDidMount() {
@@ -126,19 +139,21 @@ export default class BuyerHomeScreen extends Component {
                 <Animated.View style={{transform: [{translateY: this.state.newsAniVal }]}}>
                   {this.state.newsList.map((v, k) => {
                     return (
-                      <Text numberOfLines={1} style={styles.home.newsText} key={v.id}>{v.name}</Text>
+                      <View style={styles.common.flexDirectionRow}>
+                        <Text numberOfLines={1} style={[styles.home.newsText, styles.common.flex]} key={v.id}>{v.content}</Text>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this._showNewsMore(Config.IMGURL + v.img)}>
+                          <Text style={styles.home.newsMore}>更多</Text>
+                        </TouchableOpacity>
+                      </View>
                     )
                   })}
                   {
                     this.state.newsList[0] ?
-                    <Text numberOfLines={1} style={styles.home.newsText}>{this.state.newsList[0].name}</Text>
+                    <Text numberOfLines={1} style={styles.home.newsText}>{this.state.newsList[0].content}</Text>
                     : null
                   }
                 </Animated.View>
               </View>
-              <TouchableOpacity activeOpacity={1}>
-                <Text style={styles.home.newsMore}>更多</Text>
-              </TouchableOpacity>
              </View>
            </View>
            <View style={[styles.common.flexDirectionRow, styles.home.ad]}>
@@ -245,6 +260,20 @@ export default class BuyerHomeScreen extends Component {
           {this._renderHotList(this.state.hotTab)}
           <Text style={[styles.common.loadingTips, styles.home.hotLoadTips]}>{this.state.hotPage[this.state.hotTab] > 7 ? '没有更多商品' : '加载商品中...'}</Text>
         </ScrollView>
+        <Modal
+            animationType='fade'
+            onRequestClose={() => this._closeNewsModal()}
+            visible={this.state.newsModalVisible}
+            transparent={true}
+             >
+            <TouchableOpacity style={{flex:1}} activeOpacity={1} onPress={() => this._closeNewsModal()}>
+            <View style={styles.modal.container}>
+                <View style={styles.home.newsImgContainer}>
+                  <Image source={{uri: this.state.newsMoreImg}} style={{width: Utils.width * .7,height: Utils.width * .7, resizeMode: 'contain'}} />
+                </View>
+            </View>
+            </TouchableOpacity>
+        </Modal>
         <Loading visible={this.state.loadingVisible}></Loading>
       </View>
     );
@@ -274,12 +303,12 @@ export default class BuyerHomeScreen extends Component {
            <Text style={[styles.home.floorTabText, this.state.floorTab[o.index] === 2 ? styles.home.floorTabTextActive : '']}>精选优品</Text>
          </TouchableHighlight>
        </View>
-       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false}>
+       <ScrollView horizontal={true} style={styles.home.floorTabContainer} showsHorizontalScrollIndicator={false} onScrollBeginDrag={() => this._loadFloorGoods(o.index, this.state.floorTab[o.index])}>
          <View style={[styles.common.flexDirectionRow, styles.home.floorSv]}>
          {this.state.glist[o.index][this.state.floorTab[o.index]].map((v, k) => {
            return(
              <TouchableOpacity activeOpacity={.8} style={[styles.home.goods, {width: Utils.width/3.5}]} key={v.id}>
-               <Image source={{uri: Config.IMGURL + (v.goods_img || v.product.goods_img1)}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
+               <Image source={{uri: k < 4 || this.state.glistLoadAll[o.index][this.state.floorTab[o.index]] ? Config.IMGURL + (v.goods_img || v.product.goods_img1) : Config.IMGURL}} style={{width: Utils.width/3.5, height: Utils.width/3.5}} />
                <Text numberOfLines={2} style={styles.home.goodsName}>{v.goods_name || v.product.goods_name}</Text>
                <Text style={styles.home.goodsPrice}>￥{v.showprice}</Text>
              </TouchableOpacity>
@@ -299,7 +328,6 @@ export default class BuyerHomeScreen extends Component {
       if(r.error_code === 0) {
         this.setState({
           banner: r.data['587'],
-          newsList: r.data['588'],
           ad: r.data['589'],
           cate: r.data['598'],
           floorBanner: [
@@ -314,7 +342,16 @@ export default class BuyerHomeScreen extends Component {
           ],
           loadingVisible: false
         });
-        if(r.data['588'].length > 1) {
+      }
+    });
+    fetch(Config.PHPAPI + `api/mapp/dynamics/dylist?token=${token}`, {
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then( r => {
+      if(r.error_code === 0) {
+        this.setState({newsList: r.data});
+        if(r.data.length > 1) {
           this.newsTimer = setTimeout(() => {
             this._newsScroll();
           }, 3000);
@@ -369,25 +406,40 @@ export default class BuyerHomeScreen extends Component {
       }, 3000);
     });
   }
+  _showNewsMore = (src) => {
+    this.setState({
+      newsModalVisible: true,
+      newsMoreImg: src
+    });
+  }
+  _closeNewsModal = () => {
+    this.setState({
+      newsModalVisible: false,
+      newsMoreImg: ''
+    });
+  }
   _floorTabFunc = (k, i, id) => {
-    let _temp = this.state.floorTab;
-    _temp[k] = i;
-    this.setState({floorTab: _temp});
-    if(this.state.glist[k][i].length === 0) {
-      fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${id}&limit=8`, {
-        method: 'GET'
-      })
-      .then(response => response.json())
-      .then((r) => {
-         if(r.error_code === 0) {
-           let _temp = this.state.glist;
-           _temp[k][i] = r.data[id];
-            this.setState({
-              glist: _temp
-            });
-         }
-     });
-    }
+      let _temp = this.state.floorTab;
+      _temp[k] = i;
+      //切换加载完毕当前楼层商品
+      let _gla = this.state.glistLoadAll;
+      _gla[k][i] = true;
+      this.setState({floorTab: _temp, glistLoadAll: _gla});
+      if(this.state.glist[k][i].length === 0) {
+        fetch(Config.PHPAPI + `api/mapp/ad/ad-goodslist?id=${id}&limit=8`, {
+          method: 'GET'
+        })
+        .then(response => response.json())
+        .then((r) => {
+           if(r.error_code === 0) {
+             let _temp = this.state.glist;
+             _temp[k][i] = r.data[id];
+              this.setState({
+                glist: _temp
+              });
+           }
+       });
+      }
   }
   _bodyScroll = (e) => {
     let _bodyHeight = e.nativeEvent.contentSize.height;
@@ -472,6 +524,14 @@ export default class BuyerHomeScreen extends Component {
       })}
       </View>
     )
+  }
+  _loadFloorGoods = (i, k) => {
+    if(this.state.glistLoadAll[i][k]) return;
+    let _temp = this.state.glistLoadAll;
+    _temp[i][k] = true;
+    this.setState({
+      glistLoadAll: _temp
+    });
   }
   _toSearch = () => {
     this.props.navigation.navigate('BuyerSearch');
