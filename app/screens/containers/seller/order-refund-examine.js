@@ -145,7 +145,7 @@ export default class OrderDetailScreen extends Component{
                       </View>
                       : <View style={{width: Utils.width * .7}}>
                         <View style={styles.sexamine.mbody}>
-                          <Text style={styles.sexamine.tipsText}>同意退款后，交易取消，平台将为买家退款，退款状态变成退款成功。</Text>
+                          <Text style={styles.sexamine.tipsText}>{_data.refund.type == 1 ? '同意退款后，平台将为买家退款。' : '确定同意退货退款吗？'}</Text>
                         </View>
                         <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
                           <TouchableOpacity activeOpacity={.8} onPress={() => {this._agree()}} style={styles.modal.confirm.confirm}>
@@ -159,7 +159,7 @@ export default class OrderDetailScreen extends Component{
                       }
                       <View style={{width: Utils.width * .7}}>
                         <View style={styles.sexamine.mbody}>
-                          <Text style={styles.sexamine.tipsText}>确认退款后，交易取消，须为用户退款，订单状态转变为已退款。</Text>
+                          <Text style={styles.sexamine.tipsText}>{_data.refund.type == 1 ? '同意退款后，平台将为买家退款。' : '确定同意退货退款吗？'}</Text>
                         </View>
                         {this.state.order.payType == 0 ?
                         <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>

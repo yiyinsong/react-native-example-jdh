@@ -35,7 +35,7 @@ export default class RefundItem extends Component {
                 </View>
               </View>
               {
-                  _data.goods.map((v, k) => {
+                  _data.refundGoods.map((v, k) => {
                   return (<TouchableHighlight underlayColor='#eee' style={styles.sorderItem.goods} onPress={() => this._toRefundDetail(_data)}>
                     <View style={styles.sorderItem.itemBody}>
                       <View style={styles.sorderItem.imgWrapper}>

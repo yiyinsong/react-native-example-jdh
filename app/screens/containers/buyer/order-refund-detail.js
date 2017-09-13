@@ -27,7 +27,6 @@ export default class OrderRefundDetailScreen extends Component {
           order: {
             orderSn: ''
           },
-          trace: [],
           refund: {},
           refundGoods: []
         },
@@ -108,7 +107,7 @@ export default class OrderRefundDetailScreen extends Component {
                     <View style={styles.refundDetail.dl}>
                       <Text style={styles.refundDetail.dt}>退款进度</Text>
                       <View style={[styles.refundDetail.dd]}>
-                        {data.trace.map((v, k) => {
+                        {data.traces.map((v, k) => {
                           return (
                             <View style={[styles.common.flexDirectionRow, styles.refundDetail.progress]}>
                             <View style={styles.common.flexCenterv}>

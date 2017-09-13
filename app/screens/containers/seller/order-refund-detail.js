@@ -157,14 +157,12 @@ export default class OrderDetailScreen extends Component{
                     <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} scrollEnabled={false} ref="modalScrollView">
                       <View style={{width: Utils.width * .7}}>
                         <View style={styles.sexamine.mbody}>
-                          <Text style={styles.sexamine.tipsText}>退款后，订单状态转变为已退款。</Text>
+                          <Text style={styles.sexamine.tipsText}>{_data.refund.type == 1 ? '同意退款后，平台将为买家退款。' : '确定同意退货退款吗？'}</Text>
                         </View>
                         {this.state.data.order.payType == 0 ?
                         <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
                           <TouchableOpacity activeOpacity={.8} onPress={() => {this._agreeHandle(1)}} style={styles.modal.confirm.confirm}>
-                              <Text style={styles.modal.confirm.confirmText}>{
-                                this.state.data.refund.orderType == 40 ? '马上支付' : '线上退款'
-                              }</Text>
+                              <Text style={styles.modal.confirm.confirmText}>线上退款</Text>
                           </TouchableOpacity>
                           {
                             this.state.data.refund.orderType == 40 ? <TouchableOpacity activeOpacity={.8} onPress={this._modalClose} style={[styles.modal.confirm.cancel, styles.sexamine.btn2]}>
@@ -176,7 +174,7 @@ export default class OrderDetailScreen extends Component{
                         </View>
                         : <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
                           <TouchableOpacity activeOpacity={.8} onPress={() => {this._agreeHandle(2)}} style={styles.modal.confirm.confirm}>
-                              <Text style={styles.modal.confirm.confirmText}>{this.state.data.refund.orderType == 40 ? '马上支付' : '线下退款'}</Text>
+                              <Text style={styles.modal.confirm.confirmText}>线下退款</Text>
                           </TouchableOpacity>
                           <TouchableOpacity activeOpacity={.8} onPress={this._modalClose} style={styles.modal.confirm.cancel}>
                               <Text style={styles.modal.confirm.cancelText}>取消</Text>

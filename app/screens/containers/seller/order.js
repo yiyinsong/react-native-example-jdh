@@ -283,15 +283,6 @@ export default class OrderListScreen extends Component {
 
         this.setState({loadingVisible: false});
         let _list = data.page.list;
-        if(data.orders) {
-            data.orders.forEach((v, k) =>{
-                _list.forEach((v1, k1) => {
-                    if(v1.orderId == v.id) {
-                        _list[k1].goods = v.goods;
-                    }
-                });
-            });
-        }
 
         _list.forEach((v, k) => {
             switch(v.status) {
