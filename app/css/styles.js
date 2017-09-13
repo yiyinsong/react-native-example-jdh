@@ -3116,5 +3116,10 @@ export default {
     container: {
 
     }
+  },
+  news: {
+    moreContainer: {
+      backgroundColor: COLOR_BLACK
+    }
   }
 }

@@ -36,6 +36,7 @@ import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
 import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-detail';
 import BuyerPayScreen from '../screens/containers/buyer/pay';
 import BuyerAttentionScreen from '../screens/containers/buyer/attention';
+import BuyerNewsMoreScreen from '../screens/components/buyer/news-more';
 
 import styles from '../css/styles';
 
@@ -250,6 +251,13 @@ export default {
     screen: BuyerAttentionScreen,
     navigationOptions: {
       title: '关注中心'
+    }
+  },
+  //查看更多动态
+  NewsMore: {
+    screen: BuyerNewsMoreScreen,
+    navigationOptions: {
+      title: '最新动态'
     }
   }
 }

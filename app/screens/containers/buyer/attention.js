@@ -25,7 +25,9 @@ export default class AttentionScreen extends Component {
     	this.state = {
         loadingVisible: false,
         cateOpen: false,
-        typeOpen: false
+        typeOpen: false,
+        list: [],
+        tips: ''
       };
     }
     componentDidMount() {
@@ -65,6 +67,15 @@ export default class AttentionScreen extends Component {
                 </View>
               </TouchableHighlight>
             </View>
+            <FlatList
+              data={this.state.list}
+              renderItem={({item}) => {}}
+              onRefresh={false}
+              refreshing={false}
+              onEndReachedThreshold={2}
+              onEndReached={() => this._loadingMore(this.state.activeIndex)}
+              ListFooterComponent={this._flatListFooter}
+              style={styles.common.init}/>
             <Loading visible={this.state.loadingVisible}></Loading>
           </View>
         )
@@ -74,5 +85,13 @@ export default class AttentionScreen extends Component {
     }
     _getData = () => {
 
+    }
+    _loadingMore = () => {
+
+    }
+    _flatListFooter = () => {
+        return (
+          <Text style={styles.common.loadingTips}>{this.state.tips != '' ? this.state.tips : null}</Text>
+        )
     }
 }

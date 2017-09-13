@@ -407,10 +407,11 @@ export default class BuyerHomeScreen extends Component {
     });
   }
   _showNewsMore = (src) => {
-    this.setState({
-      newsModalVisible: true,
-      newsMoreImg: src
-    });
+    this.props.navigation.navigate('NewsMore', {src});
+    // this.setState({
+    //   newsModalVisible: true,
+    //   newsMoreImg: src
+    // });
   }
   _closeNewsModal = () => {
     this.setState({
