@@ -18,6 +18,7 @@ const COLOR_9 = '#999';
 const COLOR_E = '#eee';
 const COLOR_F = '#fafafa';
 const COLOR_SIGN_BG = '#fbf1f1';
+const COLOR_GREEN2 = '#67cab2';
 
 const FONT_8 = 8;
 const FONT_10 = 10;
@@ -3084,7 +3085,9 @@ export default {
   },
   attention: {
     filter: {
-      backgroundColor: COLOR_WHITE
+      backgroundColor: COLOR_WHITE,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
     },
     filterText: {
       fontSize: FONT_12,
@@ -3115,6 +3118,66 @@ export default {
   attentionItem: {
     container: {
 
+    },
+    item: {
+      padding: 10,
+    },
+    img: {
+      width: 80,
+      height: 80,
+      borderWidth: 1,
+      borderColor: COLOR_GRAY,
+      marginRight: 5
+    },
+    info: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
+    },
+    goodsName: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      marginBottom: 10
+    },
+    type: {
+      borderWidth: 1,
+      fontSize: FONT_11,
+      paddingLeft: 5,
+      paddingRight: 5,
+      height: 17,
+      marginRight: 5,
+      borderRadius: 2
+    },
+    type1: {
+      borderColor: COLOR_RED,
+      color: COLOR_RED,
+    },
+    type2: {
+      borderColor: COLOR_GREEN2,
+      color: COLOR_GREEN2,
+    },
+    type3: {
+      borderColor: COLOR_ORANGE,
+      color: COLOR_ORANGE,
+    },
+    type4: {
+      backgroundColor: COLOR_RED,
+      color: COLOR_WHITE,
+      borderWidth: 0,
+      borderColor: 'transparent'
+    },
+    price: {
+      fontSize: FONT_12,
+      color: COLOR_6
+    },
+    priceRed: {
+      color: COLOR_RED
+    },
+    underSale: {
+      backgroundColor: 'rgba(0, 0, 0, .6)',
+      color: COLOR_WHITE,
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      fontSize: FONT_12
     }
   },
   news: {

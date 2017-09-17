@@ -71,9 +71,11 @@ export default class OrderItem extends Component {
             <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._deliver(_data.orderSn, _data.id)} style={styles.btn.container}>
               <Text style={styles.btn.primary}>发货</Text>
             </TouchableHighlight>
+            {_data.isRefund == -1 ?
             <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._refuseDeliver(_data.id)}>
               <Text style={styles.btn.primary}>不发货</Text>
             </TouchableHighlight>
+            : null}
           </View>)
         } else if(_data.operationAllowed && _type == 1 && _data.status == 10) {
             return(<View style={styles.sorderItem.itemFooter}>
