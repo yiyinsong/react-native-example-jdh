@@ -3095,6 +3095,25 @@ export default {
       paddingBottom: 10,
       color: COLOR_3,
       marginRight: 5
+    },
+    panel: {
+      position: 'absolute',
+      left: 0,
+      bottom: 0,
+      right: 0,
+      top: 78,
+      backgroundColor: COLOR_WHITE
+    },
+    cateItem: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      padding: 10,
+      fontSize: FONT_12,
+      color: COLOR_6
+    },
+    cateItemActive: {
+      backgroundColor: COLOR_GRAY,
+      color: COLOR_RED
     }
   },
   icon: {
