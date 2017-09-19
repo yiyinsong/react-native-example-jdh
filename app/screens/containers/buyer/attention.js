@@ -27,8 +27,6 @@ export default class AttentionScreen extends Component {
     	super(props);
     	this.state = {
         loadingVisible: false,
-        cateOpen: false,
-        typeOpen: false,
         list: [],
         tips: '',
         page: 0,
@@ -37,7 +35,8 @@ export default class AttentionScreen extends Component {
         saleType: 1,
         isLoading: false,
         bodyShow: false,
-        panelTypeVisible: true
+        panelCateVisible: false,
+        panelTypeVisible: false        
       };
     }
     componentDidMount() {
@@ -51,25 +50,25 @@ export default class AttentionScreen extends Component {
         return (
           <View style={[styles.common.flexv, styles.common.initWhite]}>
             <View style={[styles.common.flexDirectionRow, styles.attention.filter]}>
-              <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex}>
+              <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex} onPress={this._filterAll}>
                 <View style={[styles.common.flex, styles.common.flexCenterh]}>
                   <Text style={styles.attention.filterText}>全部</Text>
                 </View>
               </TouchableHighlight>
-              <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex}>
+              <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex} onPress={this._openCate}>
                 <View style={[styles.common.flex, styles.common.flexCenterh, styles.common.flexCenterv]}>
                   <Text style={styles.attention.filterText}>分类</Text>
-                  {this.state.cateOpen ?
+                  {this.state.panelCateVisible ?
                     <View style={[styles.icon.arrowUp]}></View>
                     :
                     <View style={[styles.icon.arrowDown]}></View>
                   }
                 </View>
               </TouchableHighlight>
-              <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex}>
+              <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex} onPress={this._openType}>
                 <View style={[styles.common.flex, styles.common.flexCenterh, styles.common.flexCenterv]}>
-                  <Text style={styles.attention.filterText}>自营</Text>
-                  {this.state.typeOpen ?
+                  <Text style={styles.attention.filterText}>{this.state.saleType === 1 ? '自营' : '即采'}</Text>
+                  {this.state.panelTypeVisible ?
                     <View style={[styles.icon.arrowUp]}></View>
                     :
                     <View style={[styles.icon.arrowDown]}></View>
@@ -90,19 +89,35 @@ export default class AttentionScreen extends Component {
             <Loading visible={this.state.loadingVisible}></Loading>
             <Modal
             animationType='fade'
-            onRequestClose={() => this._PanelTypeClose()}
-            visible={this.state.panelTypeVisible}
+            onRequestClose={() => this._panelCateClose()}
+            visible={this.state.panelCateVisible}
             transparent={true}
              >
-            <TouchableOpacity style={styles.modal.container} activeOpacity={1} onPress={this._PanelTypeClose}></TouchableOpacity>
+            <TouchableOpacity style={styles.modal.container} activeOpacity={1} onPress={this._panelCateClose}></TouchableOpacity>
             <ScrollView style={[styles.attention.panel]}>
                 {this.state.cateList.map((v, k) => {
                   return (
-                    <TouchableHighlight underlayColor="#fafafa" onPress={() => this.filterCate(v.id)}>
+                    <TouchableHighlight underlayColor="#fafafa" onPress={() => this._filterCate(v.id)}>
                       <Text style={[styles.attention.cateItem, this.state.cateId === v.id ? styles.attention.cateItemActive : '']}>{v.cat_name}</Text>
                     </TouchableHighlight>
                   );
                 })}
+            </ScrollView>
+            </Modal>
+            <Modal
+            animationType='fade'
+            onRequestClose={() => this._panelTypeClose()}
+            visible={this.state.panelTypeVisible}
+            transparent={true}
+             >
+            <TouchableOpacity style={styles.modal.container} activeOpacity={1} onPress={this._panelTypeClose}></TouchableOpacity>
+            <ScrollView style={[styles.attention.panel]}>
+                <TouchableHighlight underlayColor="#fafafa" onPress={() => this._filterType(1)}>
+                  <Text style={styles.attention.cateItem}>自营</Text>
+                </TouchableHighlight>
+                <TouchableHighlight underlayColor="#fafafa" onPress={() => this._filterType(2)}>
+                <Text style={styles.attention.cateItem}>即采</Text>
+              </TouchableHighlight>
             </ScrollView>
             </Modal>
           </View>
@@ -110,6 +125,7 @@ export default class AttentionScreen extends Component {
     }
     _init = () => {
       this._getData();
+      this._getCate();
     }
     _getData = (bool) => {
       if(this.state.isLoading) return;
@@ -136,6 +152,8 @@ export default class AttentionScreen extends Component {
             });
         }
       });
+    }
+    _getCate = () => {
       fetch(Config.PHPAPI + `api/mapp/shop/follow-cate?saleType=${this.state.saleType}&token=${token}`,{
         method: 'GET'
       })
@@ -154,10 +172,46 @@ export default class AttentionScreen extends Component {
           <Text style={styles.common.loadingTips}>{this.state.tips != '' ? this.state.tips : null}</Text>
         )
     }
-    _PanelTypeClose = () => {
+    _panelCateClose = () => {
+      this.setState({panelCateVisible: false});
+    }
+    _openCate = () => {
+      this.setState({panelCateVisible: true});
+    }
+    _filterCate = (id) => {
+      this.setState({cateId: id, panelCateVisible: false});
+      if(this.state.cateId !== id) {
+        this._filter();
+      }
+    }
+    _filter = (loadingCate) => {
+      this.setState({
+        tips: '数据加载中...',
+        page: 0,
+        isLoading: false,
+      });
+      requestAnimationFrame(() => {
+        this._getData(true);
+        if(loadingCate) {
+          this._getCate();
+        }
+      });
+    }
+    _filterAll = () => {
+      if(this.state.cateId === '') return;
+      this.state.cateId = '';
+      this._filter();
+    }
+    _panelTypeClose = () => {
       this.setState({panelTypeVisible: false});
     }
-    filterCate = () => {
-      
+    _filterType = (i) => {
+      this.setState({saleType: i, panelTypeVisible: false});
+      if(this.state.saleType !== i){
+        this._filter();
+      };
+    }
+    _openType = () => {
+      this.setState({panelTypeVisible: true});
     }
 }

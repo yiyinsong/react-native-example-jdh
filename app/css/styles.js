@@ -3112,7 +3112,7 @@ export default {
       color: COLOR_6
     },
     cateItemActive: {
-      backgroundColor: COLOR_GRAY,
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
       color: COLOR_RED
     }
   },
@@ -3201,7 +3201,11 @@ export default {
   },
   news: {
     moreContainer: {
-      backgroundColor: COLOR_BLACK
+      backgroundColor: COLOR_WHITE
+    },
+    img: {
+      alignSelf: 'center',
+      resizeMode: 'contain'
     }
   }
 }
