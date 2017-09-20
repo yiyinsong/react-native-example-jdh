@@ -86,6 +86,15 @@ export default class OrderItem extends Component {
                 <Text style={styles.orderItem.account}>
                   共{_data.totalQty}件 合计:￥{_data.totalAmount}
                 </Text>
+                {_data.refundMoneyOnly.onlyRefundAmount > 0 ?
+                <TouchableOpacity activeOpacity={1} style={styles.orderItem.onlyRefundLabel} onPress={() => this._openRefundOnlyStatusList(_data.refundMoneyOnly.onlyRefunds)}>
+                  <View style={styles.orderItem.onlyRefundLabelContainer}>
+                    <Text style={styles.orderItem.onlyRefundLabelText}>有退款</Text>
+                  </View>
+                  <View style={styles.orderItem.onlyRefundLabelArrow}></View>
+                  <View style={styles.orderItem.onlyRefundLabelInset}></View>
+                </TouchableOpacity>
+                : null}
                 {this._renderBtn(_data)}
               </View>
               : null}
@@ -152,5 +161,8 @@ export default class OrderItem extends Component {
     }
     _openRefundStatusList = (title, list) => {
       DeviceEventEmitter.emit('orderRefundStatusShow', {title, list, index: this.index});
+    }
+    _openRefundOnlyStatusList = (list) => {
+      DeviceEventEmitter.emit('orderRefundOnlyStatusShow', {list, index: this.index});
     }
 }

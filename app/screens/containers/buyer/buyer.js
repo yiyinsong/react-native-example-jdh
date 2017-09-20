@@ -114,7 +114,7 @@ import {
                       <Text style={ styles.shome.orderText }>待付款</Text>
                       { this.state.orderNum['10'] > 0
                         ? <View style={ styles.shome.orderBadge }>
-                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['10'] }</Text>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['10'] > 99 ? '99+' : this.state.orderNum['10']}</Text>
                           </View>
                         : null
                       }
@@ -126,7 +126,7 @@ import {
                       <Text style={ styles.shome.orderText }>待发货</Text>
                       { this.state.orderNum['20'] > 0
                         ? <View style={ styles.shome.orderBadge }>
-                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['20'] }</Text>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['20'] > 99 ? '99+' : this.state.orderNum['20'] }</Text>
                           </View>
                         : null
                       }
@@ -138,7 +138,7 @@ import {
                       <Text style={ styles.shome.orderText }>待收货</Text>
                       { this.state.orderNum['30'] > 0
                         ? <View style={ styles.shome.orderBadge }>
-                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['30'] }</Text>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.orderNum['30'] > 99 ? '99+' : this.state.orderNum['30'] }</Text>
                           </View>
                         : null
                       }
@@ -150,7 +150,7 @@ import {
                       <Text style={ styles.shome.orderText }>退货退款</Text>
                       { this.state.refundNum > 0
                         ? <View style={ styles.shome.orderBadge }>
-                            <Text style={ styles.shome.orderBadgeText }>{ this.state.refundNum }</Text>
+                            <Text style={ styles.shome.orderBadgeText }>{ this.state.refundNum > 99 ? '99+' : this.state.refundNum }</Text>
                           </View>
                         : null
                       }

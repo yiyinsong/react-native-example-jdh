@@ -37,7 +37,7 @@ export default class NewsMoreScreen extends Component {
             <View style={[styles.common.flex, styles.news.moreContainer]}>
               <ScrollView>
               {this.state.bodyShow ?
-                <Image source={{uri: this.state.src}} style={[styles.news.img, {width: this.state.width,height: this.state.height, marginTop: this.state.mt}]} onLoadEnd={this._complete}/>
+                <Image source={{uri: this.state.src, }} style={[styles.news.img, {width: this.state.width,height: this.state.height, marginTop: this.state.mt}]} onLoad={this._complete}/>
               : null}
               </ScrollView>
               <Loading visible={this.state.loadingVisible}></Loading>

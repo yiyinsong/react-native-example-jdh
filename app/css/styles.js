@@ -2312,6 +2312,47 @@ export default {
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
       borderBottomRightRadius: 10
+    },
+    onlyRefundLabel: {
+      paddingLeft: 10,
+      position: 'relative'
+    },
+    onlyRefundLabelContainer: {
+      borderWidth: 1,
+      borderColor: COLOR_RED,
+      borderRadius: 3,
+      paddingLeft: 3,
+      paddingRight: 3,
+    },
+    onlyRefundLabelArrow: {
+      borderRightWidth: 4,
+      borderTopWidth: 4,
+      borderBottomWidth: 4,
+      borderRightColor: COLOR_RED,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      width: 0,
+      heiht: 0,
+      position: 'absolute',
+      left: 6,
+      top: 5,
+    },
+    onlyRefundLabelInset: {
+      borderRightWidth: 4,
+      borderTopWidth: 4,
+      borderBottomWidth: 4,
+      borderRightColor: COLOR_WHITE,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      width: 0,
+      heiht: 0,
+      position: 'absolute',
+      left: 7,
+      top: 5,
+    },
+    onlyRefundLabelText: {
+      fontSize: FONT_12,
+      color: COLOR_RED
     }
   },
   home: {
@@ -2937,6 +2978,36 @@ export default {
       borderTopColor: COLOR_E,
       padding: 10,
     },
+    onlyRefundLabel: {
+      paddingRight: 10,
+      position: 'relative'
+    },
+    onlyRefundLabelArrow: {
+      borderLeftWidth: 4,
+      borderTopWidth: 4,
+      borderBottomWidth: 4,
+      borderLeftColor: COLOR_RED,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      width: 0,
+      heiht: 0,
+      position: 'absolute',
+      right: 6,
+      top: 5,
+    },
+    onlyRefundLabelInset: {
+      borderLeftWidth: 4,
+      borderTopWidth: 4,
+      borderBottomWidth: 4,
+      borderLeftColor: COLOR_WHITE,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      width: 0,
+      heiht: 0,
+      position: 'absolute',
+      right: 7,
+      top: 5,
+    },
   },
   refundDetail: {
     dl: {
@@ -3205,7 +3276,8 @@ export default {
     },
     img: {
       alignSelf: 'center',
-      resizeMode: 'contain'
+      resizeMode: 'contain',
+      overflow: 'hidden'
     }
   }
 }

@@ -27,6 +27,7 @@ import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
 import RefundStatusList from '../../components/buyer/order-refund-status';
+import RefundOnlyStatusList from '../../components/buyer/order-refund-only-status';
 
 export default class OrderListScreen extends Component {
     constructor(props){
@@ -51,6 +52,7 @@ export default class OrderListScreen extends Component {
         bodyShow: false,
         refundStatus: '',
         refundStatusList: [],
+        refundOnlyStatusList: [],
       };
     }
     componentWillMount() {
@@ -310,6 +312,7 @@ export default class OrderListScreen extends Component {
                 <Loading visible={this.state.loadingVisible}></Loading>
                 <ModalConfirm keys={8}></ModalConfirm>
                 <RefundStatusList index={0}/>
+                <RefundOnlyStatusList index={0}/>
               </View>
               : null}
           </View>

@@ -21,6 +21,7 @@ import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
 import RefundStatusList from '../../components/buyer/order-refund-status';
+import RefundOnlyStatusList from '../../components/buyer/order-refund-only-status';
 
 
 export default class OrderDetailScreen extends Component{
@@ -137,6 +138,15 @@ export default class OrderDetailScreen extends Component{
               <Text style={[styles.common.flex, styles.orderDetail.ail]}>
                 实付金额
               </Text>
+              {_data.refundMoneyOnly.onlyRefundAmount > 0 ?
+              <TouchableOpacity activeOpacity={1} style={styles.orderDetail.onlyRefundLabel} onPress={() => this._openRefundOnlyStatusList(_data.refundMoneyOnly.onlyRefunds)}>
+                <View style={styles.orderItem.onlyRefundLabelContainer}>
+                  <Text style={styles.orderItem.onlyRefundLabelText}>有退款</Text>
+                </View>
+                <View style={styles.orderDetail.onlyRefundLabelArrow}></View>
+                <View style={styles.orderDetail.onlyRefundLabelInset}></View>
+              </TouchableOpacity>
+              : null}
               <Text style={styles.orderDetail.air}>
                 ￥{_data.totalAmount}
               </Text>
@@ -156,6 +166,7 @@ export default class OrderDetailScreen extends Component{
         <Loading visible={this.state.loadingVisible}></Loading>
         <ModalConfirm keys={7}></ModalConfirm>
         <RefundStatusList index={1}/>
+        <RefundOnlyStatusList index={1}/>        
       </View>
     );
   }
@@ -245,5 +256,8 @@ export default class OrderDetailScreen extends Component{
         this._init();
       }
     });
+  }
+  _openRefundOnlyStatusList = (list) => {
+    DeviceEventEmitter.emit('orderRefundOnlyStatusShow', {list, index: 1});
   }
 }
