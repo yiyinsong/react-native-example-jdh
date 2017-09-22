@@ -344,11 +344,11 @@ export default class SellerGoodsScreen extends Component {
       this.state.page[state.type]++;
       let _url = '';
       if(state.type == 0) {
-        _url = Config.PHPAPI + `api/mapp/goods-seller/list?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&show=${state.switchIndex}&token=${token}`
+        _url = Config.PHPAPI + `api/mapp/goods-seller/list?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&show=${state.switchIndex}&imgSize=200&token=${token}`
       } else if (state.type == 1) {
-        _url = Config.PHPAPI + `api/mapp/goods-seller/jicai?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&token=${token}&dType=${state.switchIndex2 + 1}`
+        _url = Config.PHPAPI + `api/mapp/goods-seller/jicai?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&imgSize=200&token=${token}&dType=${state.switchIndex2 + 1}`
       } else {
-        _url = Config.PHPAPI + `api/mapp/goods-seller/library?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&token=${token}`
+        _url = Config.PHPAPI + `api/mapp/goods-seller/library?keyword=${state.keyword}&page=${state.page[state.type]}&pageSize=10&cateId=${state.cateId}&brandId=${state.brandId}&imgSize=200&token=${token}`
       }
       fetch(_url, {
         method: 'GET'
