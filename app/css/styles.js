@@ -3311,5 +3311,62 @@ export default {
       resizeMode: 'contain',
       overflow: 'hidden'
     }
+  },
+  vrg: {
+    item: {
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderBottomWidth: 1,
+      marginLeft: 10,
+      marginRight: 10,
+      borderBottomColor: COLOR_GRAY
+    },
+    info: {
+      marginLeft: 10
+    },
+    itemImg: {
+      width: 60,
+      height: 60,
+    },
+    itemGoodsName: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    itemAttr: {
+      fontSize: FONT_12,
+      color: COLOR_9,
+      marginTop: 2
+    },
+    others: {
+      marginTop: 5
+    },
+    othersText: {
+      fontSize: FONT_12,
+      color: COLOR_6,
+      marginRight: 20
+    },
+    othersActive: {
+      color: COLOR_RED,
+    },
+    footer: {
+      backgroundColor: COLOR_GRAY
+    },
+    account: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      marginLeft: 10
+    },
+    accountActive: {
+      color: COLOR_RED
+    },
+    closeBtn: {
+      fontSize: FONT_12,
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      backgroundColor: COLOR_RED,
+      color: COLOR_WHITE,
+      width: 80,
+      height: 48
+    }
   }
 }

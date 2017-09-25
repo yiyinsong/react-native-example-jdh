@@ -19,6 +19,8 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import OrderItem from '../../components/seller/order-item';
 
+import ViewRefundGoods from '../../components/seller/view-refund-goods';
+
 export default class OrderDetailScreen extends Component{
   constructor(props){
   	super(props);
@@ -28,7 +30,8 @@ export default class OrderDetailScreen extends Component{
       bodyShow: false,
       data: {
         refund: {},
-        trace: []
+        trace: [],
+        refundGoods: []
       },
       order: {
         goods: [],
@@ -39,7 +42,9 @@ export default class OrderDetailScreen extends Component{
       type: _query.type,
       fromdetail: _query.fromdetail || false,
       modalVisible: false,
-      checked: false
+      checked: false,
+      goodsTotalQty: 0,
+      goodsTotalPrice: 0
     };
   }
   componentWillMount() {
@@ -75,6 +80,18 @@ export default class OrderDetailScreen extends Component{
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
                 <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.type == 1 && this.state.order.status == 0 ? this.state.order.jxOrder.totalAmount : this.state.order.totalAmount}</Text>
               </View>
+              {_data.refund.type && _data.refund.type !== 1 ?
+                <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                  <Text style={styles.srefundDetail.dt}>退款商品数</Text>
+                  <Text style={[styles.common.flex, styles.refundDetail.text2]}>{this.state.goodsTotalQty}</Text>
+                  <TouchableOpacity activeOpacity={.8} onPress={this._viewRefundGoods}>
+                    <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                      <Text style={styles.refundDetail.viewGoodsBtnText}>查看申请商品</Text>
+                      <Image source={require('../../../images/icon-arb.png')} style={styles.refundDetail.viewGoodsBtnImg}/>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                : null}
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl, styles.sexamine.borderNone]}>
                 <Text style={styles.srefundDetail.dt}>退款说明</Text>
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundNote}</Text>
@@ -185,6 +202,7 @@ export default class OrderDetailScreen extends Component{
               </View>
             </View>
         </Modal>
+        <ViewRefundGoods index={1} data={_data.refundGoods} totalNum={this.state.goodsTotalQty} totalPrice={this.state.goodsTotalPrice}/>        
       </View>
     );
   }
@@ -228,7 +246,15 @@ export default class OrderDetailScreen extends Component{
             break;
         }
       }
-      this.setState({loadingVisible: false, data: data});
+      let _gn = 0;
+      let _gp = 0;
+      if(data.refund.type != 1) {
+          data.refundGoods.forEach((v, k) => {
+              _gn += v.qty;
+              _gp += v.refundAmount;
+          });
+      }
+      this.setState({loadingVisible: false, goodsTotalQty: _gn, goodsTotalPrice: _gp, data: data});
     });
     fetch(Config.JAVAAPI + `shop/wap/client/order/detail?orderSn=${this.state.ordersn}&token=${token}`, {
         method: 'POST'
@@ -320,5 +346,8 @@ export default class OrderDetailScreen extends Component{
         UIToast(data.message || '操作失败');
       }
     });
+  }
+  _viewRefundGoods = () => {
+    DeviceEventEmitter.emit('viewRefundGoodsShow', {index: 1});
   }
 }

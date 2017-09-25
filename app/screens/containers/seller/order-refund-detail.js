@@ -34,13 +34,15 @@ export default class OrderDetailScreen extends Component{
       data: {
         order: {},
         refund: {},
-        trace: []
+        trace: [],
+        refundGoods: []
       },
       id: _query.id,
       ordersn: _query.ordersn,
       modalVisible: false,
       urlType: '',
-      goodsTotalQty: 0
+      goodsTotalQty: 0,
+      goodsTotalPrice: 0
     };
   }
   componentWillMount() {
@@ -103,7 +105,7 @@ export default class OrderDetailScreen extends Component{
                 <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                   <Text style={styles.srefundDetail.dt}>退款商品数</Text>
                   <Text style={[styles.common.flex, styles.refundDetail.text2]}>{this.state.goodsTotalQty}</Text>
-                  <TouchableOpacity activeOpacity={.8}>
+                  <TouchableOpacity activeOpacity={.8} onPress={this._viewRefundGoods}>
                     <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
                       <Text style={styles.refundDetail.viewGoodsBtnText}>查看申请商品</Text>
                       <Image source={require('../../../images/icon-arb.png')} style={styles.refundDetail.viewGoodsBtnImg}/>
@@ -202,7 +204,7 @@ export default class OrderDetailScreen extends Component{
               </View>
             </View>
         </Modal>
-        <ViewRefundGoods index={0}/>
+        <ViewRefundGoods index={0} data={_data.refundGoods} totalNum={this.state.goodsTotalQty} totalPrice={this.state.goodsTotalPrice}/>
       </View>
     );
   }
@@ -287,7 +289,15 @@ export default class OrderDetailScreen extends Component{
             data.refund.statusName = '';
         break;
       }
-      this.setState({loadingVisible: false, data: data, bodyShow: true});
+      let _gn = 0;
+      let _gp = 0;
+      if(data.refund.type != 1) {
+          data.refundGoods.forEach((v, k) => {
+              _gn += v.qty;
+              _gp += v.refundAmount;
+          });
+      }
+      this.setState({loadingVisible: false, data: data, goodsTotalQty: _gn, goodsTotalPrice: _gp, bodyShow: true});
       this.props.navigation.setParams({title: data.refund.statusName});
     });
   }
@@ -333,5 +343,8 @@ export default class OrderDetailScreen extends Component{
         UIToast(data.message || '操作失败');
       }
     });
+  }
+  _viewRefundGoods = () => {
+    DeviceEventEmitter.emit('viewRefundGoodsShow', {index: 0});
   }
 }
