@@ -942,20 +942,19 @@ export default {
       marginBottom: 5,
       color: COLOR_3,
       lineHeight: 18,
-      height: 30
+      height: 34
     },
     infoAttr: {
       fontSize: FONT_12,
       color: COLOR_9,
-      marginBottom: 5
+      marginBottom: 2
     },
     infoPrice: {
       color: COLOR_RED,
-      flex: 1,
-      fontSize: FONT_12
+      fontSize: FONT_12,
+      textAlign: 'right'
     },
     infoNum: {
-      flex: 1,
       textAlign: 'right',
       fontSize: FONT_12
     },
@@ -979,12 +978,11 @@ export default {
       marginBottom: 1
     },
     totalText: {
-      paddingTop: 5,
-      paddingLeft: 10,
+      paddingLeft: 5,
       paddingRight: 10,
       textAlign: 'right',
       fontSize: FONT_12,
-      color: COLOR_3
+      color: COLOR_3,
     },
     totalBig: {
       fontSize: FONT_16
@@ -1012,6 +1010,9 @@ export default {
       paddingLeft: 10,
       paddingRight: 10,
       paddingTop: 2
+    },
+    account: {
+      paddingTop: 5
     }
   },
   btn: {
@@ -2317,6 +2318,11 @@ export default {
       paddingLeft: 10,
       position: 'relative'
     },
+    onlyRefundLabelRight: {
+      marginTop: 5,
+      paddingRight: 5,
+      position: 'relative',
+    },
     onlyRefundLabelContainer: {
       borderWidth: 1,
       borderColor: COLOR_RED,
@@ -2337,6 +2343,19 @@ export default {
       left: 6,
       top: 5,
     },
+    onlyRefundLabelArrowRight: {
+      borderLeftWidth: 4,
+      borderTopWidth: 4,
+      borderBottomWidth: 4,
+      borderLeftColor: COLOR_RED,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      width: 0,
+      heiht: 0,
+      position: 'absolute',
+      left: 44,
+      top: 5,
+    },
     onlyRefundLabelInset: {
       borderRightWidth: 4,
       borderTopWidth: 4,
@@ -2348,6 +2367,19 @@ export default {
       heiht: 0,
       position: 'absolute',
       left: 7,
+      top: 5,
+    },
+    onlyRefundLabelInsetRight: {
+      borderLeftWidth: 4,
+      borderTopWidth: 4,
+      borderBottomWidth: 4,
+      borderLeftColor: COLOR_WHITE,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      width: 0,
+      heiht: 0,
+      position: 'absolute',
+      left: 43,
       top: 5,
     },
     onlyRefundLabelText: {

@@ -20,6 +20,9 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
+import RefundStatusList from '../../components/buyer/order-refund-status';
+import RefundOnlyStatusList from '../../components/buyer/order-refund-only-status';
+
 export default class OrderSearchScreen extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +68,7 @@ export default class OrderSearchScreen extends Component {
         </View>
         <FlatList
         data={this.state.list}
-        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)} confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
+        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} index={4} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)} confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
             text: '是否确认已收到货款？',
             confirm: (arg) => {
               this._confirmReceipt(arg);
@@ -89,6 +92,8 @@ export default class OrderSearchScreen extends Component {
         <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
       </TouchableOpacity>
       </Modal>
+      <RefundStatusList index={4}/>
+      <RefundOnlyStatusList index={4}/>
       </View>
     );
   }

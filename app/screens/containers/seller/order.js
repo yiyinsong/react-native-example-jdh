@@ -25,6 +25,9 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
+import RefundStatusList from '../../components/buyer/order-refund-status';
+import RefundOnlyStatusList from '../../components/buyer/order-refund-only-status';
+
 export default class OrderListScreen extends Component {
     constructor(props){
     	super(props);
@@ -409,6 +412,7 @@ export default class OrderListScreen extends Component {
                     data={item}
                     type={_type}
                     props={this.props}
+                    index={3}
                     refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
                     confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
                         text: '是否确认已收到货款？',
@@ -442,7 +446,7 @@ export default class OrderListScreen extends Component {
                   </View>
                   <FlatList
                     data={this.state.listJc}
-                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props} posPay={(sn) => this._posPay(sn)}></OrderItem>}
+                    renderItem={({item}) => this.state.activeIndex == 8 ? <RefundItem data={item} type={_type} props={this.props}></RefundItem> : <OrderItem data={item} type={_type} props={this.props} index={3} posPay={(sn) => this._posPay(sn)}></OrderItem>}
                     onRefresh={false}
                     refreshing={false}
                     onEndReachedThreshold={2}
@@ -464,6 +468,8 @@ export default class OrderListScreen extends Component {
               </Modal>
             </View>
             : null}
+            <RefundStatusList index={3}/>
+            <RefundOnlyStatusList index={3}/>
           </View>
         );
     }

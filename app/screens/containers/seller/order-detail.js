@@ -20,6 +20,9 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
+import RefundStatusList from '../../components/buyer/order-refund-status';
+import RefundOnlyStatusList from '../../components/buyer/order-refund-only-status';
+
 export default class OrderDetailScreen extends Component{
   constructor(props){
   	super(props);
@@ -63,6 +66,7 @@ export default class OrderDetailScreen extends Component{
           type={this.state.type}
           props={this.props}
           navgoods={true}
+          index={5}
           refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
           posPay={(sn) => this._posPay(sn)}
           confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 3, data: {
@@ -143,6 +147,8 @@ export default class OrderDetailScreen extends Component{
           this._modifyPrice(r, p);
         }
       }} keys={0} notClose={true}/>
+      <RefundStatusList index={5}/>
+      <RefundOnlyStatusList index={5}/>
       </View>
     );
   }

@@ -18,6 +18,8 @@ import UIToast from '../../common/ui-toast';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 
+import ViewRefundGoods from '../../components/seller/view-refund-goods';
+
 export default class OrderDetailScreen extends Component{
   static navigationOptions = ({ navigation, screenProps }) => ({
     headerTitle: navigation.state.params.title,
@@ -37,7 +39,8 @@ export default class OrderDetailScreen extends Component{
       id: _query.id,
       ordersn: _query.ordersn,
       modalVisible: false,
-      urlType: ''
+      urlType: '',
+      goodsTotalQty: 0
     };
   }
   componentWillMount() {
@@ -96,6 +99,18 @@ export default class OrderDetailScreen extends Component{
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundAmount}</Text>
                 <Text style={[styles.common.flex, styles.srefundDetail.ddr]}>订单总额：￥{this.state.data.refund.type !== 40  && this.state.data.order.status == 0 ? this.state.data.order.jxOrder.totalAmount : this.state.data.order.totalAmount}</Text>
               </View>
+              {this.state.data.refund.type && this.state.data.refund.type !== 1 ?
+                <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
+                  <Text style={styles.srefundDetail.dt}>退款商品数</Text>
+                  <Text style={[styles.common.flex, styles.refundDetail.text2]}>{this.state.goodsTotalQty}</Text>
+                  <TouchableOpacity activeOpacity={.8}>
+                    <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                      <Text style={styles.refundDetail.viewGoodsBtnText}>查看申请商品</Text>
+                      <Image source={require('../../../images/icon-arb.png')} style={styles.refundDetail.viewGoodsBtnImg}/>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                : null}
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>退款说明</Text>
                 <Text style={styles.srefundDetail.dd}>{_data.refund.refundNote}</Text>
@@ -187,6 +202,7 @@ export default class OrderDetailScreen extends Component{
               </View>
             </View>
         </Modal>
+        <ViewRefundGoods index={0}/>
       </View>
     );
   }
