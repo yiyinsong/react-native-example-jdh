@@ -202,7 +202,9 @@ export default class OrderDetailScreen extends Component{
               </View>
             </View>
         </Modal>
-        <ViewRefundGoods index={1} data={_data.refundGoods} totalNum={this.state.goodsTotalQty} totalPrice={this.state.goodsTotalPrice}/>        
+        {_data.refund.type && _data.refund.type !== 1 ?
+        <ViewRefundGoods index={1} data={_data.refundGoods} totalNum={this.state.goodsTotalQty} totalPrice={this.state.goodsTotalPrice}/>
+        : null}        
       </View>
     );
   }

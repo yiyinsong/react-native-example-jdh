@@ -468,8 +468,8 @@ export default class OrderListScreen extends Component {
               </Modal>
             </View>
             : null}
-            <RefundStatusList index={3}/>
-            <RefundOnlyStatusList index={3}/>
+            <RefundStatusList index={3} props={this.props} type={1}/>
+            <RefundOnlyStatusList index={3} props={this.props} type={1}/>
           </View>
         );
     }

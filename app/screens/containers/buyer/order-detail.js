@@ -165,8 +165,8 @@ export default class OrderDetailScreen extends Component{
         {this._renderBtn(_data)}
         <Loading visible={this.state.loadingVisible}></Loading>
         <ModalConfirm keys={7}></ModalConfirm>
-        <RefundStatusList index={1}/>
-        <RefundOnlyStatusList index={1}/>        
+        <RefundStatusList index={1} props={this.props} type={0}/>
+        <RefundOnlyStatusList index={1} props={this.props} type={0}/>        
       </View>
     );
   }

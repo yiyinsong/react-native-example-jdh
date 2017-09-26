@@ -92,8 +92,8 @@ export default class OrderSearchScreen extends Component {
         <Image source={{uri: this.state.posCodeSrc}} style={{width: Utils.width * .4, height: Utils.width * .4}} resizeMode ={'contain'}/>
       </TouchableOpacity>
       </Modal>
-      <RefundStatusList index={4}/>
-      <RefundOnlyStatusList index={4}/>
+      <RefundStatusList index={4} props={this.props} type={1}/>
+      <RefundOnlyStatusList index={4} props={this.props} type={1}/>
       </View>
     );
   }

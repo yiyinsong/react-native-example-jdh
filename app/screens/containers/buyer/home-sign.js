@@ -5,11 +5,14 @@ import {
   Text,
   Image,
   TextInput,
+  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   InteractionManager,
   Modal
 } from 'react-native';
+
+import HTMLView from 'react-native-htmlview';
 
 import ScreenInit from '../../../config/screenInit';
 import UIToast from '../../common/ui-toast';
@@ -24,7 +27,8 @@ export default class HomeSignScreen extends Component {
     	super(props);
     	this.state = {
         data: {
-          is_sign: false
+          is_sign: false,
+          content: ''
         },
         loadingVisible: false,
         list: [],
@@ -111,11 +115,7 @@ export default class HomeSignScreen extends Component {
                 <View style={[styles.modal.container, styles.common.flexCenterh]}>
                   <View style={styles.sign.tips}>
                     <Text style={styles.sign.tipsTitle}>签到规则</Text>
-                    <Text style={styles.sign.tipsText}>1.签到功能仅限会员店会员；</Text>
-                    <Text style={styles.sign.tipsText}>2.每位用户每天只能签到一次，签到即可获取优惠券；</Text>
-                    <Text style={styles.sign.tipsText}>3.签到成功后获取的优惠券，自动放入“我的优惠券”列表；</Text>
-                    <Text style={styles.sign.tipsText}>4.签到获取的优惠券可用于购买采购中心商品时抵扣相应金额，禁止一切违反优惠券原则的获取方式，严禁刷券；</Text>
-                    <Text style={styles.sign.tipsText}>5.最终解释权归家电汇所有。</Text>
+                    <HTMLView value={this.state.data.content.replace(/\<br \/\>/ig, '')}></HTMLView>
                   </View>
                   <View style={styles.sign.tipsLine}></View>
                   <TouchableWithoutFeedback onPress={() => this._setTipsVisible(false)}>

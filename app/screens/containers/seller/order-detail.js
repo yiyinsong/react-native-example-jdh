@@ -147,8 +147,8 @@ export default class OrderDetailScreen extends Component{
           this._modifyPrice(r, p);
         }
       }} keys={0} notClose={true}/>
-      <RefundStatusList index={5}/>
-      <RefundOnlyStatusList index={5}/>
+      <RefundStatusList index={5} props={this.props} type={1}/>
+      <RefundOnlyStatusList index={5} props={this.props} type={1}/>
       </View>
     );
   }

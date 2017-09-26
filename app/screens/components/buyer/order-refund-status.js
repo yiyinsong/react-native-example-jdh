@@ -23,6 +23,8 @@ export default class OrderRefundStatus extends Component {
         title: '',
       };
       this.index = this.props.index;
+      this.type = this.props.type;
+      this.attr = this.props.props;
     }
     componentDidMount() {
       this.listener_show = DeviceEventEmitter.addListener('orderRefundStatusShow', result => {
@@ -65,7 +67,7 @@ export default class OrderRefundStatus extends Component {
                 <ScrollView>
                 {_list.map((v, k) => {
                   return (
-                    <TouchableHighlight underlayColor="#fafafa" onPress={() => this._toRefundDetail(v.id)}>
+                    <TouchableHighlight underlayColor="#fafafa" onPress={() => this._toRefundDetail(v)}>
                       <View style={[styles.common.flexDirectionRow, styles.order.refundDd]}>
                         <Text style={[styles.order.refundDdText, {width: Utils.width * .35}]} numberOfLines={1}>{v.ctime}</Text>
                         <Text style={[styles.order.refundDdText, {width: Utils.width * .3}]} numberOfLines={1}>{v.sn}</Text>
@@ -86,7 +88,17 @@ export default class OrderRefundStatus extends Component {
     _close = () => {
       this.setState({visible: false});
     }
-    _toRefundDetail = (rid) => {
-
+    _toRefundDetail = (item) => {
+      this._close();
+      if(this.type === 0) {
+        this.attr.navigation.navigate('BuyerRefundDetail', {
+          id: item.id
+        });
+      } else {
+        this.attr.navigation.navigate('SellerRefundDetail', {
+          id: item.id,
+          ordersn: item.sn
+        });
+      }
     }
 }

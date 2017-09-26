@@ -311,8 +311,8 @@ export default class OrderListScreen extends Component {
                 </View>
                 <Loading visible={this.state.loadingVisible}></Loading>
                 <ModalConfirm keys={8}></ModalConfirm>
-                <RefundStatusList index={0}/>
-                <RefundOnlyStatusList index={0}/>
+                <RefundStatusList index={0} props={this.props} type={0}/>
+                <RefundOnlyStatusList index={0} props={this.props} type={0}/>
               </View>
               : null}
           </View>
