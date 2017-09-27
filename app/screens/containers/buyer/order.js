@@ -194,7 +194,7 @@ export default class OrderListScreen extends Component {
     }
     _getRefundData = (_type, i) => {
       let _tempIndex = i;
-      fetch(Config.JAVAAPI + `shop/mobile/refund/list?orderType[0]= 10&orderType[1]=20&page=${this.state.page}&token=${token}`, {
+      fetch(Config.JAVAAPI + `shop/mobile/refund/list?orderType[0]=10&orderType[1]=20&page=${this.state.page}&token=${token}`, {
          method: 'POST'
       })
       .then((response) => response.json())
@@ -247,7 +247,6 @@ export default class OrderListScreen extends Component {
                 break;
             }
         });
-
         let _temp = [];
         if(this.state.page != 1) {
           _temp = this.state.list;
@@ -297,7 +296,7 @@ export default class OrderListScreen extends Component {
                     index={0}
                     data={item}
                     props={this.props}
-                    confirmReceiptGoods={() => {}}
+                    confirmReceiptGoods={() => {this._confirmReceiptGoods(item.id)}}
                     cancel={() => {this._cancel(item.mainOrderSn || item.orderSn)}}
                     getItemLayout={(data, index) => ( {length: 208, offset: 208 * index, index} )}
                     ></OrderItem>
@@ -375,6 +374,28 @@ export default class OrderListScreen extends Component {
       .then( r => {
         if(r.code == 1) {
           DeviceEventEmitter.emit('BuyerOrderUpdate');
+        }
+      });
+    }
+    _confirmReceiptGoods = (id) => {
+      DeviceEventEmitter.emit('confirmShow', {
+        keys: 8,
+        data: {
+          text: '确认收货？',
+          confirm: (arg) => {
+            fetch(Config.JAVAAPI + `shop/wap/order/receive?id=${arg.id}&token=${token}`, {
+              method: 'POST'
+            })
+            .then(response => response.json())
+            .then( r => {
+              if(r.code == 1) {
+                DeviceEventEmitter.emit('BuyerOrderUpdate');
+              }
+            });
+          }
+        },
+        params: {
+          id,
         }
       });
     }

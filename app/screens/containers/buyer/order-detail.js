@@ -208,7 +208,7 @@ export default class OrderDetailScreen extends Component{
             <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
               {
                 _data.status === 30 ?
-                <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods}>
+                <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods(_data.id)}>
                   <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
                 </TouchableHighlight>
                 : null
@@ -254,6 +254,29 @@ export default class OrderDetailScreen extends Component{
       if(r.code == 1) {
         DeviceEventEmitter.emit('BuyerOrderUpdate');
         this._init();
+      }
+    });
+  }
+  _confirmReceiptGoods = (id) => {
+    DeviceEventEmitter.emit('confirmShow', {
+      keys: 7,
+      data: {
+        text: '确认收货？',
+        confirm: (arg) => {
+          fetch(Config.JAVAAPI + `shop/wap/order/receive?id=${arg.id}&token=${token}`, {
+            method: 'POST'
+          })
+          .then(response => response.json())
+          .then( r => {
+            if(r.code == 1) {
+              DeviceEventEmitter.emit('BuyerOrderUpdate');
+              this._init();
+            }
+          });
+        }
+      },
+      params: {
+        id,
       }
     });
   }
