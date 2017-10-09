@@ -19,6 +19,7 @@ import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 
 import ViewRefundGoods from '../../components/seller/view-refund-goods';
+import ViewSwiper from '../../components/seller/view-swiper';
 
 export default class OrderDetailScreen extends Component{
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -37,6 +38,7 @@ export default class OrderDetailScreen extends Component{
         trace: [],
         refundGoods: []
       },
+      imgs: [],
       id: _query.id,
       ordersn: _query.ordersn,
       modalVisible: false,
@@ -121,19 +123,19 @@ export default class OrderDetailScreen extends Component{
               <View style={[styles.common.flexDirectionRow, styles.srefundDetail.dl]}>
                 <Text style={styles.srefundDetail.dt}>用户上传图片</Text>
                 <View style={[styles.common.flexDirectionRow, styles.srefundDetail.imgContent]}>
-                  <TouchableOpacity activeOpacity={.8}>
+                  <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(0)}>
                     <Image source={{uri: _data.uimg1}} style={styles.srefundDetail.img}/>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8}>
+                  <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(1)}>
                     <Image source={{uri: _data.uimg2}} style={styles.srefundDetail.img}/>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8}>
+                  <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(2)}>
                     <Image source={{uri: _data.uimg3}} style={styles.srefundDetail.img}/>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8}>
+                  <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(3)}>
                     <Image source={{uri: _data.uimg4}} style={styles.srefundDetail.img}/>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8}>
+                  <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(4)}>
                     <Image source={{uri: _data.uimg5}} style={styles.srefundDetail.img}/>
                   </TouchableOpacity>
                 </View>
@@ -207,6 +209,7 @@ export default class OrderDetailScreen extends Component{
         {this.state.data.refund.type && this.state.data.refund.type !== 1 ?
         <ViewRefundGoods index={0} data={_data.refundGoods} totalNum={this.state.goodsTotalQty} totalPrice={this.state.goodsTotalPrice}/>
         : null}
+        <ViewSwiper data={this.state.imgs} index={0} />
       </View>
     );
   }
@@ -291,6 +294,11 @@ export default class OrderDetailScreen extends Component{
             data.refund.statusName = '';
         break;
       }
+      if(data.uimg1) this.state.imgs.push(data.uimg1);
+      if(data.uimg2) this.state.imgs.push(data.uimg2);
+      if(data.uimg3) this.state.imgs.push(data.uimg3);
+      if(data.uimg4) this.state.imgs.push(data.uimg4);
+      if(data.uimg5) this.state.imgs.push(data.uimg5);
       let _gn = 0;
       let _gp = 0;
       if(data.refund.type != 1) {
@@ -348,5 +356,8 @@ export default class OrderDetailScreen extends Component{
   }
   _viewRefundGoods = () => {
     DeviceEventEmitter.emit('viewRefundGoodsShow', {index: 0});
+  }
+  _viewBigImgs = (i) => {
+    DeviceEventEmitter.emit('viewSwiperShow', {index: 0, number: i});
   }
 }

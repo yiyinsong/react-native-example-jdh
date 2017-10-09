@@ -5,7 +5,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  InteractionManager
+  InteractionManager,
+  DeviceEventEmitter
 } from 'react-native';
 
 import styles from '../../../css/styles';
@@ -13,6 +14,9 @@ import Loading from '../../common/ui-loading';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
+
+import ViewRefundGoods from '../../components/seller/view-refund-goods';
+import ViewSwiper from '../../components/seller/view-swiper';
 
 export default class OrderRefundDetailScreen extends Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
@@ -30,10 +34,11 @@ export default class OrderRefundDetailScreen extends Component {
           refund: {},
           refundGoods: []
         },
+        imgs: [],
         bodyShow: false,
         goodsTotalQty: 0,
         goodsTotalPrice: 0,
-        loadingVisible: false
+        loadingVisible: false,
       };
     }
     componentWillMount() {
@@ -69,7 +74,7 @@ export default class OrderRefundDetailScreen extends Component {
                       <View style={[styles.common.flexDirectionRow, styles.refundDetail.dd]}>
                         <Text style={styles.refundDetail.text1}>退款商品数：</Text>
                         <Text style={[styles.common.flex, styles.refundDetail.text2]}>{this.state.goodsTotalQty}</Text>
-                        <TouchableOpacity activeOpacity={.8}>
+                        <TouchableOpacity activeOpacity={.8} onPress={this._viewRefundGoods}>
                           <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
                             <Text style={styles.refundDetail.viewGoodsBtnText}>查看申请商品</Text>
                             <Image source={require('../../../images/icon-arb.png')} style={styles.refundDetail.viewGoodsBtnImg}/>
@@ -85,19 +90,19 @@ export default class OrderRefundDetailScreen extends Component {
                       <View style={[styles.common.flexDirectionRow, styles.refundDetail.dd]}>
                         <Text style={styles.refundDetail.text1}>已上传照片：</Text>
                         <View style={[styles.common.flex, styles.refundDetail.imgGroup]}>
-                          <TouchableOpacity activeOpacity={.8}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(0)}>
                             <Image source={{uri: data.uimg1}} style={styles.refundDetail.img}/>
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={.8}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(1)}>
                             <Image source={{uri: data.uimg2}} style={styles.refundDetail.img}/>
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={.8}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(2)}>
                             <Image source={{uri: data.uimg3}} style={styles.refundDetail.img}/>
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={.8}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(3)}>
                             <Image source={{uri: data.uimg4}} style={styles.refundDetail.img}/>
                           </TouchableOpacity>
-                          <TouchableOpacity activeOpacity={.8}>
+                          <TouchableOpacity activeOpacity={.8} onPress={() => this._viewBigImgs(4)}>
                             <Image source={{uri: data.uimg5}} style={styles.refundDetail.img}/>
                           </TouchableOpacity>
                         </View>
@@ -152,7 +157,11 @@ export default class OrderRefundDetailScreen extends Component {
                 </TouchableOpacity>
                 : null}
               </View>
+              {data.refund.type && data.refund.type !== 1 ?
+                <ViewRefundGoods index={2} data={data.refundGoods} totalNum={this.state.goodsTotalQty} totalPrice={this.state.goodsTotalPrice}/>
+                : null}
               <Loading visible={this.state.loadingVisible}></Loading>
+              <ViewSwiper data={this.state.imgs} index={2} />
             </View>
         );
     }
@@ -232,6 +241,11 @@ export default class OrderRefundDetailScreen extends Component {
                 _data.refund.statusName = '';
             break;
         }
+        if(_data.uimg1) this.state.imgs.push(_data.uimg1);
+        if(_data.uimg2) this.state.imgs.push(_data.uimg2);
+        if(_data.uimg3) this.state.imgs.push(_data.uimg3);
+        if(_data.uimg4) this.state.imgs.push(_data.uimg4);
+        if(_data.uimg5) this.state.imgs.push(_data.uimg5);
         let _gn = 0;
         let _gp = 0;
         if(_data.refund.type != 1 && _data.refundGoods) {
@@ -249,5 +263,11 @@ export default class OrderRefundDetailScreen extends Component {
           goodsTotalPrice: _gp
         });
       });
+    }
+    _viewRefundGoods = () => {
+      DeviceEventEmitter.emit('viewRefundGoodsShow', {index: 2});
+    }
+    _viewBigImgs = (i) => {
+      DeviceEventEmitter.emit('viewSwiperShow', {index: 2, number: i});
     }
 }

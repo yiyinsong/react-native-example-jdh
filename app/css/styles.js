@@ -3369,5 +3369,44 @@ export default {
       width: 80,
       height: 48
     }
+  },
+  swiper: {
+    back: {
+      position: 'absolute',
+      top: 10,
+      left: 10,
+      zIndex: 3,
+      borderWidth: 1,
+      borderColor: COLOR_WHITE,
+      width: 30,
+      height: 30,
+      borderRadius: 30,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    backArrow: {
+      resizeMode: 'contain',
+      width: 15
+    },
+    container: {
+      backgroundColor: COLOR_BLACK,
+      flex:1,
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      justifyContent:'center',
+      alignItems:'center'
+    },
+    wrapper: {
+      positon: 'absolute',
+      zIndex: 2,
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      flex: 1
+    }
   }
 }
