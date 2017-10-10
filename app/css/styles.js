@@ -1836,6 +1836,17 @@ export default {
       width: 18,
       height: 18
     },
+    checkboxSmall: {
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      width: 16,
+      height: 16,
+      borderRadius: 9
+    },
+    checkedSmall: {
+      width: 16,
+      height: 16
+    },
   },
   sgoodsDetail: {
     header: {
@@ -3407,6 +3418,79 @@ export default {
       right: 0,
       bottom: 0,
       flex: 1
+    }
+  },
+  refundApply: {
+    block: {
+      padding: 10,
+      backgroundColor: COLOR_WHITE,
+      marginBottom: 10
+    },
+    title: {
+      color: COLOR_3,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+      paddingBottom: 8,
+      fontSize: FONT_12,
+      marginBottom: 5
+    },
+    item: {
+      paddingTop: 5
+    },
+    typeText: {
+      color: COLOR_3,
+      fontSize: FONT_12,
+      marginLeft: 5
+    },
+    typeTextActive: {
+      color: COLOR_RED
+    },
+    typeGrayText: {
+      color: COLOR_9
+    },
+    select: {
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      borderRadius: 4,
+      position: 'relative',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 8,
+      paddingBottom: 8,
+      marginTop: 5,
+      marginBottom: 5
+    },
+    selectText: {
+      color: COLOR_3,
+      fontSize: FONT_12
+    },
+    selectIcon: {
+      width: 14,
+      height: 14,
+      resizeMode: 'contain'
+    },
+    selectGoodsBtn: {
+      backgroundColor: COLOR_RED,
+      color: COLOR_WHITE,
+      fontSize: FONT_12,
+      borderRadius: 4,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 6,
+      paddingBottom: 6,
+      borderWidth: 1,
+      borderColor: COLOR_D
+    },
+    selectGoods: {
+      marginTop: 5
+    },
+    selectGoodsResult: {
+      fontSize: FONT_12,
+      marginLeft: 10,
+      color: COLOR_9
+    },
+    selectGoodsResultActive: {
+      color: COLOR_RED
     }
   }
 }

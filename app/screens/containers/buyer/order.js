@@ -45,10 +45,8 @@ export default class OrderListScreen extends Component {
         list: [],
         canload: false,
         tips: '',
-
         loadingVisible: false,
         activeIndex: 0,
-
         bodyShow: false,
         refundStatus: '',
         refundStatusList: [],

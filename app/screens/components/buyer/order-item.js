@@ -124,7 +124,7 @@ export default class OrderItem extends Component {
                 </TouchableHighlight>
                 : null
               }
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundApply(_data.id)}>
                 <Text style={styles.btn3.defaults}>退货退款</Text>
               </TouchableHighlight>
             </View>
@@ -156,8 +156,10 @@ export default class OrderItem extends Component {
     _confirmReceiptGoods = () => {
       this.props.confirmReceiptGoods && this.props.confirmReceiptGoods();
     }
-    _toRefundDetail = () => {
-
+    _toRefundApply = (id) => {
+      this.attr.navigation.navigate('BuyerRefundApply', {
+        orderid: id
+      });
     }
     _openRefundStatusList = (title, list) => {
       DeviceEventEmitter.emit('orderRefundStatusShow', {title, list, index: this.index});

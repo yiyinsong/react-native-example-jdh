@@ -37,6 +37,7 @@ import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-de
 import BuyerPayScreen from '../screens/containers/buyer/pay';
 import BuyerAttentionScreen from '../screens/containers/buyer/attention';
 import BuyerNewsMoreScreen from '../screens/components/buyer/news-more';
+import BuyerRefundApplyScreen from '../screens/containers/buyer/refund-apply';
 
 import styles from '../css/styles';
 
@@ -235,6 +236,13 @@ export default {
       title: '订单详情'
     }
   },
+  //买家申请退款
+  BuyerRefundApply: {
+    screen: BuyerRefundApplyScreen,
+    navigationOptions: {
+      title: '退货退款'
+    }
+  },
   //买家退款详情
   BuyerRefundDetail: {
     screen: BuyerRefundDetailScreen,
@@ -259,5 +267,5 @@ export default {
     navigationOptions: {
       title: '最新动态'
     }
-  }
+  },
 }
