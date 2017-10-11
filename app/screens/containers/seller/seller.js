@@ -338,7 +338,7 @@ export default class SellerHomeScreen extends Component {
                 <View style={ [styles.common.flex, styles.shome.dt] }>
                   <View style={ [styles.common.flex, styles.common.flexCenterv] }>
                     <Image source={require('../../../images/icon-overview-f3.png')} style={ styles.shome.dtlIcon }/>
-                    <Text style={ styles.shome.dtName }>即采商品订单</Text>
+                    <Text style={ styles.shome.dtName }>分销商品订单</Text>
                   </View>
                   <View style={ [styles.common.flex, styles.common.flexEndh, styles.common.flexCenterv] }>
                     <TouchableOpacity activeOpacity={.8} onPress={() => {this._toOrder(1, 0)}}>
@@ -427,7 +427,7 @@ export default class SellerHomeScreen extends Component {
                   <TouchableHighlight underlayColor='#fafafa' style={[styles.common.flex, styles.shome.goodsBlock]} onPress={() => this._toGoods(1)}>
                     <View style={[styles.common.flexv, styles.common.flexCenterv]}>
                       <Image source={require('../../../images/seller-goods-jc.png')} style={styles.shome.goodsIcon}/>
-                      <Text style={styles.shome.goodsText}>即采商品</Text>
+                      <Text style={styles.shome.goodsText}>分销商品</Text>
                     </View>
                   </TouchableHighlight>
                 </View>

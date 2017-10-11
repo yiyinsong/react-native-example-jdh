@@ -69,12 +69,12 @@ export default class OrderDetailScreen extends Component{
           index={5}
           refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
           posPay={(sn) => this._posPay(sn)}
-          confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 3, data: {
+          confirmReceipt={(sn) => DeviceEventEmitter.emit('confirmShow', {keys: 3, data: {
             text: '是否确认已收到货款？',
             confirm: (arg) => {
               this._confirmReceipt(arg);
             }
-          },params: id})}
+          },params: sn})}
           ></OrderItem>
           <View style={styles.sorderDetail.log}>
           {_data.actions.map((v, k) => {
@@ -226,8 +226,8 @@ export default class OrderDetailScreen extends Component{
         });
     }
   }
-  _confirmReceipt = (id) => {
-    fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
+  _confirmReceipt = (sn) => {
+    fetch(Config.JAVAAPI+`shop/wap/client/order/audit?orderSn=${sn}&token=${token}`, {
       method: 'POST'
     })
     .then(response => response.json())

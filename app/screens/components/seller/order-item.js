@@ -102,47 +102,51 @@ export default class OrderItem extends Component {
         );
     }
     _renderFooter = (_data, _type) => {
-      if(_data.operationAllowed && _type == 0 && _data.status == 20) {
-        return (<View style={styles.sorderItem.itemFooter}>
-            <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._deliver(_data.orderSn, _data.id)} style={styles.btn.container}>
-              <Text style={styles.btn.primary}>发货</Text>
-            </TouchableHighlight>
-            {_data.isRefund == -1 ?
-            <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._refuseDeliver(_data.id)}>
-              <Text style={styles.btn.primary}>不发货</Text>
-            </TouchableHighlight>
-            : null}
-          </View>)
-        } else if(_data.operationAllowed && _type == 1 && _data.status == 10) {
-            return(<View style={styles.sorderItem.itemFooter}>
-                <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container}>
-                  <Text style={styles.btn.danger}>立即采购</Text>
-                </TouchableHighlight>
-                <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._posPay(_data.orderSn)}>
-                  <Text style={styles.btn.danger}>POS支付</Text>
-                </TouchableHighlight>
-              </View>)
-        }
-        else if(_data.operationAllowed && _type == 0 && _data.status == 10 &&  _data.payType == 1 && _data.offlinePayStatus == 10) {
-          return (
-            <View style={styles.sorderItem.itemFooter}>
-              <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => {this._confirmReceipt(_data.id)}}>
-                <Text style={styles.btn.primary}>确认收款</Text>
+      if(_data.operationAllowed) {
+        if(_type == 0 && _data.status == 20) {
+          return (<View style={styles.sorderItem.itemFooter}>
+              <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._deliver(_data.orderSn, _data.id)} style={styles.btn.container}>
+                <Text style={styles.btn.primary}>发货</Text>
               </TouchableHighlight>
-            </View>
-          )
-        } else if(this.navgoods && _data.operationAllowed && ( ( _type == 0 && _data.status == 10) || ( _type == 1 && _data.status == 0))) {
-          return (
-            <View style={styles.sorderItem.itemFooter}>
-            {_data.payType == 0 ?
-            <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._modifyPrice(_type == 0 ? _data.orderSn : _data.jxOrder.orderSn)}>
-              <Text style={styles.btn.danger}>修改价格</Text>
-            </TouchableHighlight>
-            : null}
-          </View>)
-        } else {
-          return null;
-        }
+              {_data.isRefund == -1 ?
+              <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._refuseDeliver(_data.id)}>
+                <Text style={styles.btn.primary}>不发货</Text>
+              </TouchableHighlight>
+              : null}
+            </View>)
+          } else if(_type == 1 && _data.status == 10) {
+              return(<View style={styles.sorderItem.itemFooter}>
+                  <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container}>
+                    <Text style={styles.btn.danger}>立即采购</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._posPay(_data.orderSn)}>
+                    <Text style={styles.btn.danger}>POS支付</Text>
+                  </TouchableHighlight>
+                </View>)
+          }
+          else if((_type == 0 && _data.status == 10 &&  _data.payType == 1 && _data.offlinePayStatus == 10) || (_type == 1 && _data.jxOrder.payType == 1 && _data.jxOrder.offlinePayStatus == 10 && _data.jxOrder.sellerShopType == 2)) {
+            return (
+              <View style={styles.sorderItem.itemFooter}>
+                <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => {this._confirmReceipt(_type == 0 ? _data.orderSn : _data.jxOrder.orderSn)}}>
+                  <Text style={styles.btn.primary}>确认收款</Text>
+                </TouchableHighlight>
+              </View>
+            )
+          } else if(this.navgoods && _data.payType == 0 &&( ( _type == 0 && _data.status == 10) || ( _type == 1 && _data.status == 0))) {
+            return (
+              <View style={styles.sorderItem.itemFooter}>
+              {_data.payType == 0 ?
+              <TouchableHighlight underlayColor="#f5f5f5" style={styles.btn.container} onPress={() => this._modifyPrice(_type == 0 ? _data.orderSn : _data.jxOrder.orderSn)}>
+                <Text style={styles.btn.danger}>修改价格</Text>
+              </TouchableHighlight>
+              : null}
+            </View>)
+          } else {
+            return null;
+          }
+      } else {
+        return null;
+      }
     }
     _toDetail = (sn, goodsInfo) => {
       if(this.navgoods) {
@@ -198,8 +202,8 @@ export default class OrderItem extends Component {
     _modifyPrice = (sn) => {
       DeviceEventEmitter.emit('promptShow', {keys: 0, params: {sn}});
     }
-    _confirmReceipt = (id) => {
-      this.props.confirmReceipt && this.props.confirmReceipt.call(null, id);
+    _confirmReceipt = (sn) => {
+      this.props.confirmReceipt && this.props.confirmReceipt.call(null, sn);
     }
     _openRefundStatusList = (title, list) => {
       DeviceEventEmitter.emit('orderRefundStatusShow', {title, list, index: this.index});

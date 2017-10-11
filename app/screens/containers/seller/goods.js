@@ -93,7 +93,7 @@ export default class SellerGoodsScreen extends Component {
                   <Text style={[styles.sgoods.tabText, styles.sgoods.tabFirst, state.type == 0 ? styles.sgoods.tabActive : '']}>自建商品</Text>
                 </TouchableHighlight>
                 <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._tab(1)} style={styles.sgoods.tabItem}>
-                  <Text style={[styles.sgoods.tabText, state.type == 1 ? styles.sgoods.tabActive : '']}>即采商品</Text>
+                  <Text style={[styles.sgoods.tabText, state.type == 1 ? styles.sgoods.tabActive : '']}>分销商品</Text>
                 </TouchableHighlight>
                 <TouchableHighlight underlayColor="#f5f5f5" onPress={() => this._tab(2)} style={styles.sgoods.tabItem}>
                   <Text style={[styles.sgoods.tabText, styles.sgoods.tabLast, state.type == 2 ? styles.sgoods.tabActive : '']}>商品库</Text>
@@ -149,10 +149,10 @@ export default class SellerGoodsScreen extends Component {
               <View style={{width: Utils.width}}>
                 <View style={[styles.common.flexDirectionRow, styles.sgoods.switchTitle]}>
                   <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sgoods.switchItem]} onPress={() => this._switch(0, 1)}>
-                    <Text style={[styles.sgoods.switchText, state.switchIndex2 == 0 ? styles.sgoods.switchActive : '']}>已即采商品</Text>
+                    <Text style={[styles.sgoods.switchText, state.switchIndex2 == 0 ? styles.sgoods.switchActive : '']}>已分销商品</Text>
                   </TouchableOpacity>
                   <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sgoods.switchItem]} onPress={() => this._switch(1, 1)}>
-                    <Text style={[styles.sgoods.switchText, state.switchIndex2 == 1 ? styles.sgoods.switchActive : '']}>未即采商品</Text>
+                    <Text style={[styles.sgoods.switchText, state.switchIndex2 == 1 ? styles.sgoods.switchActive : '']}>未分销商品</Text>
                   </TouchableOpacity>
                 </View>
                 <FlatList
@@ -570,7 +570,7 @@ export default class SellerGoodsScreen extends Component {
         return (
           <View style={[styles.common.flex, styles.common.flexEndh]}>
             <TouchableHighlight underlayColor='#fafafa' onPress={() => {this._binging()}}>
-              <Text style={styles.btn.defaults}>一键即采</Text>
+              <Text style={styles.btn.defaults}>一键分销</Text>
             </TouchableHighlight>
           </View>
         );
@@ -716,7 +716,7 @@ export default class SellerGoodsScreen extends Component {
     _binging = () => {
       let state = this.state;
       if(state.checkTotal[1] == 0) {
-        UIToast('请选择即采商品');
+        UIToast('请选择分销商品');
         return;
       }
       let ids = [];
@@ -725,7 +725,7 @@ export default class SellerGoodsScreen extends Component {
       })
       let idsString = ids.join(',');
       DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
-          text: '是否即采所选商品',
+          text: '是否分销所选商品',
           confirm: () => {
             /****先判断是否有重名的商品****/
             fetch(Config.PHPAPI + 'api/goods/product/validate-name', {
@@ -740,7 +740,7 @@ export default class SellerGoodsScreen extends Component {
               if(data.error_code == 500) {
                 this.timer = setTimeout(() => {
                   DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
-                      text: '已存在相同商品名称，您是否继续即采?',
+                      text: '已存在相同商品名称，您是否继续分销?',
                       confirm: () => {
                         fetch(Config.PHPAPI + 'api/mapp/goods-seller/unjc', {
                           method: 'POST',
@@ -766,7 +766,7 @@ export default class SellerGoodsScreen extends Component {
               } else if(data.error_code == 0) {
                   this.timer = setTimeout(() => {
                     DeviceEventEmitter.emit('confirmShow', {keys: 4, data: {
-                        text: '是否确认一键即采所选'+ids.length+'件商品?',
+                        text: '是否确认一键分销所选'+ids.length+'件商品?',
                         confirm: () => {
                           fetch(Config.PHPAPI + 'api/mapp/goods-seller/unjc', {
                             method: 'POST',

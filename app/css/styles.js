@@ -3491,6 +3491,67 @@ export default {
     },
     selectGoodsResultActive: {
       color: COLOR_RED
+    },
+    moneyInput: {
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      width: 150,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: 5,
+      paddingRight: 5,
+      margin: 0,
+      fontSize: FONT_12,
+      borderRadius: 4,
+      height: 30
+    },
+    moneyText: {
+      fontSize: FONT_12,
+      color: COLOR_RED,
+      flex: 1,
+      textAlign: 'right'
+    },
+    desc: {
+      marginTop: 5
+    },
+    descTextarea: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      padding: 5,
+      margin: 0,
+      fontSize: FONT_12,
+      borderRadius: 4,
+      height: 80,
+      textAlignVertical: 'top'
+    },
+    img: {
+      marginTop: 5
+    },
+    addBtn: {
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      backgroundColor: COLOR_GRAY,
+      width: 60,
+      height: 60
+    },
+    addText: {
+      fontWeight: '700',
+      color: COLOR_D,
+      fontSize: FONT_18
+    },
+    btn: {
+      height: 40,
+    },
+    submit: {
+      backgroundColor: COLOR_RED,
+      flex: 1,
+      justifyContent: 'center'
+    },
+    submitText: {
+      color: COLOR_WHITE,
+      fontSize: FONT_14,
+      textAlign: 'center',
     }
   }
 }

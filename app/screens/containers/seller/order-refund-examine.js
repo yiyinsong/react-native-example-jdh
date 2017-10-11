@@ -149,7 +149,7 @@ export default class OrderDetailScreen extends Component{
                             <Text style={styles.form.checkboxText}>需平台审核</Text>
                           </TouchableOpacity>
                           <Text style={styles.sexamine.tipsText}>
-                          {this.state.checked ? '取消“需平台审核”后，该退款将由会员店直接负责，且会员店无法再向平台申请该订单的退货退款' : '勾选此项时，即采订单需平台审核通过才能完成退款'}</Text>
+                          {this.state.checked ? '取消“需平台审核”后，该退款将由会员店直接负责，且会员店无法再向平台申请该订单的退货退款' : '勾选此项时，分销订单需平台审核通过才能完成退款'}</Text>
                         </View>
                         <View style={[styles.modal.confirm.btn, styles.sexamine.mfooter]}>
                           <TouchableOpacity activeOpacity={.8} onPress={() => {this._agree(true)}} style={styles.modal.confirm.confirm}>
@@ -291,7 +291,7 @@ export default class OrderDetailScreen extends Component{
   _agree = (check) => {
     //如果是仅退款，弹出线上或者线下付款方式
     if(this.state.data.refund.type == 1) {
-      //如果是即采订单并且已经采购
+      //如果是分销订单并且已经采购
       if(check) {
         if(this.state.checked) {
           this._agreeHandle();

@@ -223,7 +223,7 @@ export default class OrderListScreen extends Component {
       if(_type == 0 && i == 8) {
         this._getRefundData(0, 8);
       }
-      /**如果是即采商品的退货退款**/
+      /**如果是分销商品的退货退款**/
       else if(_type == 1 && i == 8) {
         this._getRefundData(1, 8);
       }
@@ -388,7 +388,7 @@ export default class OrderListScreen extends Component {
                 <View style={styles.sorder.type}>
                   <View style={[styles.sorder.typeWrapper, styles.common.flexDirectionRow]}>
                     <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 0 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(0, 0)}}><Text style={[styles.sorder.typeText, _type == 0 ? styles.sorder.typeTextActive : null]}>自建商品</Text></TouchableOpacity>
-                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 1 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(1, 0)}}><Text style={[styles.sorder.typeText, _type == 1 ? styles.sorder.typeTextActive : null]}>即采商品</Text></TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.8} style={[styles.common.flex, styles.sorder.typeItem, _type == 1 ? styles.sorder.typeItemActive : null]} onPress={() => {this._selectType(1, 0)}}><Text style={[styles.sorder.typeText, _type == 1 ? styles.sorder.typeTextActive : null]}>分销商品</Text></TouchableOpacity>
                   </View>
                 </View>
                 {this.state.type == 0 ?
@@ -414,12 +414,12 @@ export default class OrderListScreen extends Component {
                     props={this.props}
                     index={3}
                     refuseDeliver={(id) => this._openRefuseDeliverModal(id)}
-                    confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
+                    confirmReceipt={(sn) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
                         text: '是否确认已收到货款？',
                         confirm: (arg) => {
                           this._confirmReceipt(arg);
                         }
-                    }, params: id})}
+                    }, params: sn})}
                     ></OrderItem>
                   }
                     onRefresh={false}
@@ -572,8 +572,8 @@ export default class OrderListScreen extends Component {
         posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
       });
     }
-    _confirmReceipt = (id) => {
-      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
+    _confirmReceipt = (sn) => {
+      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?orderSn=${sn}&token=${token}`, {
         method: 'POST'
       })
       .then(response => response.json())

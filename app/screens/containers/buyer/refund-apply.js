@@ -7,10 +7,12 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
+  TextInput,
   Picker,
   ScrollView,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   InteractionManager,
 } from 'react-native';
 
@@ -31,7 +33,8 @@ export default class RefundApplyScreen extends Component {
         name: '请选择售后原因'
       },
       reasonList: [],
-      money: 0,
+      modelMoney: 0,
+      modelDesc: '',
       bodyShow: false
     };
   }
@@ -43,10 +46,10 @@ export default class RefundApplyScreen extends Component {
   }
   render() {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.common.init}>
+        <View style={styles.common.flexv}>
         {
           this.state.bodyShow ?
-            <View>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.common.init}>
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>售后类型</Text>
                 <View>
@@ -129,7 +132,8 @@ export default class RefundApplyScreen extends Component {
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>退款金额</Text>
                 <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.selectGoods]}>
-                <TextInput onChangeText={(text) => this.setState({money: text})} value={this.state.text}/>
+                  <TextInput onChangeText={(text) => this.setState({modelMoney: text})} value={this.state.modelMoney} underlineColorAndroid="transparent" placeholder="请输入金额" style={styles.refundApply.moneyInput}/>
+                  <Text style={styles.refundApply.moneyText}>订单总额：￥1500</Text>
                 </View>
               </View>
               <View style={styles.refundApply.block}>
@@ -143,10 +147,33 @@ export default class RefundApplyScreen extends Component {
                   </Text>
                 </View>
               </View>
-            </View>
+              <View style={styles.refundApply.block}>
+                <Text style={styles.refundApply.title}>退款说明</Text>
+                <View style={styles.refundApply.desc}>
+                  <TextInput onChangeText={(text) => this.setState({modelDesc: text})} value={this.state.modelDesc} underlineColorAndroid="transparent" placeholder="请说明原因" style={styles.refundApply.descTextarea} multiline={true} blurOnSubmit={false}/>
+                </View>
+              </View>
+              <View style={styles.refundApply.block}>
+                <Text style={styles.refundApply.title}>上传照片</Text>
+                <View style={[styles.common.flexDirectionRow, styles.refundApply.img]}>
+                  <TouchableHighlight underlayColor="#ccc" style={[styles.common.flexCenterh, styles.common.flexCenterv, styles.refundApply.addBtn]}>
+                    <Text style={styles.refundApply.addText}>+</Text>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </ScrollView>
           : null
         }
-      </ScrollView>
+        {
+          this.state.bodyShow ?
+          <View style={styles.refundApply.btn}>
+            <TouchableHighlight underlayColor="#d6231a" style={styles.refundApply.submit}>
+              <Text style={styles.refundApply.submitText}>提交申请</Text>
+            </TouchableHighlight>
+          </View>
+          : null
+        }
+      </View>
     )
   }
   _checkType(i) {

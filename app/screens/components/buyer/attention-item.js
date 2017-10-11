@@ -47,7 +47,7 @@ export default class AttentionItem extends Component {
         } else if(data.sale_model == 2) {
             return (
                 <View>
-                    <Text style={styles.attentionItem.price}>即采价：<Text style={styles.attentionItem.priceRed}>￥{data.jc_price}</Text></Text>
+                    <Text style={styles.attentionItem.price}>分销价：<Text style={styles.attentionItem.priceRed}>￥{data.jc_price}</Text></Text>
                     <Text style={styles.attentionItem.price}>优惠：<Text style={styles.attentionItem.priceRed}>￥{data.jc_profit}</Text></Text>
                 </View>
             )
@@ -57,7 +57,7 @@ export default class AttentionItem extends Component {
             } else if(type == 2) {
                 return (
                     <View>
-                        <Text style={styles.attentionItem.price}>即采价：<Text style={styles.attentionItem.priceRed}>￥{data.jc_price}</Text></Text>
+                        <Text style={styles.attentionItem.price}>分销价：<Text style={styles.attentionItem.priceRed}>￥{data.jc_price}</Text></Text>
                         <Text style={styles.attentionItem.price}>优惠：<Text style={styles.attentionItem.priceRed}>￥{data.jc_profit}</Text></Text>
                     </View>
                 )

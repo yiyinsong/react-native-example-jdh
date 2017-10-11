@@ -68,12 +68,12 @@ export default class OrderSearchScreen extends Component {
         </View>
         <FlatList
         data={this.state.list}
-        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} index={4} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)} confirmReceipt={(id) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
+        renderItem={({item}) => <OrderItem data={item} type={_type} props={this.props} index={4} refuseDeliver={(id) => this._openRefuseDeliverModal(id)} posPay={(sn) => this._posPay(sn)} confirmReceipt={(sn) => DeviceEventEmitter.emit('confirmShow', {keys: 1, data: {
             text: '是否确认已收到货款？',
             confirm: (arg) => {
               this._confirmReceipt(arg);
             }
-        }, params: id})}></OrderItem>}
+        }, params: sn})}></OrderItem>}
         onRefresh={false}
         refreshing={false}
         onEndReachedThreshold={.1}
@@ -188,8 +188,8 @@ export default class OrderSearchScreen extends Component {
         posCodeSrc: `${Config.JAVAAPI}qrcode?text=${sn}&w=150`
       });
     }
-    _confirmReceipt = (id) => {
-      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?id=${id}&token=${token}`, {
+    _confirmReceipt = (sn) => {
+      fetch(Config.JAVAAPI+`shop/wap/client/order/audit?orderSn=${sn}&token=${token}`, {
         method: 'POST'
       })
       .then(response => response.json())

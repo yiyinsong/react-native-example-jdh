@@ -67,7 +67,7 @@ export default class AttentionScreen extends Component {
               </TouchableHighlight>
               <TouchableHighlight underlayColor="#fafafa" style={styles.common.flex} onPress={this._openType}>
                 <View style={[styles.common.flex, styles.common.flexCenterh, styles.common.flexCenterv]}>
-                  <Text style={styles.attention.filterText}>{this.state.saleType === 1 ? '自营' : '即采'}</Text>
+                  <Text style={styles.attention.filterText}>{this.state.saleType === 1 ? '自营' : '分销'}</Text>
                   {this.state.panelTypeVisible ?
                     <View style={[styles.icon.arrowUp]}></View>
                     :
@@ -116,7 +116,7 @@ export default class AttentionScreen extends Component {
                   <Text style={styles.attention.cateItem}>自营</Text>
                 </TouchableHighlight>
                 <TouchableHighlight underlayColor="#fafafa" onPress={() => this._filterType(2)}>
-                <Text style={styles.attention.cateItem}>即采</Text>
+                <Text style={styles.attention.cateItem}>分销</Text>
               </TouchableHighlight>
             </ScrollView>
             </Modal>
