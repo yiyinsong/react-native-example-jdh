@@ -16,26 +16,51 @@ import {
   InteractionManager,
 } from 'react-native';
 
+import ImagePicker from 'react-native-image-picker';
+
 import styles from '../../../css/styles';
 import Config from '../../../config/config';
 import ScreenInit from '../../../config/screenInit';
 import Utils from '../../../js/utils';
 
+let imagePickerOptions = {
+  title: '请选择商品图片',
+  cancelButtonTitle: '取消',
+  takePhotoButtonTitle: '拍照',
+  chooseFromLibraryButtonTitle: '相册',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
+
 export default class RefundApplyScreen extends Component {
   constructor(props) {
     super(props);
+    let _query = this.props.navigation.state.params;
     this.state = {
-      checkedType: -1,
-      checkedGoods: 0,
+      checkedType: (_query.status == 30 || _query.status == 31) ? 1 : 0,
+      checkedGoods: (_query.status == 30 || _query.status == 31) ? -1 : 0,
       checkedReceipt: -1,
       reason: {
         id: '',
         name: '请选择售后原因'
       },
-      reasonList: [],
+      reasonList: [
+        {id: 1, name: '退运费'},
+        {id: 2, name: '商品瑕疵'},
+        {id: 3, name: '质量问题'},
+        {id: 4, name: '颜色/尺寸/参数不符'},
+        {id: 5, name: '少件/漏发'},
+        {id: 6, name: '收到商品时候有划痕/破损'},
+        {id: 7, name: '假冒品牌'},
+        {id: 8, name: '发票问题'},
+        {id: 99, name: '其他'}
+      ],
       modelMoney: 0,
       modelDesc: '',
-      bodyShow: false
+      bodyShow: false,
+      status: (_query.status == 30 || _query.status == 31) ? 1 : 0,
     };
   }
   componentWillMount() {
@@ -53,23 +78,25 @@ export default class RefundApplyScreen extends Component {
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>售后类型</Text>
                 <View>
-                  <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.item]} onPress={() => this._checkType(0)}>
-                    {this.state.checkedType === 0 ?
-                      <Image source={require('../../../images/icon-checked.png')} style={styles.control.checkedSmall}/>
-                      : <View style={[styles.control.checkboxSmall]}></View>
-                    }
-                    <Text style={[styles.refundApply.typeText, this.state.checkedType === 0 ? styles.refundApply.typeTextActive : null]}>我要退货</Text>
-                  </TouchableOpacity>
+                {this.state.status === 1 ?
                   <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.item]} onPress={() => this._checkType(1)}>
                     {this.state.checkedType === 1 ?
                       <Image source={require('../../../images/icon-checked.png')} style={styles.control.checkedSmall}/>
                       : <View style={[styles.control.checkboxSmall]}></View>
                     }
-                    <Text style={[styles.refundApply.typeText, this.state.checkedType === 1 ? styles.refundApply.typeTextActive : null]}>我要退款<Text style={styles.refundApply.typeGrayText}>（无需退货）</Text></Text>
+                    <Text style={[styles.refundApply.typeText, this.state.checkedType === 1 ? styles.refundApply.typeTextActive : null]}>我要退货</Text>
+                  </TouchableOpacity>
+                  : null}
+                  <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.item]} onPress={() => this._checkType(0)}>
+                    {this.state.checkedType === 0 ?
+                      <Image source={require('../../../images/icon-checked.png')} style={styles.control.checkedSmall}/>
+                      : <View style={[styles.control.checkboxSmall]}></View>
+                    }
+                    <Text style={[styles.refundApply.typeText, this.state.checkedType === 0 ? styles.refundApply.typeTextActive : null]}>我要退款<Text style={styles.refundApply.typeGrayText}>（无需退货）</Text></Text>
                   </TouchableOpacity>
                 </View>
               </View>
-              {this.state.checkedType === 1 ?
+              {this.state.checkedType === 0 ?
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>是否包含商品</Text>
                 <View>
@@ -90,6 +117,7 @@ export default class RefundApplyScreen extends Component {
                 </View>
               </View>
               : null}
+              {this.state.status === 1 ?
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>是否收到货</Text>
                 <View>
@@ -109,11 +137,12 @@ export default class RefundApplyScreen extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
+              : null}
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>售后原因</Text>
                 <View>
                   <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.select]}>
-                    <Text style={[styles.common.flex, styles.refundApply.selectText]} numberOfLines={1}>{this.state.reason.name}</Text>
+                    <Text style={[styles.common.flex, styles.refundApply.selectText, this.state.reason.id === '' ? styles.refundApply.placeholder : '']} numberOfLines={1}>{this.state.reason.name}</Text>
                     <Image source={require('../../../images/icon-select.png')} style={styles.refundApply.selectIcon}/>
                     <Picker
                     selectedValue={this.state.reason}
@@ -129,6 +158,7 @@ export default class RefundApplyScreen extends Component {
                   </View>
                 </View>
               </View>
+              {(this.state.checkedType === 0 && this.state.checkedGoods === 0) ?
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>退款金额</Text>
                 <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.selectGoods]}>
@@ -136,7 +166,8 @@ export default class RefundApplyScreen extends Component {
                   <Text style={styles.refundApply.moneyText}>订单总额：￥1500</Text>
                 </View>
               </View>
-              <View style={styles.refundApply.block}>
+              : null}
+              {(this.state.checkedType ===1 || this.state.checkedGoods === 1) ? <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>退款商品</Text>
                 <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.selectGoods]}>
                   <TouchableOpacity activeOpacity={.8}>
@@ -147,6 +178,7 @@ export default class RefundApplyScreen extends Component {
                   </Text>
                 </View>
               </View>
+              : null}
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>退款说明</Text>
                 <View style={styles.refundApply.desc}>
@@ -156,7 +188,7 @@ export default class RefundApplyScreen extends Component {
               <View style={styles.refundApply.block}>
                 <Text style={styles.refundApply.title}>上传照片</Text>
                 <View style={[styles.common.flexDirectionRow, styles.refundApply.img]}>
-                  <TouchableHighlight underlayColor="#ccc" style={[styles.common.flexCenterh, styles.common.flexCenterv, styles.refundApply.addBtn]}>
+                  <TouchableHighlight underlayColor="#ccc" style={[styles.common.flexCenterh, styles.common.flexCenterv, styles.refundApply.addBtn]} onPress={this._selectImage}>
                     <Text style={styles.refundApply.addText}>+</Text>
                   </TouchableHighlight>
                 </View>
@@ -198,5 +230,20 @@ export default class RefundApplyScreen extends Component {
         reason: item
       });
     }
+  }
+  _selectImage() {
+    ImagePicker.showImagePicker(imagePickerOptions, (response) => { 
+      if (response.didCancel) {
+        alert('User cancelled image picker');
+      }
+      else if (response.error) {
+        alert('ImagePicker Error: ', response.error);
+      }
+      else {
+        let source = { uri: response.uri };
+
+        alert(JSON.stringify(source));
+      }
+    });
   }
 }

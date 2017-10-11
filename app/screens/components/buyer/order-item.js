@@ -158,7 +158,8 @@ export default class OrderItem extends Component {
     }
     _toRefundApply = (id) => {
       this.attr.navigation.navigate('BuyerRefundApply', {
-        orderid: id
+        orderid: id,
+        status: this.props.data.status
       });
     }
     _openRefundStatusList = (title, list) => {

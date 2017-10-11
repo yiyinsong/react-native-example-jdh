@@ -28,6 +28,7 @@ const FONT_13 = 13;
 const FONT_14 = 14;
 const FONT_16 = 16;
 const FONT_18 = 18;
+const FONT_30 = 30;
 
 export default {
   //公用样式
@@ -3464,6 +3465,9 @@ export default {
       color: COLOR_3,
       fontSize: FONT_12
     },
+    placeholder: {
+      color: COLOR_9
+    },
     selectIcon: {
       width: 14,
       height: 14,
@@ -3536,9 +3540,8 @@ export default {
       height: 60
     },
     addText: {
-      fontWeight: '700',
       color: COLOR_D,
-      fontSize: FONT_18
+      fontSize: FONT_30
     },
     btn: {
       height: 40,
