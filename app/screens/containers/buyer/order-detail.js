@@ -166,7 +166,7 @@ export default class OrderDetailScreen extends Component{
         <Loading visible={this.state.loadingVisible}></Loading>
         <ModalConfirm keys={7}></ModalConfirm>
         <RefundStatusList index={1} props={this.props} type={0}/>
-        <RefundOnlyStatusList index={1} props={this.props} type={0}/>        
+        <RefundOnlyStatusList index={1} props={this.props} type={0}/>
       </View>
     );
   }
@@ -201,21 +201,25 @@ export default class OrderDetailScreen extends Component{
           </View>
         </View>
       );
-    } else if(_data.isRefund === -1) {
+    } else if(_data.isRefund === -1 || _data.refundAllowed) {
       if(_data.status === 20 || _data.status === 30 || _data.status === 31) {
         return (
           <View style={styles.orderDetail.btnArea}>
             <View style={[styles.common.flexDirectionRow, styles.common.flexEndh]}>
               {
-                _data.status === 30 ?
+                _data.isRefund === -1 && _data.status === 30 ?
                 <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._confirmReceiptGoods(_data.id)}>
                   <Text style={[styles.btn3.defaults, styles.btn3.danger]}>确认收货</Text>
                 </TouchableHighlight>
                 : null
               }
-              <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
-                <Text style={styles.btn3.defaults}>退货退款</Text>
-              </TouchableHighlight>
+              {
+                _data.refundAllowed ?
+                  <TouchableHighlight underlayColor='#fafafa' style={styles.btn.container} onPress={() => this._toRefundDetail}>
+                  <Text style={styles.btn3.defaults}>退货退款</Text>
+                  </TouchableHighlight>
+                : null
+              }
             </View>
           </View>
         );
