@@ -3555,6 +3555,41 @@ export default {
       color: COLOR_WHITE,
       fontSize: FONT_14,
       textAlign: 'center',
+    },
+    goodsItemImg: {
+      marginLeft: 10
+    },
+    goodsItemText1: {
+      color: COLOR_3,
+      fontSize: FONT_12
+    },
+    goodsItemText2: {
+      color: COLOR_9,
+      fontSize: FONT_12
+    },
+    goodsItemText3: {
+      color: COLOR_RED
+    },
+    goodsItemInput: {
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: 5,
+      paddingRight: 5,
+      marginTop: 0,
+      marginBottom: 0,
+      marginLeft: 0,
+      marginRight: 5,
+      fontSize: FONT_12,
+      height: 20,
+      textAlign: 'center'
+    },
+    goodsItemInfo: {
+      marginBottom: 5
+    },
+    goodsItemCheck: {
+      marginTop: 22
     }
   }
 }

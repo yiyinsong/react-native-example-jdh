@@ -71,7 +71,11 @@ export default class RefundApplyScreen extends Component {
       goodsList: [],
       orderId: _query.orderid,
       refundId: _query.refundid || '',
-      remainMoney: 0
+      remainMoney: 0,
+      goodsCheck: [],
+      goodsQtyModel: [],
+      goodsPriceModel: [],
+      goodsRefundMore: []
     };
   }
   componentWillMount() {
@@ -237,19 +241,39 @@ export default class RefundApplyScreen extends Component {
                     {this.state.goodsList.map((v, k) => {
                         return (
                             <View style={[styles.common.flexDirectionRow, styles.vrg.item]}>
-                                <Image source={{uri: v.imgUrlSmall}} style={styles.vrg.itemImg} />
+                                {this.state.goodsCheck[k] ?
+                                  <Image source={require('../../../images/icon-checked.png')} style={[styles.control.checkedSmall, styles.refundApply.goodsItemCheck]}/>
+                                  : <View style={[styles.control.checkboxSmall, styles.refundApply.goodsItemCheck]}></View>
+                                }
+                                <Image source={{uri: v.imgUrlSmall}} style={[styles.vrg.itemImg, styles.refundApply.goodsItemImg]} />
                                 <View style={[styles.common.flexv, styles.vrg.info]}>
                                     <Text numberOfLines={2} style={styles.vrg.itemGoodsName}>{v.goodsName}</Text>
                                     <Text numberOfLines={1} style={styles.vrg.itemAttr}>{v.skuAttr}</Text>
-                                    <View style={[styles.common.flexDirectionRow, styles.vrg.others]}>
-                                        <Text style={styles.vrg.othersText}>
-                                            申请数量：
-                                            <Text style={styles.vrg.othersActive}>x {v.qty}</Text>
-                                        </Text>
-                                        <Text style={styles.vrg.othersText}>
-                                            申请金额：
-                                            <Text style={styles.vrg.othersActive}>￥ {v.refundAmount}</Text>
-                                        </Text>
+                                    <View style={styles.vrg.others}>
+                                        <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.refundApply.goodsItemInfo]}>
+                                          <Text style={styles.refundApply.goodsItemText1}>数量：</Text>
+                                          <TextInput
+                                          onChangeText={(text) => this._changeNum(k, text)}
+                                          value={this.state.goodsQtyModel[k]}
+                                          underlineColorAndroid="transparent"
+                                          style={styles.refundApply.goodsItemInput}
+                                          />
+                                          <Text style={styles.refundApply.goodsItemText2}>
+                                            最多可申请<Text style={styles.refundApply.goodsItemText3}>{v.qty}</Text>件
+                                          </Text>
+                                        </View>
+                                        <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                                          <Text style={styles.refundApply.goodsItemText1}>金额：</Text>
+                                          <TextInput
+                                          onChangeText={(text) => this._changePrice(k, text)}
+                                          value={this.state.goodsPriceModel[k]}
+                                          underlineColorAndroid="transparent"
+                                          style={styles.refundApply.goodsItemInput}
+                                          />
+                                          <Text style={styles.refundApply.goodsItemText2}>
+                                            最多可申请<Text style={styles.refundApply.goodsItemText3}>{this.state.goodsRefundMore[k]}</Text>元
+                                          </Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
@@ -285,15 +309,15 @@ export default class RefundApplyScreen extends Component {
         this.state.remainMoney = parseFloat(r.obj.remainMoney);
         if(r.obj.canRefundGoods) {
             this.state.goodsList = r.obj.canRefundGoods;
-            // if(!this.isedit) {
-                // r.obj.canRefundGoods.forEach((v, k) => {
-                //     this.goodsCheck.push(true);
-                //     this.goodsQtyModel.push(v.qty);
-                //     this.goodsPriceModel.push(v.actualPayAmount > this.state.remainMoney ? this.state.remainMoney : v.actualPayAmount);
-                //     this.goodsRefundMore.push(v.actualPayAmount > this.state.remainMoney ? this.state.remainMoney : v.actualPayAmount);
-                // });
+            if(this.state.refundId == '') {
+                r.obj.canRefundGoods.forEach((v, k) => {
+                    this.state.goodsCheck.push(true);
+                    this.state.goodsQtyModel.push(v.qty);
+                    this.state.goodsPriceModel.push(v.actualPayAmount > this.state.remainMoney ? this.state.remainMoney : v.actualPayAmount);
+                    this.state.goodsRefundMore.push(v.actualPayAmount > this.state.remainMoney ? this.state.remainMoney : v.actualPayAmount);
+                });
                 // this.calculation();
-            // } else {
+            } else {
             //     ajax.get(JAVAAPI + '/shop/mobile/refund/getInfo', {
             //         id: this.refundId,
             //         token
@@ -354,7 +378,7 @@ export default class RefundApplyScreen extends Component {
             //         if(_ca) this.goodsAllCheck = _ca;
             //         this.calculation();
             //     });
-            // }
+            }
         }
         this.setState({loadingVisible: false, bodyShow: true });
       }
@@ -398,5 +422,15 @@ export default class RefundApplyScreen extends Component {
   }
   _setModalVisible = (bool) => {
     this.setState({modalVisible: bool});
+  }
+  _changeNum(k, t) {
+    let _temp = this.state.goodsQtyModel;
+    _temp[k] = t;
+    this.setState({goodsQtyModel: _temp});
+  }
+  _changePrice(k, t) {
+    let _temp = this.state.goodsPriceModel;
+    _temp[k] = t;
+    this.setState({goodsPriceModel: _temp});
   }
 }
