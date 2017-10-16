@@ -4,7 +4,7 @@ import {
   Text
   } from 'react-native';
 
-  export default class ShoppingScreen extends Component {
+  export default class CategoryScreen extends Component {
     constructor(props){
     	super(props);
     	this.state = {};

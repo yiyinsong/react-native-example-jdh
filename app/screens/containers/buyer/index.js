@@ -5,23 +5,34 @@ import {
   } from 'react-native';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
-import BHomeScreen from './home';
+import StoreScreen from './store';
+import ShoppingScreen from './shopping';
 import CategoryScreen from './category';
 import CartScreen from './cart';
-import UserBuyerScreen from './buyer';
-import UserSellerScreen from '../seller/seller';
 
 import styles from '../../../css/styles';
 
 
 export default TabNavigator({
-    'BuyerHome': {
-      screen: BHomeScreen,
+    'Store': {
+      screen: StoreScreen,
       navigationOptions: {
         header: null,
-        tabBarLabel: '首页',
+        tabBarLabel: '小店',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-home-active.png') : require('../../../images/icon-home.png')}
+            style={styles.common.tabIcon}
+          />
+        ),
+      }
+    },
+    'Shopping': {
+      screen: ShoppingScreen,
+      navigationOptions: {
+        header: null,
+        tabBarLabel: '采购中心',
+        tabBarIcon: ({ focused }) => (
+          <Image source={ focused ? require('../../../images/icon-shopping-active.png') : require('../../../images/icon-shopping.png')}
             style={styles.common.tabIcon}
           />
         ),
@@ -51,43 +62,6 @@ export default TabNavigator({
         ),
       }
     },
-    'User': {
-      screen: StackNavigator({
-          UserBuyer: { screen: UserBuyerScreen },
-          UserSeller: { screen: UserSellerScreen },
-      }, {
-        navigationOptions: ({navigation}) => ({
-          header: null
-        }),
-        transitionConfig: () => ({
-          transitionSpec: {
-            duration: 300
-          },
-          screenInterpolator: (sceneProps) => {
-            const { layout, position, scene } = sceneProps;
-            const { index } = scene;
-            const scale = position.interpolate({
-              inputRange: [index - 1,  index, index + 0.99, index + 1],
-              outputRange: [0.9, 1, 1, 0.9]
-            });
-            const opacity = position.interpolate({
-              inputRange: [index-1, index, index+0.99, index+1],
-              outputRange: [0, 1, 1, 0]
-            })
-            return {opacity, transform: [{scale}]}
-          },
-       }),
-      }),
-      navigationOptions: {
-        header: null,
-        tabBarLabel: '我的',
-        tabBarIcon: ({ focused }) => (
-          <Image source={ focused ? require('../../../images/icon-user-active.png') : require('../../../images/icon-user.png')}
-            style={styles.common.tabIcon}
-          />
-        ),
-      }
-    }
 }, {
   tabBarPosition: 'bottom',
   animationEnabled: false,
@@ -103,18 +77,20 @@ export default TabNavigator({
     style: {
       backgroundColor: '#ffffff',
       borderTopColor: '#eee',
-      borderTopWidth: 1
+      borderTopWidth: 1,
+      padding: 0
     },
     labelStyle: {
       fontSize: 12,
-      marginTop: 3
+      marginTop: 0
     },
     indicatorStyle: {
       height: 0
     },
     iconStyle: {
       width: 20,
-      height: 20
+      height: 20,
+      margin: 0
     },
     tabStyle: {
       margin: 0,

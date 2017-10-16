@@ -29,8 +29,8 @@ import SellerGoodsDetailScreen from '../screens/containers/seller/goods-detail';
 import SellerGoodsEditScreen from '../screens/containers/seller/goods-edit';
 
 import BuyerScreen from '../screens/containers/buyer/index';
-import BuyerSearchScreen from '../screens/containers/buyer/home-search';
-import BuyerSignScreen from '../screens/containers/buyer/home-sign';
+import BuyerSearchScreen from '../screens/containers/buyer/search';
+import BuyerSignScreen from '../screens/containers/buyer/sign';
 import BuyerOrderScreen from '../screens/containers/buyer/order';
 import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
 import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-detail';

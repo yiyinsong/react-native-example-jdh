@@ -312,7 +312,7 @@ export default class RefundApplyScreen extends Component {
             if(this.state.refundId == '') {
                 r.obj.canRefundGoods.forEach((v, k) => {
                     this.state.goodsCheck.push(true);
-                    this.state.goodsQtyModel.push(v.qty);
+                    // this.state.goodsQtyModel.push(v.qty);
                     this.state.goodsPriceModel.push(v.actualPayAmount > this.state.remainMoney ? this.state.remainMoney : v.actualPayAmount);
                     this.state.goodsRefundMore.push(v.actualPayAmount > this.state.remainMoney ? this.state.remainMoney : v.actualPayAmount);
                 });

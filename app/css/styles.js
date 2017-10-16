@@ -28,6 +28,7 @@ const FONT_13 = 13;
 const FONT_14 = 14;
 const FONT_16 = 16;
 const FONT_18 = 18;
+const FONT_24 = 24;
 const FONT_30 = 30;
 
 export default {
@@ -341,6 +342,105 @@ export default {
     },
     downActive: {
       borderTopColor: COLOR_BLUE
+    }
+  },
+  store: {
+    top: {
+      paddingTop: 30,
+      paddingLeft: 15,
+      paddingRight: 15
+    },
+    iconStore: {
+      width: 14,
+      height: 14
+    },
+    iconShare: {
+      width: 18,
+      height: 18,
+      resizeMode: 'contain',
+    },
+    iconMessage: {
+      width: 18,
+      height: 16,
+      resizeMode: 'contain',
+      marginLeft: 15
+    },
+    storeText: {
+      color: COLOR_WHITE,
+      fontSize: FONT_12,
+      marginLeft: 5
+    },
+    storeName: {
+      color: COLOR_WHITE,
+      fontSize: FONT_14,
+      marginLeft: 20,
+      marginRight: 20,
+      textAlign: 'center'
+    },
+    today: {
+      flex: 1,
+      justifyContent: 'center',
+      alignSelf: 'center'
+    },
+    todayNum: {
+      textAlign: 'center',
+      fontSize: FONT_24,
+      color: COLOR_WHITE
+    },
+    todayText: {
+      fontSize: FONT_12,
+      color: COLOR_WHITE,
+      textAlign: 'center'
+    },
+    dataNum: {
+      fontSize: FONT_16,
+      color: COLOR_WHITE,
+      textAlign: 'center'
+    },
+    dataText: {
+      fontSize: FONT_12,
+      color: COLOR_WHITE,
+      textAlign: 'center'
+    },
+    grid: {
+      backgroundColor: COLOR_WHITE,
+      flexWrap: 'wrap'
+    },
+    gridItem: {
+      paddingTop: 15,
+      paddingBottom: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
+    },
+    icon: {
+      width: 30,
+      height: 30,
+      resizeMode: 'contain'
+    },
+    iconText: {
+      fontSize: FONT_12,
+      color: COLOR_6,
+      marginTop: 5
+    },
+    add: {
+      marginTop: 15,
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      borderStyle: 'dashed',
+      marginLeft: 40,
+      marginRight: 40,
+      paddingTop: 8,
+      paddingBottom: 8
+    },
+    addIcon: {
+      width: 18,
+      height: 18,
+      resizeMode: 'contain'
+    },
+    addText: {
+      fontSize: FONT_12,
+      color: COLOR_6,
+      marginLeft: 5
     }
   },
   //卖家中心
