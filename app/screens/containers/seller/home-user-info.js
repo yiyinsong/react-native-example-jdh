@@ -44,7 +44,7 @@ export default class SellerUserInfoScreen extends Component {
     componentDidMount() {
       InteractionManager.runAfterInteractions(() => {
         this.setState({loadingVisible: true});
-        ScreenInit.checkLogin();
+        ScreenInit.checkLogin(this);
 
         //添加地址事件侦听
         this.eventEmitter_addr = DeviceEventEmitter.addListener('event_address_num_change', (arg) => {

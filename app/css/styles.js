@@ -348,7 +348,7 @@ export default {
     top: {
       paddingTop: 30,
       paddingLeft: 15,
-      paddingRight: 15
+      paddingRight: 10
     },
     iconStore: {
       width: 14,
@@ -363,7 +363,26 @@ export default {
       width: 18,
       height: 16,
       resizeMode: 'contain',
-      marginLeft: 15
+    },
+    messageWrapper: {
+      width: 24,
+      height: 20,
+      position: 'relative',
+      marginLeft: 15,
+      justifyContent: 'flex-end'
+    },
+    message: {
+      backgroundColor: COLOR_WHITE,
+      fontSize: FONT_8,
+      width: 12,
+      height: 12,
+      borderRadius: 12,
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      color: COLOR_RED
     },
     storeText: {
       color: COLOR_WHITE,
@@ -391,6 +410,9 @@ export default {
       fontSize: FONT_12,
       color: COLOR_WHITE,
       textAlign: 'center'
+    },
+    dataWrapper: {
+      backgroundColor: 'rgba(0, 0, 0, .01)'
     },
     dataNum: {
       fontSize: FONT_16,
@@ -430,7 +452,8 @@ export default {
       marginLeft: 40,
       marginRight: 40,
       paddingTop: 8,
-      paddingBottom: 8
+      paddingBottom: 8,
+      borderRadius: 4
     },
     addIcon: {
       width: 18,
@@ -448,117 +471,10 @@ export default {
     container: {
       flex: 1
     },
-    head: {
-      position: 'relative',
-    },
-    headContent: {
-      paddingTop: 20,
-    },
-    ht: {
-      alignItems: 'flex-start'
-    },
-    userBlock: {
-      padding: 10,
-      flexDirection: 'row',
-    },
-    userBlockLeft: {
-      flex: 1,
-      flexDirection: 'row',
-    },
     arrowRight: {
       width: 14,
       height: 14,
       resizeMode: 'contain'
-    },
-    userNavText: {
-      color: BACKGROUNDCOLOR_WHITE,
-      fontSize: FONT_12
-    },
-    userNavToMess: {
-      width: 20,
-      height: 20,
-      position: 'relative'
-    },
-    userMessIcon: {
-      width: 20,
-      height: 20,
-      resizeMode: 'contain'
-    },
-    badge: {
-      width: 14,
-      height: 14,
-      borderRadius: 7,
-      backgroundColor: BACKGROUNDCOLOR_WHITE,
-      position: 'absolute',
-      top: -4,
-      right: -4
-    },
-    badgeText: {
-      fontSize: FONT_8,
-      textAlign: 'center',
-      lineHeight: 13,
-      color: COLOR_RED
-    },
-    hb: {
-      flexDirection: 'row',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 2
-    },
-    logoContainer: {
-      borderRadius: 30,
-      width: 54,
-      height: 54,
-      padding: 2,
-      backgroundColor: COLOR_WHITE,
-      overflow: 'hidden'
-    },
-    userHeadIcon: {
-      width: 50,
-      height: 50,
-      resizeMode: 'contain',
-      borderRadius: 100,
-    },
-    userData: {
-      paddingLeft: 10
-    },
-    userName: {
-      fontSize: FONT_14,
-      color: BACKGROUNDCOLOR_WHITE
-    },
-    idTab: {
-      position: 'relative',
-      marginTop: 8
-    },
-    idTabText: {
-      position: 'absolute',
-      zIndex: 2,
-      textAlign: 'center',
-      textAlignVertical: 'center',
-      width: 81,
-      height: 25,
-      fontSize: FONT_12
-    },
-    idTabImg: {
-      width: 81,
-      height: 25
-    },
-    userShare: {
-      width: 18,
-      height: 15,
-    },
-    userToOther: {
-      flexDirection: 'row',
-      alignItems: 'flex-end'
-    },
-    userQrcode: {
-      width: 16,
-      height: 16,
-      marginLeft: 20,
-      resizeMode: 'contain'
-    },
-    userInfo: {
-      alignItems: 'flex-end',
     },
     dl: {
       backgroundColor: BACKGROUNDCOLOR_WHITE,
@@ -629,64 +545,9 @@ export default {
       borderBottomWidth: 0,
       borderBottomColor: 'transparent',
     },
-    order: {
-      flex: 1,
-      alignItems: 'center',
-      paddingTop: 25,
-      paddingBottom: 25
-    },
-    orderContent: {
-
-      alignItems: 'center'
-    },
-    orderIcon: {
-      width: 20,
-      height: 20,
-      resizeMode: 'contain'
-    },
-    orderText: {
-      fontSize: FONT_12,
-      color: COLOR_6,
-      marginTop: 5
-    },
-    orderBadge: {
-      position: 'absolute',
-      top: -5,
-      right: 0,
-      width: 14,
-      height: 14,
-      backgroundColor: COLOR_RED,
-      borderRadius: 7,
-    },
-    orderBadgeText: {
-      color: BACKGROUNDCOLOR_WHITE,
-      fontSize: FONT_8,
-      textAlign: 'center',
-      width: 14,
-      height: 14,
-      lineHeight: 12
-    },
     borderNone: {
       borderBottomWidth: 0
     },
-    goodsMana: {
-      paddingTop: 15,
-      paddingBottom: 15
-    },
-    gl: {
-      borderRightWidth: 1,
-      borderRightColor: COLOR_GRAY
-    },
-    goodsIcon: {
-      width: 30,
-      height: 30,
-      resizeMode: 'contain'
-    },
-    goodsText: {
-      fontSize: FONT_12,
-      color: COLOR_6,
-      marginTop: 5
-    }
   },
   //账户信息
   sinfo: {
@@ -2958,63 +2819,6 @@ export default {
     signedClose: {
       width: 30,
       height: 30
-    }
-  },
-  buyer: {
-    attention: {
-      paddingBottom: 10
-    },
-    attentionItem: {
-      marginLeft: 10,
-      marginRight: 10,
-      marginTop: 10,
-      overflow: 'hidden'
-    },
-    attentionImg: {
-      resizeMode: 'contain'
-    },
-    attentionText: {
-      fontSize: FONT_12,
-      color: COLOR_3,
-      height: 36,
-      lineHeight: 18
-    },
-    attentionType: {
-      borderWidth: 1,
-      borderColor: COLOR_RED,
-      borderRadius: 3,
-      color: COLOR_RED,
-      fontSize: FONT_10,
-      paddingLeft: 3,
-      paddingRight: 3,
-      marginTop: 5,
-      marginRight: 5
-    },
-    attentionUnderSale: {
-      backgroundColor: 'rgba(0, 0, 0, .6)',
-      textAlign: 'center',
-      textAlignVertical: 'center',
-      fontSize: FONT_12,
-      color: COLOR_WHITE
-    },
-    ticket: {
-      paddingTop: 15,
-      paddingBottom: 15
-    },
-    tl: {
-      borderRightWidth: 1,
-      borderRightColor: COLOR_GRAY
-    },
-    ticketIcon: {
-      width: 24,
-      height: 17
-    },
-    ticketText: {
-      fontSize: FONT_13,
-      color: COLOR_3
-    },
-    ticketBottomText: {
-      marginTop: 5
     }
   },
   refundItem: {

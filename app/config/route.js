@@ -27,6 +27,7 @@ import SellerRefundRefuseScreen from '../screens/containers/seller/order-refund-
 
 import SellerGoodsDetailScreen from '../screens/containers/seller/goods-detail';
 import SellerGoodsEditScreen from '../screens/containers/seller/goods-edit';
+import SellerStorePreviewScreen from '../screens/components/seller/store-preview';
 
 import BuyerScreen from '../screens/containers/buyer/index';
 import BuyerSearchScreen from '../screens/containers/buyer/search';
@@ -38,6 +39,7 @@ import BuyerPayScreen from '../screens/containers/buyer/pay';
 import BuyerAttentionScreen from '../screens/containers/buyer/attention';
 import BuyerNewsMoreScreen from '../screens/components/buyer/news-more';
 import BuyerRefundApplyScreen from '../screens/containers/buyer/refund-apply';
+
 
 import styles from '../css/styles';
 
@@ -268,4 +270,10 @@ export default {
       title: '最新动态'
     }
   },
+  StorePreview: {
+    screen: SellerStorePreviewScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
 }

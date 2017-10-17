@@ -34,7 +34,7 @@ export default class SellerAddrList extends Component {
     componentDidMount() {
       InteractionManager.runAfterInteractions(() => {
         this.setState({loadingVisible: true});
-        ScreenInit.checkLogin();
+        ScreenInit.checkLogin(this);
         this._updateData();
         /**添加新增地址侦听**/
         this.listener_address_add = DeviceEventEmitter.addListener('addressListAddOne', () => {

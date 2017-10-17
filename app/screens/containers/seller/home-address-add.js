@@ -34,7 +34,7 @@ export default class SellerAddrAdd extends Component {
     }
     componentDidMount() {
       InteractionManager.runAfterInteractions(() => {
-        ScreenInit.checkLogin();
+        ScreenInit.checkLogin(this);
         this.listener_select = DeviceEventEmitter.addListener('addressSelect', (result) => {
           this.setState({
             addr: result.province + result.city + result.county + result.town + result.village,
