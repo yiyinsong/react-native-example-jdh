@@ -71,6 +71,9 @@ export default {
     flexSelfRight: {
       alignSelf: 'flex-end'
     },
+    flexWrap: {
+      flexWrap: 'wrap'
+    },
     header: {
       backgroundColor: COLOR_WHITE,
       height: 65,
@@ -3494,6 +3497,79 @@ export default {
     },
     goodsItemCheck: {
       marginTop: 22
+    }
+  },
+  category: {
+    header: {
+      paddingTop: 30,
+      paddingLeft: 10,
+      paddingBottom: 5,
+      paddingRight: 10,
+      backgroundColor: COLOR_WHITE,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E
+    },
+    logo: {
+      width: 70,
+      height: 28
+    },
+    searchWrapper: {
+      backgroundColor: BACKGROUNDCOLOR_GRAY,
+      paddingLeft: 10,
+      paddingRight: 10,
+      borderRadius: 20,
+      marginLeft: 10
+    },
+    search: {
+      margin: 0,
+      padding: 0,
+      height: 24,
+      fontSize: FONT_12,
+    },
+    searchIcon: {
+      width: 14,
+      height: 14,
+      marginLeft: 5
+    },
+    left: {
+      backgroundColor: COLOR_WHITE,
+      width: 90
+    },
+    leftItem: {
+      fontSize: FONT_14,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+      textAlign: 'center',
+      paddingTop: 10,
+      paddingBottom: 10,
+      color: COLOR_3
+    },
+    leftItemActive: {
+      color: COLOR_RED,
+      backgroundColor: BACKGROUNDCOLOR_GRAY
+    },
+    lv2: {
+      marginBottom: 10
+    },
+    rightItem: {
+      backgroundColor: COLOR_WHITE,
+      marginTop: 10,
+      marginLeft: 10,
+      padding: 0
+    },
+    rightItemTitle: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+      paddingLeft: 10,
+      paddingTop: 10,
+      paddingRight: 10
+    },
+    rightItemText: {
+      color: COLOR_9,
+      fontSize: FONT_12,
+      paddingTop: 5,
+      paddingBottom: 5,
+      textAlign: 'center'
     }
   }
 }

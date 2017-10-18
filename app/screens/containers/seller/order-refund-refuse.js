@@ -26,11 +26,16 @@ export default class OrderDetailScreen extends Component{
       id: _query.id,
       refundtype: _query.refundtype || 1,
       fromdetail: _query.fromdetail || false,
+      secondRefuse: _query.secondrefuse || false,
       selectReason: {
         id: '',
         name: '请选择'
       },
-      reason: [
+      reason: _query.secondrefuse ? [
+        {id: 9, name: '商品损坏'},
+        {id: 10, name: '买家寄回的商品与申请不符'},
+        {id: 99, name: '其他'}
+      ] : [
         {id: 1, name: '退款金额不对，买家要求过高'},
         {id: 2, name: '商品没问题，买家举证无效'},
         {id: 3, name: '商品没问题，买家未举证'},
@@ -121,7 +126,7 @@ export default class OrderDetailScreen extends Component{
       return;
     }
     let _refundUrl = '';
-    if(this.state.refundtype == 1) {
+    if(this.state.refundtype == 1 || this.state.secondRefuse) {
         _refundUrl = Config.JAVAAPI + 'shop/mobile/refund/decideRefund';
     } else {
         _refundUrl = Config.JAVAAPI + 'shop/mobile/refund/decideReturnGoods';

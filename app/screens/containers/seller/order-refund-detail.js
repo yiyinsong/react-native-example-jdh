@@ -160,6 +160,9 @@ export default class OrderDetailScreen extends Component{
             { _data.refund.isNow == 1 && _data.refund.type == 2 && _data.refund.status == 30 ?
             <TouchableHighlight underlayColor="#e15e5e" style={[styles.common.flex, styles.footerBtn.b1]} onPress={() => {this._pay(2)}}><Text style={styles.footerBtn.text}>确认收货并打款</Text></TouchableHighlight>
             : null }
+            { _data.refund.isNow == 1 && _data.refund.type == 2 && _data.refund.status == 30 ?
+              <TouchableHighlight underlayColor="#f5f5f5" style={[styles.common.flex, styles.footerBtn.b2]} onPress={() => {this._refuseRefund(_data)}}><Text style={styles.footerBtn.text2}>拒绝退款</Text></TouchableHighlight>              
+              : null }
           </View>
         </View>
         : null }
@@ -359,5 +362,15 @@ export default class OrderDetailScreen extends Component{
   }
   _viewBigImgs = (i) => {
     DeviceEventEmitter.emit('viewSwiperShow', {index: 0, number: i});
+  }
+  _refuseRefund = (data) => {
+    this.props.navigation.navigate('SellerRefundRefuse', {
+      ordersn: this.state.ordersn,
+      type: data.refund.orderType == 40 ? 0 : 1,
+      id: this.state.id,
+      refundtype: data.refund.type,
+      fromdetail: true,
+      secondrefuse: true
+    });
   }
 }

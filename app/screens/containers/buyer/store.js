@@ -35,7 +35,7 @@ import {
     }
     render() {
       return(
-        <ScrollView style={styles.common.init}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.common.init}>
             <ImageBackground style={{width: Utils.width, height: Utils.width / 1.74}} source={require('../../../images/store-bg.png')} resizeMode='cover'>
                 <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.store.top]}>
                     <TouchableOpacity activeOpacity={.8} style={styles.common.flexDirectionRow} onPress={this._toStorePreview}>

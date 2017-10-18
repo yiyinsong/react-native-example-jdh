@@ -41,7 +41,7 @@ export default TabNavigator({
     'Category': {
       screen: CategoryScreen,
       navigationOptions: {
-        headerTitle: '分类',
+        header: null,
         tabBarLabel: '分类',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-cate-active.png') : require('../../../images/icon-cate.png')}
