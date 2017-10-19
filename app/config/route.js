@@ -27,7 +27,9 @@ import SellerRefundRefuseScreen from '../screens/containers/seller/order-refund-
 
 import SellerGoodsDetailScreen from '../screens/containers/seller/goods-detail';
 import SellerGoodsEditScreen from '../screens/containers/seller/goods-edit';
+import SellerQuickBuildGoodsScreen from '../screens/containers/seller/quick-build-goods';
 import SellerStorePreviewScreen from '../screens/components/seller/store-preview';
+import SellerStoreManaScreen from '../screens/containers/seller/store-mana';
 
 import BuyerScreen from '../screens/containers/buyer/index';
 import BuyerSearchScreen from '../screens/containers/buyer/search';
@@ -186,6 +188,27 @@ export default {
       title: '编辑商品'
     }
   },
+  //卖家添加商品
+  SellerBuildGoods: {
+    screen: SellerQuickBuildGoodsScreen,
+    navigationOptions: {
+      title: '新建商品'
+    }
+  },
+  //店铺
+  StorePreview: {
+    screen: SellerStorePreviewScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  //店铺管理
+  StoreMana: {
+    screen: SellerStoreManaScreen,
+    navigationOptions: {
+      title: '店铺管理'
+    }
+  },
   //买家
   Buyer: {
     screen: BuyerScreen,
@@ -270,10 +293,4 @@ export default {
       title: '最新动态'
     }
   },
-  StorePreview: {
-    screen: SellerStorePreviewScreen,
-    navigationOptions: {
-      header: null
-    }
-  }
 }

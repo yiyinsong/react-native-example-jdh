@@ -1,3 +1,8 @@
+/**
+ * Component: 分类
+ * author: yiyinSong
+ * date: 2017-10-18
+ */
 import React, { Component } from 'react';
 import {
   Image,

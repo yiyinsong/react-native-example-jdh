@@ -114,10 +114,10 @@ import {
                     </View>
                 </TouchableHighlight>
             </View>
-            <TouchableHighlight underlayColor="#f1f1f1" style={styles.store.add}>
+            <TouchableHighlight underlayColor="#f1f1f1" style={styles.store.add} onPress={this._toBuildGoods}>
                 <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh]}>
                     <Image source={require('../../../images/store-icon-add.png')} style={styles.store.addIcon}/>
-                    <Text style={styles.store.addText}>快速添加商品</Text>
+                    <Text style={styles.store.addText}>添加商品</Text>
                 </View>
             </TouchableHighlight>
             <Loading visible={this.state.loadingVisible}></Loading>
@@ -178,7 +178,7 @@ import {
         this.props.navigation.navigate('StorePreview', {shopid: this.state.storeInfo.shop_id});
     }
     _toStoreInfo = () => {
-        this.props.navigation.navigate('SellerUserInfo');
+        this.props.navigation.navigate('StoreMana');
     }
     _toSellerGoods = () => {
         this.props.navigation.navigate('SellerGoods', {type: 0});
@@ -191,5 +191,8 @@ import {
     }
     _toStoreData = () => {
         this.props.navigation.navigate('SellerStoreInfo');
+    }
+    _toBuildGoods = () => {
+        this.props.navigation.navigate('SellerBuildGoods');        
     }
   }

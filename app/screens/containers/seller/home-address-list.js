@@ -38,11 +38,6 @@ export default class SellerAddrList extends Component {
         this._updateData();
         /**添加新增地址侦听**/
         this.listener_address_add = DeviceEventEmitter.addListener('addressListAddOne', () => {
-          /**发送事件侦听，告诉账户信息地址数量改变**/
-          DeviceEventEmitter.emit('event_address_num_change',{
-            addr_count: parseInt(this.state.addr.addr_count) + 1,
-            addr_remain: parseInt(this.state.addr.addr_remain) - 1
-          });
           /**重新刷新页面更新数据**/
           this._updateData();
         });
@@ -178,11 +173,6 @@ export default class SellerAddrList extends Component {
               addr_remain: this.state.addr.addr_remain + 1,
               list: this.state.addr.list
             }
-          });
-          //发送事件侦听，告诉账户信息地址数量改变
-          DeviceEventEmitter.emit('event_address_num_change',{
-            addr_count: this.state.addr.addr_count,
-            addr_remain: this.state.addr.addr_remain
           });
         } else {
           UIToast(result.msg);

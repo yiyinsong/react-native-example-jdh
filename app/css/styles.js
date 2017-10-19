@@ -19,6 +19,7 @@ const COLOR_E = '#eee';
 const COLOR_F = '#fafafa';
 const COLOR_SIGN_BG = '#fbf1f1';
 const COLOR_GREEN2 = '#67cab2';
+const COLOR_PINK = '#ffd8da';
 
 const FONT_8 = 8;
 const FONT_10 = 10;
@@ -630,13 +631,14 @@ export default {
     },
     logoutBtn: {
       marginTop: 20,
-      marginLeft: 50,
-      marginRight: 50,
+      marginLeft: 30,
+      marginRight: 30,
+      marginBottom: 20,
       borderWidth: 1,
       borderColor: COLOR_RED,
       backgroundColor: BACKGROUNDCOLOR_WHITE,
-      paddingTop: 15,
-      paddingBottom: 15,
+      paddingTop: 8,
+      paddingBottom: 8,
       borderRadius: 4
     },
     logoutText: {
@@ -3570,6 +3572,75 @@ export default {
       paddingTop: 5,
       paddingBottom: 5,
       textAlign: 'center'
+    }
+  },
+  storeMana: {
+    container: {
+      marginTop: 10
+    },
+    item: {
+      backgroundColor: COLOR_WHITE,
+      paddingTop: 12,
+      paddingBottom: 12,
+      paddingLeft: 10,
+      paddingRight: 10,
+      marginBottom: 1
+    },
+    itemLeftIcon: {
+      width: 16,
+      height: 16,
+    },
+    itemText: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+      marginLeft: 10
+    },
+    itemRightIcon: {
+      width: 6,
+      height: 12
+    }
+  },
+  addGoods: {
+    back: {
+      marginLeft: 10,   
+    },
+    backText: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    tips: {
+      backgroundColor: COLOR_PINK,
+      padding: 10,
+    },
+    tipsText: {
+      fontSize: FONT_12,
+      color: COLOR_RED
+    },
+    close: {
+      width: 20,
+      height: 20,
+      position: 'relative',
+      borderWidth: 1,
+      borderColor: COLOR_RED,
+      borderRadius: 20
+    },
+    closeLine1: {
+      position: 'absolute',
+      top: 9,
+      left: 2,
+      width: 14,
+      height: 1,
+      backgroundColor: COLOR_RED,
+      transform: [{'rotateZ': '45deg'}]
+    },
+    closeLine2: {
+      position: 'absolute',
+      top: 9, 
+      left: 2,      
+      width: 14,
+      height: 1,
+      backgroundColor: COLOR_RED,
+      transform: [{'rotateZ': '135deg'}]
     }
   }
 }
