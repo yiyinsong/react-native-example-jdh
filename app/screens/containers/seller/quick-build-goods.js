@@ -29,6 +29,10 @@ import UIToast from '../../common/ui-toast';
     	this.state = {
         visibleTips: true,
         loadingVisible: false,
+        modelName: '',
+        modelAttr: '',
+        modelPrice: '',
+        modelInv: ''
       };
     }
     render() {
@@ -46,7 +50,106 @@ import UIToast from '../../common/ui-toast';
               </TouchableOpacity>
             </View>
             : null}
+            <View style={[styles.addGoods.block, styles.addGoods.borderTopNone]}>
+              <TextInput
+              style={styles.addGoods.name}
+              onChangeText={(text) => this.setState({modelName: text})}
+              value={this.state.modelName}
+              underlineColorAndroid="transparent"
+              placeholder="请输入商品名称(50字以内)"
+              multiline={true}
+              maxLength={50}
+            />
+            <View style={[styles.common.flexDirectionRow, styles.addGoods.imgs]}>
+              <View style={styles.addGoods.imgItem}>
+                <TouchableOpacity  activeOpacity={.8} style={styles.addGoods.imgClose}>
+                  <View>
+                    <View style={styles.addGoods.imgClose1}></View>
+                    <View style={styles.addGoods.imgClose2}></View>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={.8}>
+                  <Image source={{uri: 'https://img6.bdstatic.com/img/image/smallpic/xiaoqingxbanq.jpg'}} style={styles.addGoods.thumb} resizeMode="cover">
+                    <Text style={styles.addGoods.thumbText}>主图</Text>
+                  </Image>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexCenterh, styles.common.flexCenterv, styles.addGoods.imgsBtn]}>
+                  <Text style={styles.addGoods.imgsBtnIcon}>+</Text>
+                  <Text style={styles.addGoods.imgsBtnText}>添加细节图</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.addGoods.uploadTips]}>
+              <Image source={require('../../../images/goods-add-tips.png')} style={styles.addGoods.uploadTipsImg} resizeMode="contain" />
+              <Text style={styles.addGoods.uploadTipsText}>拍照时请保持手机竖向，商品尽量居中屏幕内，图片比例建议为1:1</Text>
+            </View>
+            </View>
+            <View style={styles.addGoods.block}>
+              <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]}>
+                <Text style={styles.addGoods.itemText}>商品规格：</Text>
+                <TextInput
+                style={[styles.common.flex, styles.addGoods.itemInput]}
+                onChangeText={(text) => this.setState({modelAttr: text})}
+                value={this.state.modelAttr}
+                underlineColorAndroid="transparent"
+              />
+              </View>
+              <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+                <Text style={styles.addGoods.itemText}>价格：</Text>
+                <Text style={[styles.addGoods.itemGrayText]}>￥</Text>
+                <TextInput
+                style={[styles.common.flex, styles.addGoods.itemInput]}
+                onChangeText={(text) => this.setState({modelPrice: text})}
+                value={this.state.modelPrice}
+                underlineColorAndroid="transparent"
+              />
+              </View>
+              <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+                <Text style={styles.addGoods.itemText}>库存：</Text>
+                <TextInput
+                style={[styles.common.flex, styles.addGoods.itemInput]}
+                onChangeText={(text) => this.setState({modelInv: text})}
+                value={this.state.modelInv}
+                underlineColorAndroid="transparent"
+              />
+              </View>
+            </View>
+            <View style={styles.addGoods.block}>
+              <TouchableOpacity activeOpacity={1} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]}>
+                  <Text style={styles.addGoods.itemText}>商品图文描述：</Text>
+                  <Text style={styles.addGoods.chosen}>已选择</Text>
+                  <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={1} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+                <Text style={styles.addGoods.itemText}>店铺分类：</Text>
+                <Text style={styles.addGoods.chosen}>默认分类-未分类</Text>
+                <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={1} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+                <Text style={styles.addGoods.itemText}>选择品牌：</Text>
+                <Text style={styles.addGoods.chosen}>未选择</Text>
+                <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.common.flexDirectionRow, styles.addGoods.agreement]}>
+              <View style={styles.control.checkboxRectSmall}></View>
+              <Image source={require('../../../images/icon-check-rect.png')} style={styles.control.checkedSmall} resizeMode="contain"/>
+              <TouchableOpacity activeOpacity={.8}>
+                <Text style={styles.addGoods.agreementText}>《商品信息发布规范》</Text>
+              </TouchableOpacity>  
+              <TouchableOpacity activeOpacity={.8}>
+                <Text style={styles.addGoods.agreementText}>《禁发商品及信息管理规范》</Text>
+              </TouchableOpacity>  
+            </View>
           </ScrollView>
+          <View style={[styles.common.flexDirectionRow, styles.common.flexCenterh, styles.addGoods.btn]}>
+              <TouchableOpacity activeOpacity={.8} style={styles.common.flex}>
+                <Text style={styles.addGoods.btnRed}>发布商品并上架</Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={.8} style={styles.common.flex}>
+                <Text style={styles.addGoods.btnBlue}>发布商品暂不上架</Text>
+              </TouchableOpacity>
+          </View>
           <Loading visible={this.state.loadingVisible}></Loading>           
         </View>
       );

@@ -549,9 +549,6 @@ export default {
       borderBottomWidth: 0,
       borderBottomColor: 'transparent',
     },
-    borderNone: {
-      borderBottomWidth: 0
-    },
   },
   //账户信息
   sinfo: {
@@ -1813,6 +1810,20 @@ export default {
     checkedSmall: {
       width: 16,
       height: 16
+    },
+    checkboxRect: {
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      width: 18,
+      height: 18,
+      borderRadius: 3
+    },
+    checkboxRectSmall: {
+      borderWidth: 1,
+      borderColor: COLOR_D,
+      width: 16,
+      height: 16,
+      borderRadius: 3
     },
   },
   sgoodsDetail: {
@@ -3641,6 +3652,180 @@ export default {
       height: 1,
       backgroundColor: COLOR_RED,
       transform: [{'rotateZ': '135deg'}]
+    },
+    block: {
+      backgroundColor: COLOR_WHITE,
+      paddingLeft: 10,
+      paddingRight: 10,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_D,
+      marginBottom: 10
+    },
+    borderTopNone: {
+      borderTopWidth: 0
+    },
+    name: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_D,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingTop: 5,
+      paddingBottom: 5,
+      margin: 0,
+      fontSize: FONT_14,
+      height: 44,
+      textAlignVertical: 'top'
+    },
+    imgs: {
+      paddingTop: 10
+    },
+    imgItem: {
+      position: 'relative',
+      width: 70,
+      height: 70,
+      marginRight: 10,
+    },
+    imgClose: {
+      position: 'absolute',
+      width: 16,
+      height: 16,
+      backgroundColor: COLOR_RED,
+      borderWidth: 1,
+      borderColor: COLOR_WHITE,
+      borderRadius: 16,
+      zIndex: 1,
+      left: -6,
+      top: -6
+    },
+    imgClose1: {
+      position: 'absolute',
+      top: 7,
+      left: 3,
+      width: 8,
+      height: 1,
+      backgroundColor: COLOR_3,
+      transform: [{'rotateZ': '45deg'}]
+    },
+    imgClose2: {
+      position: 'absolute',
+      top: 7, 
+      left: 3,      
+      width: 8,
+      height: 1,
+      backgroundColor: COLOR_3,
+      transform: [{'rotateZ': '135deg'}]
+    },
+    thumb: {
+      width: 70,
+      height: 70,
+      justifyContent: 'flex-end'
+    },
+    thumbText: {
+      textAlign: 'center',
+      backgroundColor: 'rgba(255, 59, 49, .8)',
+      color: COLOR_3,
+      fontSize: FONT_11
+    },
+    uploadTips: {
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    uploadTipsImg: {
+      width: 14,
+      height: 14,
+      marginTop: 2
+    },
+    uploadTipsText: {
+      color: COLOR_A,
+      fontSize: FONT_12,
+      marginLeft: 5
+    },
+    imgsBtn: {
+      width: 70,
+      height: 70,
+      backgroundColor: COLOR_E
+    },
+    imgsBtnIcon: {
+      width: 18,
+      height: 18,
+      borderWidth: 1,
+      borderColor: COLOR_6,
+      borderRadius: 18,
+      textAlign: 'center',
+      textAlignVertical: 'center'
+    },
+    imgsBtnText: {
+      fontSize: FONT_11,
+      textAlign: 'center',
+      marginTop: 5
+    },
+    item: {
+      borderTopWidth: 1,
+      borderTopColor: COLOR_D
+    },
+    itemText: {
+      color: COLOR_3,
+      fontSize: FONT_14
+    },
+    itemInput: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+      paddingTop: 5,
+      paddingBottom: 5,
+      paddingLeft: 0,
+      paddingRight: 0,
+      marginLeft: 5
+    },
+    itemGrayText: {
+      color: COLOR_9
+    },
+    chosen: {
+      fontSize: FONT_14,
+      color: COLOR_9,
+      flex: 1,
+      textAlign: 'right',
+      paddingTop: 10,
+      paddingBottom: 10
+    },
+    arrow: {
+      marginLeft: 5,
+      width: 6,
+      height: 12
+    },
+    agreement: {
+      padding: 10
+    },
+    agreementText: {
+      color: COLOR_BLUE,
+      fontSize: FONT_12
+    },
+    btn: {
+      backgroundColor: COLOR_WHITE,
+      padding: 10
+    },
+    btnRed: {
+      fontSize: FONT_12,
+      backgroundColor: COLOR_RED,
+      color: COLOR_WHITE,
+      textAlign: 'center',
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderRadius: 2,
+      flex: 1,
+      marginRight: 5
+    },
+    btnBlue: {
+      fontSize: FONT_12,
+      backgroundColor: COLOR_BLUE,
+      color: COLOR_WHITE,
+      textAlign: 'center',
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderRadius: 2,
+      flex: 1,
+      marginLeft: 5
     }
   }
 }
