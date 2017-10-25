@@ -3827,5 +3827,23 @@ export default {
       flex: 1,
       marginLeft: 5
     }
+  },
+  addGoodsCate: {
+    left: {
+      backgroundColor: COLOR_WHITE,
+      width: 120
+    },
+    leftItem: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+      padding: 10
+    },
+    leftItemActive: {
+      backgroundColor: COLOR_GRAY,
+      color: COLOR_RED
+    },
+    rightItemActive: {
+      color: COLOR_RED
+    }
   }
 }

@@ -28,6 +28,7 @@ import SellerRefundRefuseScreen from '../screens/containers/seller/order-refund-
 import SellerGoodsDetailScreen from '../screens/containers/seller/goods-detail';
 import SellerGoodsEditScreen from '../screens/containers/seller/goods-edit';
 import SellerQuickBuildGoodsScreen from '../screens/containers/seller/quick-build-goods';
+import SellerQuickBuildGoodsCategoryScreen from '../screens/containers/seller/quick-build-goods-category';
 import SellerStorePreviewScreen from '../screens/components/seller/store-preview';
 import SellerStoreManaScreen from '../screens/containers/seller/store-mana';
 
@@ -193,6 +194,13 @@ export default {
     screen: SellerQuickBuildGoodsScreen,
     navigationOptions: {
       title: '新建商品'
+    }
+  },
+  //卖家添加商品选择分类
+  SellerBuildGoodsCategory: {
+    screen: SellerQuickBuildGoodsCategoryScreen,
+    navigationOptions: {
+      title: '选择分类'
     }
   },
   //店铺

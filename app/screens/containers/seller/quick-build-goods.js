@@ -11,7 +11,9 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  InteractionManager,
+  DeviceEventEmitter
   } from 'react-native';
 
 import Config from '../../../config/config';
@@ -19,6 +21,8 @@ import Utils from '../../../js/utils';
 import Loading from '../../common/ui-loading';
 import styles from '../../../css/styles';
 import UIToast from '../../common/ui-toast';
+import ScreenInit from '../../../config/screenInit';
+
 
   export default class QuickBuildGoodsScreen extends Component {
     static navigationOptions = ({ navigation }) => ({
@@ -32,7 +36,10 @@ import UIToast from '../../common/ui-toast';
         modelName: '',
         modelAttr: '',
         modelPrice: '',
-        modelInv: ''
+        modelInv: '',
+        categoryText1: '',
+        categoryText2: '',
+        cid: -1,
       };
     }
     render() {
@@ -115,17 +122,17 @@ import UIToast from '../../common/ui-toast';
               </View>
             </View>
             <View style={styles.addGoods.block}>
-              <TouchableOpacity activeOpacity={1} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]}>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]}>
                   <Text style={styles.addGoods.itemText}>商品图文描述：</Text>
                   <Text style={styles.addGoods.chosen}>已选择</Text>
                   <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]} onPress={this._toSelectCategory}>
                 <Text style={styles.addGoods.itemText}>店铺分类：</Text>
-                <Text style={styles.addGoods.chosen}>默认分类-未分类</Text>
+                <Text style={styles.addGoods.chosen} numberOfLines={1}>{this.state.categoryText1}-{this.state.categoryText2}</Text>
                 <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={1} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
                 <Text style={styles.addGoods.itemText}>选择品牌：</Text>
                 <Text style={styles.addGoods.chosen}>未选择</Text>
                 <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
@@ -155,9 +162,23 @@ import UIToast from '../../common/ui-toast';
       );
     }
     componentDidMount() {
-      this.setState({loadingVisible: true});
-      this._init();
+      InteractionManager.runAfterInteractions(() => {
+        ScreenInit.checkLogin(this);
+        // this.setState({loadingVisible: true});
+        this._init();
+      });
+      this.listener_cate = DeviceEventEmitter.addListener('addGoodsSelectCategory', (r) => {
+        this.setState({
+          cid: r.cid,
+          categoryText1: r.lv1text,
+          categoryText2: r.lv2text
+        });
+      })
     }
+    componentWillUnmount = () => {
+      this.listener_cate && this.listener_cate.remove();
+    }
+    
     _init = () => {
       // fetch(`${Config.PHPAPI}api/mapp/shop/cate?token=${token}`, {
       //   method: 'post'
@@ -176,5 +197,8 @@ import UIToast from '../../common/ui-toast';
       this.setState({
         visibleTips: false
       });
+    }
+    _toSelectCategory = () => {
+      this.props.navigation.navigate('SellerBuildGoodsCategory', {cid: this.state.cid});
     }
   }
