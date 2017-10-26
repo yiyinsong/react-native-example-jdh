@@ -3845,5 +3845,42 @@ export default {
     rightItemActive: {
       color: COLOR_RED
     }
+  },
+  addGoodsBrand: {
+    btn: {
+      backgroundColor: COLOR_BLUE,
+      color: COLOR_WHITE,
+      fontSize: FONT_12,
+      textAlign: 'center',
+      marginLeft: 10,
+      marginRight: 10,
+      marginBottom: 10,
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderRadius: 3
+    },
+    item: {
+      fontSize: FONT_12,
+      marginLeft: 10,
+      marginRight: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+      padding: 10,
+      color: COLOR_3
+    },
+    itemActive: {
+      color: COLOR_RED
+    },
+    modal: {
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      flex: 1,
+      justifyContent:'center'
+    },
+    modalContainer: {
+      backgroundColor: COLOR_WHITE,
+      marginLeft: 20,
+      marginRight: 20,
+      borderRadius: 3
+    }
   }
 }

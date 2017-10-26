@@ -29,6 +29,7 @@ import SellerGoodsDetailScreen from '../screens/containers/seller/goods-detail';
 import SellerGoodsEditScreen from '../screens/containers/seller/goods-edit';
 import SellerQuickBuildGoodsScreen from '../screens/containers/seller/quick-build-goods';
 import SellerQuickBuildGoodsCategoryScreen from '../screens/containers/seller/quick-build-goods-category';
+import SellerQuickBuildGoodsBrandScreen from '../screens/containers/seller/quick-build-goods-brand';
 import SellerStorePreviewScreen from '../screens/components/seller/store-preview';
 import SellerStoreManaScreen from '../screens/containers/seller/store-mana';
 
@@ -201,6 +202,13 @@ export default {
     screen: SellerQuickBuildGoodsCategoryScreen,
     navigationOptions: {
       title: '选择分类'
+    }
+  },
+  //卖家添加商品选择品牌
+  SellerBuildGoodsBrand: {
+    screen: SellerQuickBuildGoodsBrandScreen,
+    navigationOptions: {
+      title: '选择品牌'
     }
   },
   //店铺

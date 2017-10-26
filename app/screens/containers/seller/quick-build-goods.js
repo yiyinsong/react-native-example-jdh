@@ -37,9 +37,11 @@ import ScreenInit from '../../../config/screenInit';
         modelAttr: '',
         modelPrice: '',
         modelInv: '',
-        categoryText1: '',
-        categoryText2: '',
+        categoryText1: '默认分类',
+        categoryText2: '未分类',
         cid: -1,
+        bid: -1,
+        brandName: '未选择'
       };
     }
     render() {
@@ -132,9 +134,9 @@ import ScreenInit from '../../../config/screenInit';
                 <Text style={styles.addGoods.chosen} numberOfLines={1}>{this.state.categoryText1}-{this.state.categoryText2}</Text>
                 <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]}>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]} onPress={this._toSelectBrand}>
                 <Text style={styles.addGoods.itemText}>选择品牌：</Text>
-                <Text style={styles.addGoods.chosen}>未选择</Text>
+                <Text style={styles.addGoods.chosen}>{this.state.brandName}</Text>
                 <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
               </TouchableOpacity>
             </View>
@@ -173,10 +175,17 @@ import ScreenInit from '../../../config/screenInit';
           categoryText1: r.lv1text,
           categoryText2: r.lv2text
         });
-      })
+      });
+      this.listener_brand = DeviceEventEmitter.addListener('addGoodsSelectBrand', (r) => {
+        this.setState({
+          bid: r.bid,
+          brandName: r.brandname,
+        });
+      });
     }
     componentWillUnmount = () => {
       this.listener_cate && this.listener_cate.remove();
+      this.listener_brand && this.listener_brand.remove();
     }
     
     _init = () => {
@@ -200,5 +209,8 @@ import ScreenInit from '../../../config/screenInit';
     }
     _toSelectCategory = () => {
       this.props.navigation.navigate('SellerBuildGoodsCategory', {cid: this.state.cid});
+    }
+    _toSelectBrand = () => {
+      this.props.navigation.navigate('SellerBuildGoodsBrand', {bid: this.state.bid});      
     }
   }
