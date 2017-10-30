@@ -140,7 +140,30 @@ export default {
       fontSize: 16,
       alignSelf: 'center',
       fontWeight: '100'
-    }
+    },
+    close: {
+      width: 20,
+      height: 20,
+      position: 'relative',
+    },
+    closeLine1: {
+      position: 'absolute',
+      top: 9,
+      left: 0,
+      width: 18,
+      height: 1,
+      backgroundColor: COLOR_A,
+      transform: [{'rotateZ': '45deg'}]
+    },
+    closeLine2: {
+      position: 'absolute',
+      top: 9, 
+      left: 0,      
+      width: 18,
+      height: 1,
+      backgroundColor: COLOR_A,
+      transform: [{'rotateZ': '135deg'}]
+    },
   },
   modal: {
     container: {
@@ -3872,7 +3895,7 @@ export default {
       color: COLOR_RED
     },
     modal: {
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      backgroundColor: 'rgba(0, 0, 0, .3)',
       flex: 1,
       justifyContent:'center'
     },
@@ -3880,7 +3903,68 @@ export default {
       backgroundColor: COLOR_WHITE,
       marginLeft: 20,
       marginRight: 20,
-      borderRadius: 3
+      borderRadius: 5,
+      paddingBottom: 20
+    },
+    modalHeader: {
+      backgroundColor: COLOR_GRAY,
+      padding: 10,
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
+    },
+    modalTitle: {
+      fontSize: FONT_12,
+      color: COLOR_3,
+    },
+    modalItem: {
+      paddingTop: 10,
+      paddingBottom: 10,
+      marginLeft: 10,
+      marginRight: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
+    },
+    modalLabel: {
+      fontSize: FONT_12,
+      color: COLOR_9
+    },
+    modalInput: {
+      padding: 0,
+      margin: 0,
+      fontSize: FONT_12,
+      color: COLOR_3,
+      height: 20
+    },
+    uploadBtn: {
+      borderWidth: 1,
+      borderColor: COLOR_E,
+      width: 145,
+      height: 60,
+      fontSize: FONT_12,
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      color: COLOR_9
+    },
+    uploadImg: {
+      width: 145,
+      height: 60,
+    },
+    tips: {
+      fontSize: FONT_11,
+      color: COLOR_9,
+      marginTop: 5
+    },
+    submit: {
+      backgroundColor: COLOR_RED,
+      color: COLOR_WHITE,
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      textAlign: 'center',
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderRadius: 3,
+      fontSize: FONT_12
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import Config from '../config/config';
 
 let floatCal = function(a, b, symbol) {
 	let r1, r2, m;
@@ -44,5 +45,27 @@ export default {
 	  div: function(a,b){
 	    return floatCal(a,b,'/');
 	  }
+	},
+	uploadImgFn(uri, success, error) {
+		let formData = new FormData();
+		let file = {uri, type: 'multipart/form-data', name: 'image.png'};
+		formData.append("file", file);
+		formData.append('rootPath', 'goods');
+		formData.append('ratio', '200x0,400x0,750x0,1500x0');
+
+		fetch(`${Config.UPLOADURL}file/uploadImg`, {
+				method: 'POST',
+				headers: {
+					'Content-Type':'multipart/form-data'
+				},
+				body: formData,
+		})
+		.then((response) => response.json())
+		.then((responseData)=> {
+			success && success(responseData);
+		})
+		.catch((err)=> {
+			error && errror(err);
+		});
 	}
 }
