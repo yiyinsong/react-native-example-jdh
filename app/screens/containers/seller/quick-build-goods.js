@@ -13,7 +13,9 @@ import {
   TouchableHighlight,
   TextInput,
   InteractionManager,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Modal,
+  WebView
   } from 'react-native';
 
 import Config from '../../../config/config';
@@ -41,7 +43,8 @@ import ScreenInit from '../../../config/screenInit';
         categoryText2: '未分类',
         cid: -1,
         bid: -1,
-        brandName: '未选择'
+        brandName: '未选择',
+        modalVisible: true
       };
     }
     render() {
@@ -159,7 +162,30 @@ import ScreenInit from '../../../config/screenInit';
                 <Text style={styles.addGoods.btnBlue}>发布商品暂不上架</Text>
               </TouchableOpacity>
           </View>
-          <Loading visible={this.state.loadingVisible}></Loading>           
+          <Loading visible={this.state.loadingVisible}></Loading>
+          <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={this._closeModal}>
+            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.descHeader]}>
+              <TouchableOpacity activeOpacity={.8}>
+                <Image source={require('../../../images/icon-back.png')} resizeMode="contain" style={styles.addGoods.descBack}/>
+              </TouchableOpacity>
+              <Text style={styles.addGoods.descTitle}>编辑商品详情</Text>
+            </View>
+            <WebView
+            source={require('../../../html/quick-build-goods-desc.html')}
+            scalesPageToFit={true}
+            style={styles.addGoods.webview}
+          />
+          <TouchableHighlight underlayColor="#f5f5f5" style={styles.addGoods.descBtn}>
+              <View style={[styles.common.flexCenterh, styles.common.flexCenterv]}>
+                <Text style={styles.addGoods.descBtnIcon}>+</Text>
+                <Text style={styles.addGoods.descBtnText}>添加图片</Text>
+              </View>
+          </TouchableHighlight>
+          </Modal>        
         </View>
       );
     }
@@ -212,5 +238,8 @@ import ScreenInit from '../../../config/screenInit';
     }
     _toSelectBrand = () => {
       this.props.navigation.navigate('SellerBuildGoodsBrand', {bid: this.state.bid});      
+    }
+    _closeModal = () => {
+      this.setState({modalVisible: false});
     }
   }

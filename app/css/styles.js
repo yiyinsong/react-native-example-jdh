@@ -3849,6 +3849,49 @@ export default {
       borderRadius: 2,
       flex: 1,
       marginLeft: 5
+    },
+    webview: {
+      backgroundColor: COLOR_WHITE,
+      flex: 1
+    },
+    descBtn: {
+      backgroundColor: COLOR_WHITE,
+      paddingTop: 6,
+      paddingBottom: 6,
+      borderTopWidth: 1,
+      borderTopColor: COLOR_E
+    },
+    descBtnIcon: {
+      width: 24,
+      height: 24,
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      borderWidth: 1,
+      borderColor: COLOR_9,
+      borderRadius: 24
+    },
+    descBtnText: {
+      color: COLOR_9,
+      fontSize: FONT_12,
+      marginTop: 3
+    },
+    descHeader: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_E,
+      paddingLeft: 10,
+      paddingRight: 10,
+      height: 40,
+      backgroundColor: COLOR_WHITE
+    },
+    descBack: {
+      width: 18
+    },
+    descTitle: {
+      fontSize: FONT_16,
+      textAlign: 'center',
+      color: COLOR_3,
+      flex: 1,
+      paddingRight: 18
     }
   },
   addGoodsCate: {
