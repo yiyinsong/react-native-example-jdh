@@ -9,6 +9,24 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <div contenteditable="true" class="goods-add-desc"></div>
+    <div contenteditable="true" class="goods-add-desc" id="goods-desc"></div>
+    <script type="text/javascript">
+        var content = document.getElementById('goods-desc');
+        function getMessage() {
+            window.postMessage(content.innerHTML);
+        }
+        
+        function setInitMessage(mess) {
+            if(mess) {
+                var oFragmeng = document.createElement('div');
+                oFragmeng.innerHTML = mess; 
+                content.appendChild(oFragmeng);
+            }
+            
+        }
+        setTimeout(function() {
+            window.postMessage('initWebview');
+        }, 100);
+    </script>
 </body>
 </html>

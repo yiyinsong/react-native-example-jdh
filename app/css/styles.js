@@ -3892,7 +3892,7 @@ export default {
       color: COLOR_3,
       flex: 1,
       paddingRight: 18
-    }
+    },
   },
   addGoodsCate: {
     left: {

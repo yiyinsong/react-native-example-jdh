@@ -17,6 +17,7 @@ import {
   Modal,
   WebView
   } from 'react-native';
+import ImagePicker from 'react-native-image-picker';  
 
 import Config from '../../../config/config';
 import Utils from '../../../js/utils';
@@ -24,6 +25,17 @@ import Loading from '../../common/ui-loading';
 import styles from '../../../css/styles';
 import UIToast from '../../common/ui-toast';
 import ScreenInit from '../../../config/screenInit';
+
+let imagePickerOptions = {
+  title: '请选择图片',
+  cancelButtonTitle: '取消',
+  takePhotoButtonTitle: '拍照',
+  chooseFromLibraryButtonTitle: '相册',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
 
 
   export default class QuickBuildGoodsScreen extends Component {
@@ -44,7 +56,8 @@ import ScreenInit from '../../../config/screenInit';
         cid: -1,
         bid: -1,
         brandName: '未选择',
-        modalVisible: true
+        modalVisible: false,
+        modalDesc: '',
       };
     }
     render() {
@@ -127,7 +140,7 @@ import ScreenInit from '../../../config/screenInit';
               </View>
             </View>
             <View style={styles.addGoods.block}>
-              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]}>
+              <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]} onPress={this._openDesc}>
                   <Text style={styles.addGoods.itemText}>商品图文描述：</Text>
                   <Text style={styles.addGoods.chosen}>已选择</Text>
                   <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
@@ -169,7 +182,7 @@ import ScreenInit from '../../../config/screenInit';
           visible={this.state.modalVisible}
           onRequestClose={this._closeModal}>
             <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.descHeader]}>
-              <TouchableOpacity activeOpacity={.8}>
+              <TouchableOpacity activeOpacity={.8} onPress={this._closeModal}>
                 <Image source={require('../../../images/icon-back.png')} resizeMode="contain" style={styles.addGoods.descBack}/>
               </TouchableOpacity>
               <Text style={styles.addGoods.descTitle}>编辑商品详情</Text>
@@ -178,8 +191,10 @@ import ScreenInit from '../../../config/screenInit';
             source={require('../../../html/quick-build-goods-desc.html')}
             scalesPageToFit={true}
             style={styles.addGoods.webview}
+            ref="refWebviewDesc"
+            onMessage={this._webviewOnMessage}
           />
-          <TouchableHighlight underlayColor="#f5f5f5" style={styles.addGoods.descBtn}>
+          <TouchableHighlight underlayColor="#f5f5f5" style={styles.addGoods.descBtn} onPress={this._selectDescImg}>
               <View style={[styles.common.flexCenterh, styles.common.flexCenterv]}>
                 <Text style={styles.addGoods.descBtnIcon}>+</Text>
                 <Text style={styles.addGoods.descBtnText}>添加图片</Text>
@@ -240,6 +255,36 @@ import ScreenInit from '../../../config/screenInit';
       this.props.navigation.navigate('SellerBuildGoodsBrand', {bid: this.state.bid});      
     }
     _closeModal = () => {
-      this.setState({modalVisible: false});
+      let script = 'getMessage()';
+      this.refs.refWebviewDesc.injectJavaScript(script);
+      setTimeout(() => {
+        this.setState({modalVisible: false});
+      }, 100);
+    }
+    _selectDescImg = () => {
+      ImagePicker.showImagePicker(imagePickerOptions, (response) => { 
+        if (response.didCancel) {
+        }
+        else if (response.error) {
+        }
+        else {
+          Utils.uploadImgFn(response.uri, (r) => {
+            let script = 'var img = new Image();img.src="'+(Config.IMGURL + r['750x0']) +'"; document.getElementById("goods-desc").appendChild(img);';
+            this.refs.refWebviewDesc.injectJavaScript(script);
+          }, (err) => {
+          });
+        }
+      });
+    }
+    _openDesc = () => {
+      this.setState({modalVisible: true});
+    }
+    _webviewOnMessage = (event) => {
+      if(event.nativeEvent.data == 'initWebview') {
+        let script = 'setInitMessage(' + this.state.modalDesc + ')';
+        this.refs.refWebviewDesc.injectJavaScript(script);
+      } else {
+        this.setState({modalDesc: event.nativeEvent.data});
+      }      
     }
   }
