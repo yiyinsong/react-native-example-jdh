@@ -15,7 +15,8 @@ import {
   InteractionManager,
   DeviceEventEmitter,
   Modal,
-  WebView
+  WebView,
+  Animated
   } from 'react-native';
 import ImagePicker from 'react-native-image-picker';  
 
@@ -56,8 +57,9 @@ let imagePickerOptions = {
         cid: -1,
         bid: -1,
         brandName: '未选择',
-        modalVisible: false,
+
         modalDesc: '',
+        descTranslateY: new Animated.Value(Utils.height),
       };
     }
     render() {
@@ -142,7 +144,7 @@ let imagePickerOptions = {
             <View style={styles.addGoods.block}>
               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item, styles.addGoods.borderTopNone]} onPress={this._openDesc}>
                   <Text style={styles.addGoods.itemText}>商品图文描述：</Text>
-                  <Text style={styles.addGoods.chosen}>已选择</Text>
+                  <Text style={styles.addGoods.chosen}>{this.state.modalDesc === '' ? '未选择' : '已选择'}</Text>
                   <Image source={require('../../../images/icon-arb.png')} resizeMode="contain" style={styles.addGoods.arrow} />
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.item]} onPress={this._toSelectCategory}>
@@ -176,17 +178,7 @@ let imagePickerOptions = {
               </TouchableOpacity>
           </View>
           <Loading visible={this.state.loadingVisible}></Loading>
-          <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={this._closeModal}>
-            <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.addGoods.descHeader]}>
-              <TouchableOpacity activeOpacity={.8} onPress={this._closeModal}>
-                <Image source={require('../../../images/icon-back.png')} resizeMode="contain" style={styles.addGoods.descBack}/>
-              </TouchableOpacity>
-              <Text style={styles.addGoods.descTitle}>编辑商品详情</Text>
-            </View>
+          <Animated.View style={[styles.addGoods.descModal, {transform: [{translateY: this.state.descTranslateY}]}]}>
             <WebView
             source={require('../../../html/quick-build-goods-desc.html')}
             scalesPageToFit={true}
@@ -194,20 +186,26 @@ let imagePickerOptions = {
             ref="refWebviewDesc"
             onMessage={this._webviewOnMessage}
           />
-          <TouchableHighlight underlayColor="#f5f5f5" style={styles.addGoods.descBtn} onPress={this._selectDescImg}>
-              <View style={[styles.common.flexCenterh, styles.common.flexCenterv]}>
-                <Text style={styles.addGoods.descBtnIcon}>+</Text>
-                <Text style={styles.addGoods.descBtnText}>添加图片</Text>
-              </View>
-          </TouchableHighlight>
-          </Modal>        
+          <View style={[styles.common.flexDirectionRow, styles.addGoods.descFooter]}>
+            <TouchableOpacity activeOpacity={.8} style={styles.addGoods.descBtnBlue} onPress={this._selectDescImg}>
+                <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                  <Text style={styles.addGoods.descBtnIcon}>+</Text>
+                  <Text style={styles.addGoods.descBtnText}>添加图片</Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={.8} style={styles.addGoods.descBtnRed} onPress={this._selectDescImg} onPress={this._saveDesc}>
+                <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv]}>
+                  <Text style={styles.addGoods.descBtnText}>确定</Text>
+                </View>
+            </TouchableOpacity>
+          </View>
+          </Animated.View>        
         </View>
       );
     }
     componentDidMount() {
       InteractionManager.runAfterInteractions(() => {
         ScreenInit.checkLogin(this);
-        // this.setState({loadingVisible: true});
         this._init();
       });
       this.listener_cate = DeviceEventEmitter.addListener('addGoodsSelectCategory', (r) => {
@@ -254,12 +252,17 @@ let imagePickerOptions = {
     _toSelectBrand = () => {
       this.props.navigation.navigate('SellerBuildGoodsBrand', {bid: this.state.bid});      
     }
-    _closeModal = () => {
+    _saveDesc = () => {
       let script = 'getMessage()';
       this.refs.refWebviewDesc.injectJavaScript(script);
-      setTimeout(() => {
-        this.setState({modalVisible: false});
-      }, 100);
+      Animated.timing(                            
+        this.state.descTranslateY,                      
+        {
+          toValue: Utils.height, 
+          duration: 300,
+          useNativeDriver: true                           
+        }
+      ).start();  
     }
     _selectDescImg = () => {
       ImagePicker.showImagePicker(imagePickerOptions, (response) => { 
@@ -277,14 +280,16 @@ let imagePickerOptions = {
       });
     }
     _openDesc = () => {
-      this.setState({modalVisible: true});
+      Animated.timing(                            
+        this.state.descTranslateY,                      
+        {
+          toValue: 0, 
+          duration: 300,
+          useNativeDriver: true                           
+        }
+      ).start();  
     }
     _webviewOnMessage = (event) => {
-      if(event.nativeEvent.data == 'initWebview') {
-        let script = 'setInitMessage(' + this.state.modalDesc + ')';
-        this.refs.refWebviewDesc.injectJavaScript(script);
-      } else {
-        this.setState({modalDesc: event.nativeEvent.data});
-      }      
+        this.setState({modalDesc: event.nativeEvent.data});  
     }
   }

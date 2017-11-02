@@ -3854,45 +3854,51 @@ export default {
       backgroundColor: COLOR_WHITE,
       flex: 1
     },
-    descBtn: {
+    descFooter: {
       backgroundColor: COLOR_WHITE,
-      paddingTop: 6,
-      paddingBottom: 6,
+      padding: 10,
       borderTopWidth: 1,
       borderTopColor: COLOR_E
     },
     descBtnIcon: {
-      width: 24,
-      height: 24,
+      color: COLOR_WHITE,
+      width: 20,
+      height: 20,
       textAlign: 'center',
-      textAlignVertical: 'center',
-      borderWidth: 1,
-      borderColor: COLOR_9,
-      borderRadius: 24
+      borderRadius: 20,
+      borderWidth:1,
+      borderColor: COLOR_WHITE,
+      marginRight: 5
     },
     descBtnText: {
-      color: COLOR_9,
+      color: COLOR_WHITE,
       fontSize: FONT_12,
-      marginTop: 3
     },
-    descHeader: {
-      borderBottomWidth: 1,
-      borderBottomColor: COLOR_E,
-      paddingLeft: 10,
-      paddingRight: 10,
-      height: 40,
-      backgroundColor: COLOR_WHITE
+    descModal: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0
     },
-    descBack: {
-      width: 18
-    },
-    descTitle: {
-      fontSize: FONT_16,
-      textAlign: 'center',
-      color: COLOR_3,
+    descBtnRed: {
+      backgroundColor: COLOR_RED,
+      padding: 10,
+      alignItems: 'center',
+      borderRadius: 3,
+      marginLeft: 5,
       flex: 1,
-      paddingRight: 18
+      justifyContent: 'center'
     },
+    descBtnBlue: {
+      backgroundColor: COLOR_BLUE,
+      padding: 10,
+      alignItems: 'center',
+      borderRadius: 3,
+      marginRight: 5,
+      flex: 1,      
+      justifyContent: 'center'      
+    }
   },
   addGoodsCate: {
     left: {
