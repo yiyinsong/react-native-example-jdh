@@ -3898,6 +3898,22 @@ export default {
       marginRight: 5,
       flex: 1,      
       justifyContent: 'center'      
+    },
+    swiper: {
+      backgroundColor: COLOR_BLACK
+    },
+    swiperHeader: {
+      backgroundColor: COLOR_6,
+      padding: 10
+    },
+    swiperHeaderText: {
+      color: COLOR_WHITE,
+      fontSize: FONT_12
+    },
+    swiperBack: {
+      width: 7,
+      height: 14,
+      marginRight: 10
     }
   },
   addGoodsCate: {

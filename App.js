@@ -27,15 +27,15 @@ const ReactNativeJdh = StackNavigator(Route, {
           </TouchableOpacity>),
     headerRight: <TouchableOpacity style={styles.common.headerBtnRight}></TouchableOpacity>
   }),
-  transitionConfig: () => ({
-    transitionSpec: {
-      duration: 350
-    },
-   screenInterpolator: (sceneProps) => {
-     if (sceneProps.scene.route.withoutAnimation) return null;
-     return CardStackStyleInterpolator.forHorizontal(sceneProps)
-   },
- }),
+  // transitionConfig: () => ({
+  //   transitionSpec: {
+  //     duration: 350
+  //   },
+  //  screenInterpolator: (sceneProps) => {
+  //    if (sceneProps.scene.route.withoutAnimation) return null;
+  //    return CardStackStyleInterpolator.forHorizontal(sceneProps)
+  //  },
+//  }),
 });
 
 let exit = false;
