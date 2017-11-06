@@ -113,6 +113,12 @@ import {
                         <Text style={styles.store.iconText}>数据统计</Text>
                     </View>
                 </TouchableHighlight>
+                <TouchableHighlight underlayColor="#f5f5f5" style={[styles.store.gridItem, {width: Utils.width * .33, borderRightWidth: 1, borderRightColor: '#f1f1f1'}]} onPress={this._toMyCustomer}>
+                    <View style={[styles.common.flexv, styles.common.flexCenterh, styles.common.flexCenterv]}>
+                        <Image source={require('../../../images/store-icon7.png')} style={styles.store.icon}/>
+                        <Text style={styles.store.iconText}>我的顾客</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
             <TouchableHighlight underlayColor="#f1f1f1" style={styles.store.add} onPress={this._toBuildGoods}>
                 <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.common.flexCenterh]}>
@@ -194,5 +200,8 @@ import {
     }
     _toBuildGoods = () => {
         this.props.navigation.navigate('SellerBuildGoods');        
+    }
+    _toMyCustomer = () => {
+        this.props.navigation.navigate('SellerCustomer');                
     }
   }

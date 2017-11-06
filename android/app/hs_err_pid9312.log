@@ -1,0 +1,126 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 10560 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=9312, tid=9144
+#
+# JRE version:  (8.0_60-b27) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.60-b23 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000002448800):  JavaThread "Unknown thread" [_thread_in_vm, id=9144, stack(0x0000000002de0000,0x0000000002ee0000)]
+
+Stack: [0x0000000002de0000,0x0000000002ee0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000002448800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=9144, stack(0x0000000002de0000,0x0000000002ee0000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x000000013fed0000 - 0x000000013ff07000 	D:\Program Files\Java\jdk1.8.0_60\bin\java.exe
+0x0000000077970000 - 0x0000000077b1a000 	C:\windows\SYSTEM32\ntdll.dll
+0x0000000077750000 - 0x000000007786f000 	C:\windows\system32\kernel32.dll
+0x000007fefd750000 - 0x000007fefd7ba000 	C:\windows\system32\KERNELBASE.dll
+0x000007fefe730000 - 0x000007fefe80b000 	C:\windows\system32\ADVAPI32.dll
+0x000007fefe530000 - 0x000007fefe5cf000 	C:\windows\system32\msvcrt.dll
+0x000007fefdd80000 - 0x000007fefdd9f000 	C:\windows\SYSTEM32\sechost.dll
+0x000007fefdba0000 - 0x000007fefdccd000 	C:\windows\system32\RPCRT4.dll
+0x0000000077870000 - 0x000000007796a000 	C:\windows\system32\USER32.dll
+0x000007fefe6c0000 - 0x000007fefe727000 	C:\windows\system32\GDI32.dll
+0x000007feffa70000 - 0x000007feffa7e000 	C:\windows\system32\LPK.dll
+0x000007feff9a0000 - 0x000007feffa6b000 	C:\windows\system32\USP10.dll
+0x000007fefc690000 - 0x000007fefc884000 	C:\windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.18837_none_fa3b1e3d17594757\COMCTL32.dll
+0x000007fefdda0000 - 0x000007fefde11000 	C:\windows\system32\SHLWAPI.dll
+0x000007fefdd50000 - 0x000007fefdd7e000 	C:\windows\system32\IMM32.DLL
+0x000007feff870000 - 0x000007feff979000 	C:\windows\system32\MSCTF.dll
+0x000007fefd590000 - 0x000007fefd5c1000 	C:\windows\system32\nvinitx.dll
+0x000007fefd580000 - 0x000007fefd58c000 	C:\windows\system32\VERSION.dll
+0x0000000075190000 - 0x0000000075196000 	C:\Program Files\NVIDIA Corporation\CoProcManager\detoured.dll
+0x000007fefa3f0000 - 0x000007fefa422000 	C:\Program Files\NVIDIA Corporation\CoProcManager\nvd3d9wrapx.dll
+0x000007fefde90000 - 0x000007fefe067000 	C:\windows\system32\SETUPAPI.dll
+0x000007fefd7c0000 - 0x000007fefd7f6000 	C:\windows\system32\CFGMGR32.dll
+0x000007fefdac0000 - 0x000007fefdb9a000 	C:\windows\system32\OLEAUT32.dll
+0x000007feffa80000 - 0x000007feffc7c000 	C:\windows\system32\ole32.dll
+0x000007fefd680000 - 0x000007fefd69a000 	C:\windows\system32\DEVOBJ.dll
+0x000007fefa3c0000 - 0x000007fefa3e2000 	C:\Program Files\NVIDIA Corporation\CoProcManager\nvdxgiwrapx.dll
+0x00000000790c0000 - 0x0000000079192000 	D:\Program Files\Java\jdk1.8.0_60\jre\bin\msvcr100.dll
+0x0000000002510000 - 0x0000000002d99000 	D:\Program Files\Java\jdk1.8.0_60\jre\bin\server\jvm.dll
+0x000007feedc60000 - 0x000007feedc69000 	C:\windows\system32\WSOCK32.dll
+0x000007fefe670000 - 0x000007fefe6bd000 	C:\windows\system32\WS2_32.dll
+0x000007fefde80000 - 0x000007fefde88000 	C:\windows\system32\NSI.dll
+0x000007fefb110000 - 0x000007fefb14b000 	C:\windows\system32\WINMM.dll
+0x0000000077b40000 - 0x0000000077b47000 	C:\windows\system32\PSAPI.DLL
+0x000000005e420000 - 0x000000005e42f000 	D:\Program Files\Java\jdk1.8.0_60\jre\bin\verify.dll
+0x000000006d560000 - 0x000000006d589000 	D:\Program Files\Java\jdk1.8.0_60\jre\bin\java.dll
+0x00000000701d0000 - 0x00000000701e6000 	D:\Program Files\Java\jdk1.8.0_60\jre\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Djava.awt.headless=true -Xmx1024M -Dfile.encoding=GBK -Duser.country=CN -Duser.language=zh -Duser.variant 
+java_command: com.android.dx.command.Main --dex --num-threads=4 --output F:\app\react-native-example-jdh\android\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_40c4193f05b44d8b326adfbe32b0be5e1b7e565d.jar F:\app\react-native-example-jdh\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar
+java_class_path (initial): D:\Android\sdk\build-tools\23.0.1\lib\dx.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=D:\Program Files\Java\jdk1.8.0_60
+CLASSPATH=F:\app\react-native-example-jdh\android\\gradle\wrapper\gradle-wrapper.jar
+PATH=D:\Program Files\cmder\bin;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Program Files\cmder\vendor\conemu-maximus5;D:\Program Files\cmder\vendor\conemu-maximus5\ConEmu;C:\PROGRAMDATA\ORACLE\JAVA\JAVAPATH;C:\PROGRAM FILES\BROADCOM\BROADCOM 802.11 NETWORK ADAPTER\DRIVER;C:\WINDOWS\SYSTEM32;C:\WINDOWS;C:\WINDOWS\SYSTEM32\WBEM;C:\WINDOWS\SYSTEM32\WINDOWSPOWERSHELL\V1.0\;;D:\PROGRAM FILES\JAVA\JDK1.8.0_60\BIN;D:\PROGRAM FILES\JAVA\JDK1.8.0_60\JRE\BIN;D:\ANDROID\SDK\TOOLS;D:\ANDROID\SDK\PLATFORM-TOOLS;D:\PROGRAM FILES\ADT\ECLIPSE\PLUGINS\ORG.APACHE.ANT_1.8.4.V201303080030\BIN;D:\PROGRAM FILES\ADT\APACHEANT\BIN;D:\PROGRAM FILES\ADT\APACHEANT\LIB;C:\USERS\XIAOSONG\APPDATA\ROAMING\NPM;C:\PROGRAM FILES (X86)\NVIDIA CORPORATION\PHYSX\COMMON; D:\Android\sdk\TOOLS;D:\PROGRAM FILES\NODEJS\;C:\PROGRAM FILES\DOTNET\;D:\PROGRAM FILES\MONGODB\SERVER\3.4\BIN;D:\PROGRAM FILES\TORTOISEGIT\BIN;D:\PROGRAM FILES\GIT\CMD;D:\PROGRAM FILES\BRACKETS\COMMAND;C:\Program Files\WIDCOMM\Bluetooth Software\;C:\Program Files\WIDCOMM\Bluetooth Software\syswow64;C:\Users\xiaosong\AppData\Roaming\npm;D:\Program Files\Microsoft VS Code\bin;C:\Users\xiaosong\AppData\Local\atom\bin;D:\Program Files\Git\usr\bin;D:\Program Files\Git\usr\share\vim\vim74;D:\Program Files\cmder\
+USERNAME=xiaosong
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 60 Stepping 3, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 (6.1.7601.23915)
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 60 stepping 3, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2
+
+Memory: 4k page, physical 8268820k(1204764k free), swap 8266960k(189128k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.60-b23) for windows-amd64 JRE (1.8.0_60-b27), built on Aug  4 2015 11:06:27 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Mon Nov 06 21:19:22 2017
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

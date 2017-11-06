@@ -4031,5 +4031,50 @@ export default {
       borderRadius: 3,
       fontSize: FONT_12
     }
+  },
+  customer: {
+    search: {
+      margin: 10,
+      borderRadius: 3,
+      backgroundColor: COLOR_GRAY,
+      paddingTop: 6,
+      paddingBottom: 6,
+      paddingLeft: 8,
+      paddingRight: 8
+    },
+    searchInput: {
+      padding: 0,
+      margin: 0,
+      fontSize: FONT_12,
+      height: 18
+    },
+    searchIcon: {
+      width: 18,
+      height: 18
+    },
+    dt: {
+      backgroundColor: COLOR_GRAY,
+    },
+    dtText: {
+      paddingTop: 8,
+      paddingBottom: 8,
+      textAlign: 'center',
+      fontSize: FONT_14,
+      color: COLOR_3,
+      flex: 1
+    },
+    dd: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      height: 38
+    },
+    ddText: {
+      paddingTop: 10,
+      paddingBottom: 10,
+      textAlign: 'center',
+      fontSize: FONT_12,
+      color: COLOR_3,
+      flex: 1
+    },
   }
 }

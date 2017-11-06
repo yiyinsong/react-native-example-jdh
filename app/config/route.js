@@ -32,6 +32,7 @@ import SellerQuickBuildGoodsCategoryScreen from '../screens/containers/seller/qu
 import SellerQuickBuildGoodsBrandScreen from '../screens/containers/seller/quick-build-goods-brand';
 import SellerStorePreviewScreen from '../screens/components/seller/store-preview';
 import SellerStoreManaScreen from '../screens/containers/seller/store-mana';
+import SellerCustomerScreen from '../screens/containers/seller/customer';
 
 import BuyerScreen from '../screens/containers/buyer/index';
 import BuyerSearchScreen from '../screens/containers/buyer/search';
@@ -209,6 +210,13 @@ export default {
     screen: SellerQuickBuildGoodsBrandScreen,
     navigationOptions: {
       title: '选择品牌'
+    }
+  },
+  //我的顾客
+  SellerCustomer: {
+    screen: SellerCustomerScreen,
+    navigationOptions: {
+      title: '我的顾客'
     }
   },
   //店铺
