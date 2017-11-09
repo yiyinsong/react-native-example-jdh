@@ -118,19 +118,19 @@ export default class ShoppingScreen extends Component {
                {this._renderCate(this.state.cate[1])}
                {this._renderCate(this.state.cate[2])}
                {this._renderCate(this.state.cate[3])}
-               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={() => this._toCateHandle(4)}>
-                 <Image source={require('../../../images/icon-home-cate5.png')} style={styles.home.cateIcon} />
-                 <Text style={styles.home.cateText}>众采</Text>
-               </TouchableOpacity>
+               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={this._toSign}>
+                <Image source={require('../../../images/icon-home-cate10.png')} style={styles.home.cateIcon} />
+                <Text style={styles.home.cateText}>签到</Text>
+              </TouchableOpacity>
              </View>
              <View style={[styles.common.flexDirectionRow, styles.home.cate]}>
                {this._renderCate(this.state.cate[4])}
                {this._renderCate(this.state.cate[5])}
                {this._renderCate(this.state.cate[6])}
                {this._renderCate(this.state.cate[7])}
-               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={this._toSign}>
-                 <Image source={require('../../../images/icon-home-cate10.png')} style={styles.home.cateIcon} />
-                 <Text style={styles.home.cateText}>签到</Text>
+               <TouchableOpacity activeOpacity={.8} style={[styles.common.flexv, styles.common.flexCenterv]} onPress={this._toCategory}>
+                 <Image source={require('../../../images/icon-home-cate11.png')} style={styles.home.cateIcon} />
+                 <Text style={styles.home.cateText}>分类</Text>
                </TouchableOpacity>
              </View>
              <View style={[styles.common.flexDirectionRow, styles.common.flexCenterv, styles.home.news]}>
@@ -344,7 +344,7 @@ export default class ShoppingScreen extends Component {
         });
       }
     });
-    fetch(Config.PHPAPI + `api/mapp/dynamics/dylist?token=${token}`, {
+    fetch(Config.PHPAPI + `api/mapp/dynamics/dyindex?token=${token}`, {
       method: 'GET'
     })
     .then(response => response.json())
@@ -540,8 +540,7 @@ export default class ShoppingScreen extends Component {
   _toSign = () => {
     this.props.navigation.navigate('BuyerSign');
   }
-  _toCateHandle = (k) => {
-    if(k === 4) {
-    }
+  _toCategory = () => {
+    this.props.navigation.navigate('BuyerCategory');    
   }
 }

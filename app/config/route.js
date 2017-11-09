@@ -37,6 +37,7 @@ import SellerCustomerScreen from '../screens/containers/seller/customer';
 import BuyerScreen from '../screens/containers/buyer/index';
 import BuyerSearchScreen from '../screens/containers/buyer/search';
 import BuyerSignScreen from '../screens/containers/buyer/sign';
+import BuyerCategoryScreen from '../screens/containers/buyer/category';
 import BuyerOrderScreen from '../screens/containers/buyer/order';
 import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
 import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-detail';
@@ -267,6 +268,13 @@ export default {
   //买家签到
   BuyerSign: {
     screen: BuyerSignScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  //买家分类
+  BuyerCategory: {
+    screen: BuyerCategoryScreen,
     navigationOptions: {
       header: null
     }

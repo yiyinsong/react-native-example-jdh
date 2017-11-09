@@ -4,6 +4,7 @@ import {
   ScrollView,
   Text,
   Image,
+  ImageBackground,
   TextInput,
   StyleSheet,
   TouchableOpacity,
@@ -54,7 +55,7 @@ export default class SignScreen extends Component {
                 <TouchableOpacity activeOpacity={.8} style={styles.sign.tipsLink} onPress={() => this._setTipsVisible(true)}>
                   <Image source={require('../../../images/sign-rule.png')} style={styles.sign.tipsIcon} />
                 </TouchableOpacity>
-                <Image source={require('../../../images/sign-bg.png')} style={[styles.common.flexCenterh, styles.common.flexCenterv, {width: Utils.width, height: Utils.width/1.63}]} resizeMode="contain">
+                <ImageBackground source={require('../../../images/sign-bg.png')} style={[styles.common.flexCenterh, styles.common.flexCenterv, {width: Utils.width, height: Utils.width/1.63}]} resizeMode="contain">
                   {
                     this.state.data.is_sign ?
                     <TouchableOpacity activeOpacity={.8} onPress={() => this._setSignedVisible(true)}>
@@ -67,7 +68,7 @@ export default class SignScreen extends Component {
                       <Image source={require('../../../images/sign-btn.png')} style={{width: Utils.width*.3, height: Utils.width*.3}} resizeMode="contain"/>
                     </TouchableOpacity>
                   }
-                </Image>
+                </ImageBackground>
                 <ScrollView>
                   <Text style={styles.sign.date}>{this.state.data.Y}/{this.state.data.m}</Text>
                   <View style={styles.sign.table}>

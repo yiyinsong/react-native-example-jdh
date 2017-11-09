@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   TextInput,
   InteractionManager,
+  Alert,
+  Linking
   } from 'react-native';
 
 import Config from '../../../config/config';
@@ -69,7 +71,6 @@ export default class CustomerScreen extends Component {
         InteractionManager.runAfterInteractions(() => {
             ScreenInit.checkLogin(this);
             this.setState({loadingVisible: true});
-            // this._init();
         });
     }
     _init = () => {
@@ -83,27 +84,26 @@ export default class CustomerScreen extends Component {
                 _name = this.state.text;
             }
         }
-       // alert(`${Config.JAVAAPI}shop/wap/client/order/shopCustomer?token=${token}&pageIndex=${this.state.page}&name=${_name}&mobile=${_mobile}`);
         fetch(`${Config.JAVAAPI}shop/wap/client/order/shopCustomer?token=${token}&pageIndex=${this.state.page}&name=${_name}&mobile=${_mobile}`, {
             method: 'POST'
         })
         .then((response) => response.json())
         .then(r => {
             this.setState({loadingVisible: false});
+            this.state.loading = false;
             if(r.code === 1) {
-                this.setState({list: [...this.state.list, ...r.obj.results]});
                 if(r.obj.pageIndex >= r.obj.totalPage) {
                     this.state.loadEnd = true;
                 }
+                this.setState({list: [...this.state.list, ...r.obj.results]});
             }
-            this.state.loading = false;
         });
     }
     _renderItem = (item) => {
         return (
             <View style={[styles.common.flexDirectionRow, styles.customer.dd]}>
                 <View style={styles.common.flex}><Text style={styles.customer.ddText} numberOfLines={1}>{item.item.name}</Text></View>
-                <View style={styles.common.flex}><Text style={styles.customer.ddText} numberOfLines={1}>{item.item.mobile}</Text></View>
+                <TouchableOpacity activeOpacity={1} style={styles.common.flex} onPress={() => this._fnTel(item.item.mobile)}><Text style={styles.customer.ddText} numberOfLines={1}>{item.item.mobile}</Text></TouchableOpacity>
                 <View style={styles.common.flex}><Text style={styles.customer.ddText} numberOfLines={1}>{item.item.orderCount}</Text></View>
             </View>
         )
@@ -121,5 +121,16 @@ export default class CustomerScreen extends Component {
             loadingVisible: false
         });
         this._init();
+    }
+    _fnTel = (numbers) => {
+        Alert.alert(
+        '提示',
+        `是否拨打${numbers}`,
+        [
+            {text: '取消'},
+            {text: '确定', onPress: () => Linking.openURL(`tel:${numbers}`)},
+        ],
+        { cancelable: false }
+        );
     }
 }

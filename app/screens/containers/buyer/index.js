@@ -7,7 +7,7 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 
 import StoreScreen from './store';
 import ShoppingScreen from './shopping';
-import CategoryScreen from './category';
+import NewsScreen from './news';
 import CartScreen from './cart';
 
 import styles from '../../../css/styles';
@@ -38,18 +38,6 @@ export default TabNavigator({
         ),
       }
     },
-    'Category': {
-      screen: CategoryScreen,
-      navigationOptions: {
-        header: null,
-        tabBarLabel: '分类',
-        tabBarIcon: ({ focused }) => (
-          <Image source={ focused ? require('../../../images/icon-cate-active.png') : require('../../../images/icon-cate.png')}
-            style={styles.common.tabIcon}
-          />
-        ),
-      }
-    },
     'Cart': {
       screen: CartScreen,
       navigationOptions: {
@@ -57,6 +45,18 @@ export default TabNavigator({
         tabBarLabel: '购物车',
         tabBarIcon: ({ focused }) => (
           <Image source={ focused ? require('../../../images/icon-cart-active.png') : require('../../../images/icon-cart.png')}
+            style={styles.common.tabIcon}
+          />
+        ),
+      }
+    },
+    'News': {
+      screen: NewsScreen,
+      navigationOptions: {
+        header: null,
+        tabBarLabel: '动态',
+        tabBarIcon: ({ focused }) => (
+          <Image source={ focused ? require('../../../images/icon-news-active.png') : require('../../../images/icon-news.png')}
             style={styles.common.tabIcon}
           />
         ),
