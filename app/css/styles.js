@@ -3259,14 +3259,70 @@ export default {
     }
   },
   news: {
-    moreContainer: {
-      backgroundColor: COLOR_WHITE
+    tab: {
+      paddingTop: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY
     },
-    img: {
-      alignSelf: 'center',
-      resizeMode: 'contain',
-      overflow: 'hidden'
+    tabText: {
+      color: COLOR_3,
+      fontSize: FONT_14,
+      textAlign: 'center',
+      paddingTop: 10,
+      paddingLeft: 5,
+      paddingRight: 5,
+      paddingBottom: 8,
+      borderBottomWidth: 2,
+      borderBottomColor: COLOR_WHITE
+    },
+    tabTextActive: {
+      color: COLOR_RED,
+      borderBottomColor: COLOR_RED
+    },
+    item: {
+      borderBottomWidth: 1,
+      borderBottomColor: COLOR_GRAY,
+      padding: 10
+    },
+    itemImg: {
+      width: 80,
+      height: 80,
+    },
+    itemInfo: {
+      marginLeft: 10
+    },
+    top: {
+      borderWidth: 1,
+      borderColor: COLOR_RED,
+      marginRight: 5
+    },
+    topText: {
+      color: COLOR_RED,
+      fontSize: FONT_12
+    },
+    itemTitle: {
+      fontSize: FONT_14,
+      color: COLOR_3,
+    },
+    itemContent: {
+      fontSize: FONT_12,
+      color: COLOR_9,
+      marginTop: 5
     }
+  },
+  newsDetail: {
+    title: {
+      fontSize: FONT_14,
+      color: COLOR_3
+    },
+    time: {
+      fontSize: FONT_12,
+      color: COLOR_9,
+      marginTop: 5
+    },
+    container: {
+      padding: 10
+    },
   },
   vrg: {
     item: {

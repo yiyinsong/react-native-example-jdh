@@ -43,7 +43,7 @@ import BuyerOrderDetailScreen from '../screens/containers/buyer/order-detail';
 import BuyerRefundDetailScreen from '../screens/containers/buyer/order-refund-detail';
 import BuyerPayScreen from '../screens/containers/buyer/pay';
 import BuyerAttentionScreen from '../screens/containers/buyer/attention';
-import BuyerNewsMoreScreen from '../screens/components/buyer/news-more';
+import BuyerNewsDetailScreen from '../screens/containers/buyer/news-detail';
 import BuyerRefundApplyScreen from '../screens/containers/buyer/refund-apply';
 
 
@@ -319,10 +319,10 @@ export default {
     }
   },
   //查看更多动态
-  NewsMore: {
-    screen: BuyerNewsMoreScreen,
+  NewsDetail: {
+    screen: BuyerNewsDetailScreen,
     navigationOptions: {
-      title: '最新动态'
+      title: '动态详情'
     }
   },
 }
