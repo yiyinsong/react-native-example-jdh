@@ -43,7 +43,7 @@ import {
                             <Image source={require('../../../images/store-icon-store.png')} style={styles.store.iconStore}/>
                             <Text style={styles.store.storeText}>店铺</Text>
                         </View>
-                    </TouchableOpacity> 
+                    </TouchableOpacity>
                     <View style={styles.common.flex}>
                         <Text numberOfLines={1} style={[styles.common.flex, styles.store.storeName]}>{this.state.storeInfo.shop_name}</Text>
                     </View>
@@ -199,9 +199,9 @@ import {
         this.props.navigation.navigate('SellerStoreInfo');
     }
     _toBuildGoods = () => {
-        this.props.navigation.navigate('SellerBuildGoods');        
+        this.props.navigation.navigate('SellerBuildGoods');
     }
     _toMyCustomer = () => {
-        this.props.navigation.navigate('SellerCustomer');                
+        this.props.navigation.navigate('SellerCustomer');
     }
   }

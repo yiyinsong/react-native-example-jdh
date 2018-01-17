@@ -34,9 +34,12 @@ import ModalConfirm from '../../common/modal-confirm';
         totalPrice: 0,
         isEdit: false
       };
+      this.setHeaderRightTimer = null;
     }
     componentWillMount() {
-      this.props.navigation.setParams({headerRight: '编辑'});
+      this.setHeaderRightTimer = setTimeout(() => {
+        this.props.navigation.setParams({headerRight: '编辑'});
+      });
     }
     componentDidMount() {
       this.setState({loadingVisible: true});
@@ -54,6 +57,7 @@ import ModalConfirm from '../../common/modal-confirm';
       });
     }
     componentWillUnmount() {
+      this.setHeaderRightTimer && clearTimeout(this.setHeaderRightTimer);
       this.listener_edit && this.listener_edit.remove();
     }
     render() {
