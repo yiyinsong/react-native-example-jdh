@@ -59,9 +59,9 @@ export default class SignScreen extends Component {
                   {
                     this.state.data.is_sign ?
                     <TouchableOpacity activeOpacity={.8} onPress={() => this._setSignedVisible(true)}>
-                      <Image source={require('../../../images/sign-btn-active.png')} style={[styles.common.flexCenterv, styles.common.flexCenterh, {width: Utils.width*.3, height: Utils.width*.3}]} resizeMode="contain">
+                      <ImageBackground source={require('../../../images/sign-btn-active.png')} style={[styles.common.flexCenterv, styles.common.flexCenterh, {width: Utils.width*.3, height: Utils.width*.3}]} resizeMode="contain">
                         <Text style={styles.sign.signedText}>已连续<Text style={styles.sign.signedDay}>{this.state.data.signinnum}</Text>天</Text>
-                      </Image>
+                      </ImageBackground>
                     </TouchableOpacity>
                     :
                     <TouchableOpacity activeOpacity={.8} onPress={this._signFunc}>

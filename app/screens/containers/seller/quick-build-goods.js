@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import {
   Image,
+  ImageBackground,
   Text,
   View,
   ScrollView,
@@ -18,7 +19,7 @@ import {
   WebView,
   Animated
   } from 'react-native';
-import ImagePicker from 'react-native-image-picker';  
+import ImagePicker from 'react-native-image-picker';
 
 import Config from '../../../config/config';
 import Utils from '../../../js/utils';
@@ -108,9 +109,9 @@ let imagePickerOptions = {
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={.8} onPress={() => this._fnViewImgs(k)}>
-                      <Image source={{uri: v}} style={styles.addGoods.thumb}>
+                      <ImageBackground source={{uri: v}} style={styles.addGoods.thumb}>
                         {k === 0 ? <Text style={styles.addGoods.thumbText}>主图</Text> : null}
-                      </Image>
+                      </ImageBackground>
                     </TouchableOpacity>
                   </View>
                 )
@@ -176,16 +177,16 @@ let imagePickerOptions = {
             <View style={[styles.common.flexDirectionRow, styles.addGoods.agreement]}>
               <TouchableOpacity activeOpacity={.8} onPress={this._fnAgree}>
                 {this.state.agreement ?
-                <Image source={require('../../../images/icon-check-rect.png')} style={styles.control.checkedSmall} resizeMode="contain"/>              
+                <Image source={require('../../../images/icon-check-rect.png')} style={styles.control.checkedSmall} resizeMode="contain"/>
                 : <View style={styles.control.checkboxRectSmall}></View>
                 }
               </TouchableOpacity>
               <TouchableOpacity activeOpacity={.8}>
                 <Text style={styles.addGoods.agreementText}>《商品信息发布规范》</Text>
-              </TouchableOpacity>  
+              </TouchableOpacity>
               <TouchableOpacity activeOpacity={.8}>
                 <Text style={styles.addGoods.agreementText}>《禁发商品及信息管理规范》</Text>
-              </TouchableOpacity>  
+              </TouchableOpacity>
             </View>
           </ScrollView>
           <View style={[styles.common.flexDirectionRow, styles.common.flexCenterh, styles.addGoods.btn]}>
@@ -218,7 +219,7 @@ let imagePickerOptions = {
                 </View>
             </TouchableOpacity>
           </View>
-          </Animated.View>   
+          </Animated.View>
           <Modal
           animationType={"none"}
           transparent={true}
@@ -247,7 +248,7 @@ let imagePickerOptions = {
                   })}
                 </Swiper>
                 </View>
-          </Modal>     
+          </Modal>
         </View>
       );
     }
@@ -274,7 +275,7 @@ let imagePickerOptions = {
       this.listener_cate && this.listener_cate.remove();
       this.listener_brand && this.listener_brand.remove();
     }
-    
+
     _init = () => {
       // fetch(`${Config.PHPAPI}api/mapp/shop/cate?token=${token}`, {
       //   method: 'post'
@@ -298,22 +299,22 @@ let imagePickerOptions = {
       this.props.navigation.navigate('SellerBuildGoodsCategory', {cid: this.state.cid});
     }
     _toSelectBrand = () => {
-      this.props.navigation.navigate('SellerBuildGoodsBrand', {bid: this.state.bid});      
+      this.props.navigation.navigate('SellerBuildGoodsBrand', {bid: this.state.bid});
     }
     _saveDesc = () => {
       let script = 'getMessage()';
       this.refs.refWebviewDesc.injectJavaScript(script);
-      Animated.timing(                            
-        this.state.descTranslateY,                      
+      Animated.timing(
+        this.state.descTranslateY,
         {
-          toValue: Utils.height, 
+          toValue: Utils.height,
           duration: 300,
-          useNativeDriver: true                           
+          useNativeDriver: true
         }
-      ).start();  
+      ).start();
     }
     _selectDescImg = () => {
-      ImagePicker.showImagePicker(imagePickerOptions, (response) => { 
+      ImagePicker.showImagePicker(imagePickerOptions, (response) => {
         if (response.didCancel) {
         }
         else if (response.error) {
@@ -328,23 +329,23 @@ let imagePickerOptions = {
       });
     }
     _openDesc = () => {
-      Animated.timing(                            
-        this.state.descTranslateY,                      
+      Animated.timing(
+        this.state.descTranslateY,
         {
-          toValue: 0, 
+          toValue: 0,
           duration: 300,
-          useNativeDriver: true                           
+          useNativeDriver: true
         }
-      ).start();  
+      ).start();
     }
     _webviewOnMessage = (event) => {
-        this.setState({modalDesc: event.nativeEvent.data});  
+        this.setState({modalDesc: event.nativeEvent.data});
     }
     _fnAgree = () => {
       this.setState({agreement: !this.state.agreement});
     }
     _fnSelectImg = () => {
-      ImagePicker.showImagePicker(imagePickerOptions, (response) => { 
+      ImagePicker.showImagePicker(imagePickerOptions, (response) => {
         if (response.didCancel) {
         }
         else if (response.error) {
