@@ -4,6 +4,7 @@ import {
   View,
   Text,
   Image,
+  ImageBackground,
   TouchableHighlight
 } from 'react-native';
 
@@ -20,9 +21,9 @@ export default class AttentionItem extends Component {
         return (
             <TouchableHighlight underlayColor="#fafafa" style={[styles.attentionItem.container]}>
               <View style={[styles.common.flexDirectionRow, styles.attentionItem.item]}>
-                  <Image source={{uri: data.goods_img1}} style={styles.attentionItem.img}>
+                  <ImageBackground source={{uri: data.goods_img1}} style={styles.attentionItem.img}>
                     {data.on_sale == 0 ? <Text style={[styles.common.flex, styles.attentionItem.underSale]}>已下架</Text> : null}
-                  </Image>
+                  </ImageBackground>
                   <View style={[styles.common.flexv, styles.attentionItem.info]}>
                     <Text style={styles.attentionItem.goodsName} numberOfLines={2}>{data.goods_name}</Text>
                     <View style={styles.common.flexDirectionRow}>
