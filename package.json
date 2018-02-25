@@ -9,7 +9,7 @@
   "dependencies": {
     "moment": "^2.19.2",
     "react": "^16.2.0",
-    "react-native": "^0.52.0",
+    "react-native": "^0.53.3",
     "react-native-flexi-radio-button": "^0.2.2",
     "react-native-htmlview": "^0.12.1",
     "react-native-image-picker": "^0.26.7",
